@@ -1,7 +1,24 @@
-## web端
+# web
 
-使用`vue`+`vuetifyjs`。
+## Project setup
+```
+yarn install
+```
 
-启动`npm run dev`
+### Compiles and hot-reloads for development
+```
+yarn serve
+```
 
-打包`npm run build`
+### Compiles and minifies for production
+```
+yarn build
+```
+
+### Lints and fixes files
+```
+yarn lint
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
