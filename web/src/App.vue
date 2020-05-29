@@ -1,10 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
+    <v-app-bar app color="primary" dark>
       <div class="d-flex align-center">
         <v-img
           alt="Vuetify Logo"
@@ -38,23 +34,29 @@
     </v-app-bar>
 
     <v-content>
-      <HelloWorld/>
+      <transition
+        enter-active-class="animate__animated animate__bounceInLeft"
+        leave-active-class="animate__animated animate__bounceOutRight"
+        mode="out-in"
+      >
+        <router-view></router-view>
+      </transition>
+      <router-link to="/foo">Go to Foo</router-link>
+      <router-link to="/">Go to main</router-link>
+      <router-link to="/404">Go to 404</router-link>
     </v-content>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
-
 export default {
-  name: 'App',
+  name: "App",
 
-  components: {
-    HelloWorld,
-  },
+  components: {},
 
   data: () => ({
     //
   }),
 };
 </script>
+<style lang="scss" src="./css/main.scss"></style>
