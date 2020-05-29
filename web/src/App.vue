@@ -1,62 +1,30 @@
 <template>
-  <v-app>
-    <v-app-bar app color="primary" dark>
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
-
-      <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
-    </v-app-bar>
-
-    <v-content>
-      <transition
-        enter-active-class="animate__animated animate__bounceInLeft"
-        leave-active-class="animate__animated animate__bounceOutRight"
-        mode="out-in"
-      >
-        <router-view></router-view>
-      </transition>
-      <router-link to="/foo">Go to Foo</router-link>
-      <router-link to="/">Go to main</router-link>
-      <router-link to="/404">Go to 404</router-link>
-    </v-content>
-  </v-app>
+  <div>
+    <router-view></router-view>
+    <v-overlay :value="overlay">
+      <v-progress-circular indeterminate size="64"></v-progress-circular>
+    </v-overlay>
+  </div>
 </template>
 
 <script>
 export default {
   name: "App",
-
-  components: {},
-
-  data: () => ({
-    //
-  }),
+  data() {
+    return {
+      overlay: true,
+    };
+  },
+  mounted() {
+    this.checkLogin();
+  },
+  methods: {
+    checkLogin() {
+      setTimeout(() => {
+        this.overlay = false;
+      }, 200);
+    },
+  },
 };
 </script>
 <style lang="scss" src="./css/main.scss"></style>
