@@ -15,7 +15,7 @@ export default {
   },
   methods: {
     checkLogin() {
-      this.$router.push("404");
+      this.$router.push("login");
     },
   },
 };
