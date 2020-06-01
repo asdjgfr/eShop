@@ -70,11 +70,12 @@ export default {
   },
   methods: {
     async handleLogin() {
-      const res = await api.user.login();
-      if (res.data.code === 0) {
+      const res = await api.user.login({
+        username: "admin",
+        password: "123456"
+      });
+      if (res !== "fail") {
         await this.$router.push("/dashboard/customerreception");
-      } else {
-        alert("登陆失败！");
       }
     }
   }

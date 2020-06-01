@@ -1,8 +1,12 @@
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
+.align-center {
+  text-align: center;
 }
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
+.global-loading {
+  user-select: none;
+  .v-overlay__content {
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+  }
 }
