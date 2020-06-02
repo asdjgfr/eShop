@@ -1,5 +1,9 @@
 {
+  "name": "car-management-system",
+  "version": "0.0.1",
+  "description": "4s店管理系统",
   "dependencies": {
+    "@babel/polyfill": "^7.10.1",
     "koa": "^2.12.0",
     "koa-bodyparser": "^4.3.0",
     "koa-router": "^9.0.1",
@@ -7,5 +11,12 @@
     "mysql2": "^2.1.0",
     "sequelize": "^5.21.11",
     "uuid": "^8.1.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.2",
+    "@babel/preset-env": "^7.10.2",
+    "babel-loader": "^8.1.0",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11"
   }
 }

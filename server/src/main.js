@@ -1,4 +1,4 @@
-const Koa = require("koa");
+import Koa from "koa";
 const Router = require("koa-router");
 const bodyParser = require("koa-bodyparser");
 
