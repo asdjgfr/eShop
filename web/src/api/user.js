@@ -7,4 +7,11 @@ const login = data =>
     data
   });
 
-export default { login };
+const checkLogin = data =>
+  service({
+    url: "/api/checklogin",
+    method: "post",
+    data
+  });
+
+export default { login, checkLogin };

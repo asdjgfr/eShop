@@ -1,7 +1,11 @@
 {
   "dependencies": {
     "koa": "^2.12.0",
+    "koa-bodyparser": "^4.3.0",
+    "koa-router": "^9.0.1",
+    "lodash": "^4.17.15",
     "mysql2": "^2.1.0",
-    "sequelize": "^5.21.11"
+    "sequelize": "^5.21.11",
+    "uuid": "^8.1.0"
   }
 }

@@ -1,6 +1,7 @@
 import axios from "axios";
-// import qs from "qs";
+import qs from "qs";
 import store from "../plugins/vuex";
+import router from "@/router/router";
 
 const service = axios.create({
   timeout: 5000 // 请求超时时间
@@ -8,11 +9,16 @@ const service = axios.create({
 /****** request拦截器==>对请求参数做处理 ******/
 service.interceptors.request.use(
   config => {
-    console.log(config.data);
     store.commit("toggleGlobalLoading", { show: true });
     config.method === "post"
-      ? (config.data = { ...config.data })
-      : (config.params = { ...config.params });
+      ? (config.data = qs.stringify({
+          session: sessionStorage.getItem("session") ?? "",
+          ...config.data
+        }))
+      : (config.params = {
+          session: sessionStorage.getItem("session") ?? "",
+          ...config.params
+        });
     config.headers["Content-Type"] = "application/x-www-form-urlencoded";
     return config;
   },
@@ -24,30 +30,29 @@ service.interceptors.request.use(
 );
 /****** respone拦截器==>对响应做处理 ******/
 service.interceptors.response.use(
-  response => {
+  async response => {
     //成功请求到数据
     store.commit("toggleGlobalLoading", { show: false });
     //这里根据后端提供的数据进行对应的处理
-    if (response.data.code === 0) {
-      return response.data;
-    } else {
+    if (response.data.code === 401) {
+      await router.push("/login");
+    }
+    if (response.data.code !== 0) {
       store.commit("toggleGlobalToast", {
         show: true,
         text: response.data.msg
       });
-      return "fail";
     }
+    return response.data;
   },
   error => {
     //响应错误处理
-    console.log("error");
-    console.log(error);
     console.log(JSON.stringify(error));
-    let text =
-      JSON.parse(JSON.stringify(error)).response.status === 404
-        ? "404"
-        : "网络异常，请重试";
-    store.commit("toggleGlobalToast", { show: true, text });
+    store.commit("toggleGlobalLoading", { show: false });
+    store.commit("toggleGlobalToast", {
+      show: true,
+      text: error.message ?? "网络异常，请重试！"
+    });
     return Promise.reject(error);
   }
 );

@@ -9,9 +9,9 @@ export default new Vuex.Store({
   state: {
     session: "",
     // 全局的加载动画
-    globalLoading: false,
+    globalLoading: true,
     globalLoadingText: "加载中。。。",
-    globalToast: true,
+    globalToast: false,
     globalToastText: ""
   },
   getters: {},

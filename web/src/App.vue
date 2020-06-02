@@ -13,6 +13,8 @@
 </template>
 
 <script>
+import Fingerprint2 from "fingerprintjs2";
+import api from "@/api/index";
 export default {
   name: "App",
   data() {
@@ -35,16 +37,41 @@ export default {
     },
     toastText() {
       return this.$store.state.globalToastText;
+    },
+    userLogin() {
+      return this.$store.state.user.login;
     }
   },
   mounted() {
     this.checkLogin();
   },
   methods: {
-    checkLogin() {
-      setTimeout(() => {
-        this.$store.commit("toggleGlobalLoading", { show: false });
-      }, 2000);
+    async checkLogin() {
+      this.$store.commit("toggleGlobalLoading", {
+        show: true,
+        text: "检查登录状态。。。"
+      });
+      if (localStorage.getItem("deviceID") == null) {
+        const components = await Fingerprint2.getPromise();
+        const deviceID = await Fingerprint2.x64hash128(
+          components
+            .map(function(component) {
+              return component.value;
+            })
+            .join(""),
+          31
+        );
+        localStorage.setItem("deviceID", deviceID);
+      }
+      const res = await api.user.checkLogin({
+        session: sessionStorage.getItem("session"),
+        deviceID: localStorage.getItem("deviceID")
+      });
+
+      if (res.code !== 0 && this.$route.path !== "/login") {
+        await this.$router.push("/login");
+      }
+      this.$store.commit("toggleGlobalLoading", { show: false });
     }
   }
 };
