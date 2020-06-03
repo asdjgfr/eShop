@@ -21,5 +21,6 @@ exports.config = {
         idle: 10000,
       },
     },
+    timezone: "+08:00",
   },
 };
