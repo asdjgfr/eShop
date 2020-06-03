@@ -1,12 +1,8 @@
 exports.login = function (router) {
   router.post("/api/login", async (ctx) => {
     const { username, password, device, deviceID, session } = ctx.request.body;
-    const ip = ctx.request.headers["X-Real-IP"]
-      ? ctx.request.headers["X-Real-IP"]
-      : "";
-    const realIP = ctx.request.headers["X-Forwarded-For"]
-      ? ctx.request.headers["X-Forwarded-For"]
-      : "";
+    const ip = ctx.request.headers["X-Real-IP"] ?? "";
+    const realIP = ctx.request.headers["X-Forwarded-For"] ?? "";
     ctx.body = await require("../db/user").userLogin(
       username,
       password,
