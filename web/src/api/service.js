@@ -35,7 +35,12 @@ service.interceptors.response.use(
     store.commit("toggleGlobalLoading", { show: false });
     //这里根据后端提供的数据进行对应的处理
     if (response.data.code === 401) {
-      await router.push("/login");
+      // 登陆失效
+      try {
+        await router.replace("/login");
+      } catch (e) {
+        console.warn(e);
+      }
     }
     if (response.data.code !== 0) {
       store.commit("toggleGlobalToast", {
