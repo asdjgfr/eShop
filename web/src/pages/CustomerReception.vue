@@ -1,11 +1,10 @@
 <template>
   <div>
-    <v-tabs>
-      <v-tab v-for="i in tabs" :key="i" :href="`#tab-${i}`">{{ i }}</v-tab>
-      <v-tab-item v-for="i in tabs" :key="i" :value="'tab-' + i">
+    <el-tabs type="border-card">
+      <el-tab-pane v-for="i in tabs" :key="i" :label="i">
         <repair-work-order v-if="i === '维修单'" />
-      </v-tab-item>
-    </v-tabs>
+      </el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 

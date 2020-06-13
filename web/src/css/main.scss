@@ -1,3 +1,7 @@
+html,
+body {
+  margin: 0;
+}
 .align-center {
   text-align: center;
 }
@@ -9,4 +13,9 @@
     justify-items: center;
     align-items: center;
   }
+}
+.text-overflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
 }

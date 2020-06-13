@@ -20,38 +20,38 @@ export const routes = [
         path: "customerreception",
         component: CustomerReception,
         title: "客户接待",
-        icon: "fa fa-user-tie",
+        icon: "el-icon-s-custom"
       },
       {
         path: "inventorymanagement",
         component: InventoryManagement,
         title: "库存管理",
-        icon: "fa fa-warehouse",
+        icon: "el-icon-s-home"
       },
       {
         path: "maintenancemanagement",
         component: MaintenanceManagement,
         title: "维修管理",
-        icon: "fa fa-tools",
+        icon: "el-icon-setting"
       },
       {
         path: "customermanagement",
         component: CustomerManagement,
         title: "客户管理",
-        icon: "fa fa-user-tag",
+        icon: "el-icon-user"
       },
       {
         path: "financialmanagement",
         component: FinancialManagement,
         title: "财务管理",
-        icon: "fa fa-money-check-alt",
-      },
-    ],
+        icon: "el-icon-money"
+      }
+    ]
   },
   { path: "/404", component: NotFound },
   {
     // 会匹配所有路径
     path: "*",
-    redirect: "/404",
-  },
+    redirect: "/404"
+  }
 ];

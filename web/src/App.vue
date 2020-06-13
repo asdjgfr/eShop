@@ -1,15 +1,5 @@
 <template>
-  <div>
-    <router-view></router-view>
-    <v-snackbar v-model="toast" :timeout="3000" :top="true">
-      {{ toastText }}
-    </v-snackbar>
-    <v-overlay :value="overlay" class="global-loading">
-      <v-progress-circular indeterminate size="64"></v-progress-circular>
-      <br />
-      <div class="align-center" v-text="overlayText" />
-    </v-overlay>
-  </div>
+  <router-view />
 </template>
 
 <script>
@@ -21,23 +11,6 @@ export default {
     return {};
   },
   computed: {
-    overlay() {
-      return this.$store.state.globalLoading;
-    },
-    overlayText() {
-      return this.$store.state.globalLoadingText;
-    },
-    toast: {
-      get() {
-        return this.$store.state.globalToast;
-      },
-      set(show) {
-        this.$store.commit("toggleGlobalToast", { show });
-      }
-    },
-    toastText() {
-      return this.$store.state.globalToastText;
-    },
     userLogin() {
       return this.$store.state.user.login;
     }
@@ -47,8 +20,9 @@ export default {
   },
   methods: {
     async checkLogin() {
-      this.$store.commit("toggleGlobalLoading", {
-        show: true,
+      const loading = this.$loading({
+        fullscreen: true,
+        lock: true,
         text: "检查登录状态。。。"
       });
       if (localStorage.getItem("deviceID") == null) {
@@ -71,7 +45,7 @@ export default {
       if (res.code !== 0 && this.$route.path !== "/login") {
         await this.$router.push("/login");
       }
-      this.$store.commit("toggleGlobalLoading", { show: false });
+      loading.close();
     }
   }
 };

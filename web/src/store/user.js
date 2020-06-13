@@ -3,14 +3,7 @@ const state = {
   username: "",
   isAdmin: false
 };
-const mutations = {
-  updateUserInfo(state, params) {
-    const { login, username, isAdmin } = params;
-    state.login = login;
-    state.username = username;
-    state.isAdmin = isAdmin;
-  }
-};
+const mutations = {};
 export default {
   state,
   mutations

@@ -1,55 +1,47 @@
 <template>
-  <v-app-bar app color="#1867c0" elevate-on-scroll dense dark>
-    <v-app-bar-nav-icon @click="handleShowDrawer" />
-    <v-toolbar-title>{{ title }}</v-toolbar-title>
-  </v-app-bar>
+  <el-row class="app-bar">
+    <el-col :span="12">
+      <el-button
+        type="default"
+        icon="el-icon-menu"
+        @click="handleChangeDrawer"
+        style="margin-right: 10px"
+      />
+      <span v-text="title ? title : '4s店智能管理系统'" />
+    </el-col>
+    <el-col :span="12" style="text-align: right">
+      <el-dropdown>
+        <div>
+          <el-avatar icon="el-icon-user-solid" />
+          <span
+            v-text="username"
+            style="padding-left: 10px;margin-right: 10px"
+          />
+        </div>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item>退出登录</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
-import { routes } from "@/router/routes";
 export default {
   name: "AppBar",
-  props: ["drawer"],
+  props: ["drawer", "title"],
   data() {
     return {
-      items: [
-        {
-          text: "Dashboard",
-          disabled: false,
-          href: "breadcrumbs_dashboard"
-        },
-        {
-          text: "Link 1",
-          disabled: false,
-          href: "breadcrumbs_link_1"
-        },
-        {
-          text: "Link 2",
-          disabled: true,
-          href: "breadcrumbs_link_2"
-        }
-      ]
+      username: localStorage.getItem("username")
     };
   },
   methods: {
-    handleShowDrawer() {
-      this.$emit("update:drawer", true);
+    handleChangeDrawer() {
+      this.$emit("update:drawer", !this.drawer);
     }
   },
-  computed: {
-    title() {
-      const { path } = this.$route;
-      const currentPath = path.replace(/\/dashboard\//, "");
-
-      return (
-        routes
-          .find(r => r.path === "/dashboard")
-          ?.children?.find(r => r.path === currentPath).title ??
-        "4s店智能管理系统"
-      );
-    }
-  }
+  computed: {}
 };
 </script>
 
-<style scoped></style>
+<style lang="scss" src="../css/app-bar.scss"></style>

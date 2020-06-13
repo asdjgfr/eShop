@@ -1,0 +1,13 @@
+.dashboard-aside {
+  width: 240px;
+  height: 100%;
+  .el-menu {
+    height: 100%;
+    overflow: hidden auto;
+  }
+}
+
+.dashboard-container {
+  height: calc(100vh - 120px);
+  overflow: hidden;
+}

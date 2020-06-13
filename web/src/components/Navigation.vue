@@ -1,57 +1,63 @@
-<template>
-  <v-navigation-drawer :value="drawer" absolute temporary @input="handleChange">
-    <v-list shaped dense>
-      <v-subheader>用户名</v-subheader>
-      <v-divider />
-      <v-list-item-group :value="activeIndex" color="primary">
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="item.path"
-          @click="handleJump(item.path)"
-          :disabled="i === activeIndex"
-        >
-          <v-list-item-icon>
-            <v-icon dense v-text="item.icon"></v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title"></v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list-item-group>
-    </v-list>
-  </v-navigation-drawer>
-</template>
-
 <script>
-import { routes } from "../router/routes";
 export default {
   name: "Navigation",
-  props: ["drawer"],
+  props: ["drawer", "dashboardRoutes"],
   data() {
-    return {
-      items: routes
-        .find((pRoute) => pRoute.path === "/dashboard")
-        .children.map((cRoute) => ({
-          title: cRoute.title,
-          icon: cRoute.icon,
-          path: `/dashboard/${cRoute.path}`,
-        })),
-    };
+    return {};
   },
-  computed: {
-    activeIndex() {
-      const { path } = this.$route;
-      return this.items.findIndex((r) => r.path === path);
-    },
+  render() {
+    return (
+      <el-menu
+        default-active={this.dashboardRoutes[0]?.path ?? ""}
+        onOpen={this.handleOpen}
+        onClose={this.handleClose}
+        onSelect={this.handleSelect}
+        collapse={this.drawer}
+      >
+        {this.dashboardRoutes.map(item => {
+          if (item.children && item.children.length) {
+            return (
+              <el-submenu index={item.path}>
+                <template slot="title">
+                  <i class={item.icon} />
+                  <span>{item.title}</span>
+                </template>
+                {item.children.map(sub => (
+                  <el-menu-item index={sub.path} title={sub.title}>
+                    {sub.title}
+                  </el-menu-item>
+                ))}
+              </el-submenu>
+            );
+          } else {
+            return (
+              <el-menu-item
+                index={item.path}
+                title={item.title}
+                class="text-overflow"
+              >
+                <i class={item.icon} />
+                <span slot="title">{item.title}</span>
+              </el-menu-item>
+            );
+          }
+        })}
+      </el-menu>
+    );
   },
   methods: {
-    handleChange(bool) {
-      this.$emit("update:drawer", bool);
+    handleSelect(path) {
+      if (this.$route.path !== path) {
+        this.$router.push(path);
+      }
     },
-    handleJump(path) {
-      this.$router.push(path);
+    handleOpen(key, keyPath) {
+      console.log(key, keyPath);
     },
-  },
+    handleClose(key, keyPath) {
+      console.log(key, keyPath);
+    }
+  }
 };
 </script>
 

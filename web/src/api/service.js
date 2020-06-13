@@ -1,15 +1,16 @@
 import axios from "axios";
 import qs from "qs";
-import store from "../plugins/vuex";
 import router from "@/router/router";
-
+import { Message, Loading } from "element-ui";
+// eslint-disable-next-line no-unused-vars
+let loading = null;
 const service = axios.create({
   timeout: 5000 // 请求超时时间
 });
 /****** request拦截器==>对请求参数做处理 ******/
 service.interceptors.request.use(
   config => {
-    store.commit("toggleGlobalLoading", { show: true });
+    loading = Loading.service({ fullscreen: true, lock: true });
     config.method === "post"
       ? (config.data = qs.stringify({
           session: sessionStorage.getItem("session") ?? "",
@@ -24,7 +25,10 @@ service.interceptors.request.use(
   },
   error => {
     //请求错误处理
-    store.commit("toggleGlobalToast", { show: true, text: "网络错误！" });
+    Message({
+      message: "网络错误！",
+      type: "error"
+    });
     Promise.reject(error);
   }
 );
@@ -32,7 +36,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   async response => {
     //成功请求到数据
-    store.commit("toggleGlobalLoading", { show: false });
+    loading && loading.close();
     //这里根据后端提供的数据进行对应的处理
     if (response.data.code === 401) {
       // 登陆失效
@@ -43,9 +47,9 @@ service.interceptors.response.use(
       }
     }
     if (response.data.code !== 0) {
-      store.commit("toggleGlobalToast", {
-        show: true,
-        text: response.data.msg
+      Message({
+        message: response.data.msg,
+        type: "error"
       });
     }
     return response.data;
@@ -53,10 +57,10 @@ service.interceptors.response.use(
   error => {
     //响应错误处理
     console.log(JSON.stringify(error));
-    store.commit("toggleGlobalLoading", { show: false });
-    store.commit("toggleGlobalToast", {
-      show: true,
-      text: error.message ?? "网络异常，请重试！"
+    loading && loading.close();
+    Message({
+      message: error.message ?? "网络异常，请重试！",
+      type: "error"
     });
     return Promise.reject(error);
   }
