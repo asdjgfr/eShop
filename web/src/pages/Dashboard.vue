@@ -30,7 +30,7 @@ export default {
   components: { Navigation, AppBar },
   data() {
     return {
-      drawer: false,
+      drawer: true,
       dashboardRoutes: routes
         .find(pRoute => pRoute.path === "/dashboard")
         .children.map(cRoute => ({
@@ -45,6 +45,17 @@ export default {
       const { path } = this.$route;
       return this.dashboardRoutes.find(r => r.path === path) ?? {};
     }
+  },
+  watch: {
+    drawer(val) {
+      localStorage.setItem("drawer", val);
+    }
+  },
+  mounted() {
+    this.$nextTick(() => {
+      const drawer = localStorage.getItem("drawer") ?? true;
+      this.drawer = drawer === "true";
+    });
   }
 };
 </script>
