@@ -10,7 +10,7 @@
       <span v-text="title ? title : '4s店智能管理系统'" />
     </el-col>
     <el-col :span="12" style="text-align: right">
-      <el-dropdown>
+      <el-dropdown @command="handleClickList">
         <div>
           <el-avatar icon="el-icon-user-solid" />
           <span
@@ -19,7 +19,7 @@
           />
         </div>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>退出登录</el-dropdown-item>
+          <el-dropdown-item command="logout">退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </el-col>
@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import api from "@/api";
+
 export default {
   name: "AppBar",
   props: ["drawer", "title"],
@@ -38,6 +40,32 @@ export default {
   methods: {
     handleChangeDrawer() {
       this.$emit("update:drawer", !this.drawer);
+    },
+    handleClickList(command) {
+      switch (command) {
+        case "logout":
+          this.handleLogout();
+          break;
+      }
+    },
+    async handleLogout() {
+      const session = sessionStorage.getItem("session");
+      this.$loading({
+        fullscreen: true,
+        text: "注销中。。。"
+      });
+      const res = await api.user.logout({
+        session
+      });
+      if (res.code === 0) {
+        this.$message({
+          type: "success",
+          message: "注销成功！"
+        });
+        sessionStorage.removeItem("session");
+        await this.$router.push("/login");
+      }
+      console.log(res);
     }
   },
   computed: {}

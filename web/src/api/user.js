@@ -14,4 +14,11 @@ const checkLogin = data =>
     data
   });
 
-export default { login, checkLogin };
+const logout = data =>
+  service({
+    url: "/api/logout",
+    method: "post",
+    data
+  });
+
+export default { login, checkLogin, logout };

@@ -27,3 +27,11 @@ exports.checkLogin = function (router) {
   });
   return router;
 };
+
+exports.logout = function (router) {
+  router.post("/api/logout", async (ctx) => {
+    const { session } = ctx.request.body;
+    ctx.body = await require("../db/user").userLogout(session);
+  });
+  return router;
+};

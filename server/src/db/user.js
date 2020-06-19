@@ -121,7 +121,11 @@ exports.userLogin = async function (
     const { sessionPool } = require("../session/sessionPool");
     sessionPool.push({
       session,
+      username,
+      device,
       deviceID,
+      ip,
+      realIP,
     });
     await userLog(username, device, deviceID, ip, realIP, "登录系统");
     return {
@@ -146,3 +150,17 @@ async function userLog(username, device, deviceID, ip, realIP, action) {
     loginTime: new Date().getTime().toString(),
   });
 }
+
+exports.userLogout = async function (session) {
+  const { sessionPool } = require("../session/sessionPool");
+  const index = sessionPool.findIndex((s) => s.session === session);
+  if (index > -1) {
+    const { username, device, deviceID, ip, realIP } = sessionPool[index];
+    sessionPool.slice(index, 1);
+    await userLog(username, device, deviceID, ip, realIP, "注销系统");
+  }
+  return {
+    code: 0,
+    msg: "注销成功！",
+  };
+};

@@ -62,7 +62,7 @@ export default {
           const { username, password } = this.ruleForm;
           this.$loading({
             fullscreen: true,
-            text: "登陆中。。。"
+            text: "登录中。。。"
           });
           const res = await api.user.login({
             username,
