@@ -7,7 +7,7 @@
         @click="handleChangeDrawer"
         style="margin-right: 10px"
       />
-      <span v-text="title ? title : '4s店智能管理系统'" />
+      <span v-text="title ? title : mainTitle" />
     </el-col>
     <el-col :span="12" style="text-align: right">
       <el-dropdown @command="handleClickList">
@@ -28,13 +28,14 @@
 
 <script>
 import api from "@/api";
-
+const { title } = require("@/conf/config.json");
 export default {
   name: "AppBar",
   props: ["drawer", "title"],
   data() {
     return {
-      username: localStorage.getItem("username")
+      username: localStorage.getItem("username"),
+      mainTitle: title
     };
   },
   methods: {

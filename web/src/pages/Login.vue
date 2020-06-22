@@ -3,7 +3,7 @@
     <video :src="videoSrc" autoplay muted loop></video>
     <el-card shadow="always" width="370">
       <div slot="header">
-        <span>4S店管理系统</span>
+        <span v-text="title" />
       </div>
       <el-form
         :model="ruleForm"
@@ -29,10 +29,13 @@
 
 <script>
 import api from "@/api/index";
+
+const { title } = require("@/conf/config.json");
 export default {
   name: "Login",
   data() {
     return {
+      title,
       ruleForm: {
         username: "",
         password: ""
