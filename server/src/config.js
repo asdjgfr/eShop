@@ -10,7 +10,7 @@ exports.config = {
   db: {
     dbName: "carManagementSystem",
     username: "root",
-    password: "Ln123456",
+    password: "Aa123456",
     dbConfig: {
       host: "localhost",
       dialect: "mysql",
