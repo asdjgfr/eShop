@@ -4,41 +4,88 @@
       <div slot="header">
         <span>维修工单</span>
       </div>
-      <div>
+      <el-form
+        ref="form"
+        :model="form"
+        :label-width="labelWidth"
+        :inline="true"
+      >
         <el-divider content-position="left">工单信息</el-divider>
-      </div>
+        <el-form-item label="工单号">
+          <el-input v-model="form.order"></el-input>
+        </el-form-item>
+        <el-form-item label="客户来源">
+          <el-select
+            v-model="form.source"
+            multiple
+            filterable
+            allow-create
+            default-first-option
+            placeholder="输入并回车可新增"
+          >
+            <el-option
+              v-for="item in sourceTree"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+              <span style="float: left">{{ item.value }}</span>
+              <el-button
+                style="float: right;margin-right: 20px"
+                type="danger"
+                size="small"
+                icon="el-icon-delete"
+                round
+                @click.stop
+              />
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="维修类型">
+          <el-select
+            v-model="form.repairType"
+            multiple
+            filterable
+            allow-create
+            default-first-option
+            placeholder="输入并回车可新增"
+          >
+            <el-option
+              v-for="item in repairType"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+              <span style="float: left">{{ item.value }}</span>
+              <el-button
+                style="float: right;margin-right: 20px"
+                type="danger"
+                size="small"
+                icon="el-icon-delete"
+                round
+                @click.stop
+              />
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <div class="form-inline-100">
+          <el-form-item label="维修类型">
+            <el-input
+              type="textarea"
+              :autosize="{ minRows: 2, maxRows: 4 }"
+              placeholder="请输入内容"
+              v-model="form.remarks"
+            >
+            </el-input>
+          </el-form-item>
+        </div>
+      </el-form>
     </el-card>
   </el-form>
   <!--  <v-card outlined>-->
   <!--    <v-subheader>维修工单</v-subheader>-->
   <!--    <v-divider></v-divider>-->
-  <!--    <v-form ref="form" v-model="valid" lazy-validation>-->
-  <!--      <v-container>-->
-  <!--        <v-subheader>工单信息</v-subheader>-->
-  <!--        <v-row>-->
-  <!--          <v-col cols="12" md="3">-->
-  <!--            <v-text-field-->
-  <!--              label="工单号"-->
-  <!--              required-->
-  <!--              v-model="order"-->
-  <!--              append-icon="fa fa-search"-->
-  <!--              @click:append="handleSearchOrder"-->
-  <!--              :readonly="true"-->
-  <!--            >-->
-  <!--            </v-text-field>-->
-  <!--          </v-col>-->
-  <!--          <v-col cols="12" md="3">-->
-  <!--            <v-autocomplete-->
-  <!--              v-model="source"-->
-  <!--              :items="sourceTree"-->
-  <!--              light-->
-  <!--              no-data-text="没有找到历史来源"-->
-  <!--              prepend-icon="fa fa-plus"-->
-  <!--              @click:prepend="handleAddSource"-->
-  <!--              @change="handleChangeSource"-->
-  <!--              label="客户来源"-->
-  <!--            ></v-autocomplete>-->
-  <!--          </v-col>-->
+
   <!--          <v-col cols="12" md="3">-->
   <!--            <v-select-->
   <!--              v-model="repairType"-->
@@ -140,11 +187,11 @@
 </template>
 
 <script>
-import { v1 as uuidv1 } from "uuid";
 export default {
   name: "RepairWorkOrder",
   data() {
     return {
+      labelWidth: window.labelWidth,
       headers: [
         {
           text: "序号",
@@ -191,10 +238,20 @@ export default {
       phone: "",
       mileage: "",
       cars: ["a"],
-      repairType: [],
-      sourceTree: [],
+      repairType: [
+        {
+          value: "Beijing",
+          label: "北京"
+        }
+      ],
+      sourceTree: [
+        {
+          value: "Beijing",
+          label: "北京"
+        }
+      ],
       repairTypes: ["a", "a3", "a2", "a1"],
-      form: { uuidv1 }
+      form: { order: "", source: [], remarks: "" }
     };
   },
   computed: {},
