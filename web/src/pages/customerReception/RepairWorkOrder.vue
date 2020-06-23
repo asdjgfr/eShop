@@ -4,7 +4,9 @@
       <div slot="header">
         <span>维修工单</span>
       </div>
-      <div>123</div>
+      <div>
+        <el-divider content-position="left">工单信息</el-divider>
+      </div>
     </el-card>
   </el-form>
   <!--  <v-card outlined>-->
@@ -138,6 +140,7 @@
 </template>
 
 <script>
+import { v1 as uuidv1 } from "uuid";
 export default {
   name: "RepairWorkOrder",
   data() {
@@ -191,7 +194,7 @@ export default {
       repairType: [],
       sourceTree: [],
       repairTypes: ["a", "a3", "a2", "a1"],
-      form: {}
+      form: { uuidv1 }
     };
   },
   computed: {},

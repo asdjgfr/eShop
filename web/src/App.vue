@@ -8,22 +8,34 @@ import api from "@/api/index";
 export default {
   name: "App",
   data() {
-    return {};
+    return {
+      currentRouterPath: ""
+    };
   },
   computed: {
     userLogin() {
       return this.$store.state.user.login;
     }
   },
+  watch: {
+    $route(to, from) {
+      if (to.path !== from.path) {
+        this.checkLogin("跳转中，请稍后。。。");
+      }
+      if (to.path === "/login") {
+        localStorage.removeItem("session");
+      }
+    }
+  },
   mounted() {
     this.checkLogin();
   },
   methods: {
-    async checkLogin() {
+    async checkLogin(text = "检查登录状态。。。") {
       const loading = this.$loading({
         fullscreen: true,
         lock: true,
-        text: "检查登录状态。。。"
+        text
       });
       if (localStorage.getItem("deviceID") == null) {
         const components = await Fingerprint2.getPromise();
@@ -38,10 +50,12 @@ export default {
         localStorage.setItem("deviceID", deviceID);
       }
       const res = await api.user.checkLogin({
-        session: sessionStorage.getItem("session"),
+        session: localStorage.getItem("session"),
         deviceID: localStorage.getItem("deviceID")
       });
-
+      if (res.code !== 0) {
+        localStorage.removeItem("session");
+      }
       if (res.code !== 0 && this.$route.path !== "/login") {
         await this.$router.push("/login");
       }

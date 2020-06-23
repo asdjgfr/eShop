@@ -52,11 +52,13 @@ export default {
   },
   computed: {},
   mounted() {
-    sessionStorage.removeItem("session");
     const username = localStorage.getItem("username") ?? "";
     const password = localStorage.getItem("password") ?? "";
     this.ruleForm.username = username;
     this.ruleForm.password = password;
+    if (localStorage.getItem("session") !== null) {
+      this.handleLogin();
+    }
   },
   methods: {
     handleLogin() {
@@ -81,7 +83,7 @@ export default {
             });
             localStorage.setItem("username", username);
             localStorage.setItem("password", password);
-            sessionStorage.setItem("session", res.session);
+            localStorage.setItem("session", res.session);
             sessionStorage.setItem("isAdmin", res.isAdmin);
             await this.$router.push("/dashboard/customerreception");
           }

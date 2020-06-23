@@ -119,6 +119,10 @@ exports.userLogin = async function (
   ) {
     session = session || uuidV1();
     const { sessionPool } = require("../session/sessionPool");
+    const index = sessionPool.findIndex(
+      (s) => s.session === session && s.deviceID === deviceID
+    );
+    index > -1 && sessionPool.splice(index, 1);
     sessionPool.push({
       session,
       username,

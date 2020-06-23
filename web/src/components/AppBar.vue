@@ -50,7 +50,7 @@ export default {
       }
     },
     async handleLogout() {
-      const session = sessionStorage.getItem("session");
+      const session = localStorage.getItem("session");
       this.$loading({
         fullscreen: true,
         text: "注销中。。。"
@@ -63,7 +63,7 @@ export default {
           type: "success",
           message: "注销成功！"
         });
-        sessionStorage.removeItem("session");
+        localStorage.removeItem("session");
         await this.$router.push("/login");
       }
       console.log(res);

@@ -13,11 +13,11 @@ service.interceptors.request.use(
     loading = Loading.service({ fullscreen: true, lock: true });
     config.method === "post"
       ? (config.data = qs.stringify({
-          session: sessionStorage.getItem("session") ?? "",
+          session: localStorage.getItem("session") ?? "",
           ...config.data
         }))
       : (config.params = {
-          session: sessionStorage.getItem("session") ?? "",
+          session: localStorage.getItem("session") ?? "",
           ...config.params
         });
     config.headers["Content-Type"] = "application/x-www-form-urlencoded";
