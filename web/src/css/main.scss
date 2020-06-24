@@ -19,3 +19,20 @@ body {
   text-overflow: ellipsis;
   word-break: break-word;
 }
+
+.el-select .el-tag {
+  max-width: 90%;
+  position: relative;
+  .el-select__tags-text {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+    padding-right: 10px;
+  }
+  i {
+    position: absolute;
+    top: 5px !important;
+    right: 0 !important;
+  }
+}

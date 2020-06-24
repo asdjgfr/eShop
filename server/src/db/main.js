@@ -25,7 +25,9 @@ exports.main = async function () {
 };
 async function initSystem() {
   const checkAdminAndCreate = await require("./user").checkAdminAndCreate();
+  const checkCustomerSource = await require("./customerSource").checkCustomerSource();
   return {
     checkAdminAndCreate,
+    checkCustomerSource,
   };
 }

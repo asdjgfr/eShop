@@ -21,4 +21,4 @@ const logout = data =>
     data
   });
 
-export default { login, checkLogin, logout };
+export default { login, checkLogin, logout, a: "5454" };

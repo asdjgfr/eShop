@@ -2,6 +2,8 @@ import axios from "axios";
 import qs from "qs";
 import router from "@/router/router";
 import { Message, Loading } from "element-ui";
+import needGlobalLoading from "./needGlobalLoading";
+
 // eslint-disable-next-line no-unused-vars
 let loading = null;
 const service = axios.create({
@@ -10,14 +12,18 @@ const service = axios.create({
 /****** request拦截器==>对请求参数做处理 ******/
 service.interceptors.request.use(
   config => {
-    loading = Loading.service({ fullscreen: true, lock: true });
+    if (needGlobalLoading.has(config.url)) {
+      loading = Loading.service({ fullscreen: true, lock: true });
+    }
     config.method === "post"
       ? (config.data = qs.stringify({
           session: localStorage.getItem("session") ?? "",
+          deviceID: localStorage.getItem("deviceID") ?? "",
           ...config.data
         }))
       : (config.params = {
           session: localStorage.getItem("session") ?? "",
+          deviceID: localStorage.getItem("deviceID") ?? "",
           ...config.params
         });
     config.headers["Content-Type"] = "application/x-www-form-urlencoded";
@@ -39,14 +45,16 @@ service.interceptors.response.use(
     loading && loading.close();
     //这里根据后端提供的数据进行对应的处理
     if (response.data.code === 401) {
-      // 登陆失效
+      // 登录失效
       try {
         await router.replace("/login");
       } catch (e) {
         console.warn(e);
       }
     }
-    if (response.data.code !== 0) {
+    if (response.data.code === 401 && router.app.$route.path === "/login") {
+      console.warn("登录失效！");
+    } else if (response.data.code !== 0) {
       Message({
         message: response.data.msg,
         type: "error"
@@ -56,7 +64,7 @@ service.interceptors.response.use(
   },
   error => {
     //响应错误处理
-    console.log(JSON.stringify(error));
+    console.warn(JSON.stringify(error));
     loading && loading.close();
     Message({
       message: error.message ?? "网络异常，请重试！",

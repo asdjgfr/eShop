@@ -12,7 +12,7 @@
       >
         <el-divider content-position="left">工单信息</el-divider>
         <el-form-item label="工单号">
-          <el-input v-model="form.order"></el-input>
+          {{ form.order }}
         </el-form-item>
         <el-form-item label="客户来源">
           <el-select
@@ -21,7 +21,10 @@
             filterable
             allow-create
             default-first-option
+            collapse-tags
             placeholder="输入并回车可新增"
+            @visible-change="handleGetSourceTree"
+            :loading="sourceLoading"
           >
             <el-option
               v-for="item in sourceTree"
@@ -29,14 +32,14 @@
               :label="item.label"
               :value="item.value"
             >
-              <span style="float: left">{{ item.value }}</span>
+              <span style="float: left">{{ item.label }}</span>
               <el-button
                 style="float: right;margin-right: 20px"
                 type="danger"
                 size="small"
                 icon="el-icon-delete"
                 round
-                @click.stop
+                @click.stop="delCustomerSource(item.value)"
               />
             </el-option>
           </el-select>
@@ -79,64 +82,91 @@
             </el-input>
           </el-form-item>
         </div>
+        <el-divider content-position="left">车主车辆信息</el-divider>
+        <el-form-item label="维修类型">
+          <el-input
+            v-model="form.numberPlate"
+            placeholder="请输入车牌号"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="车系">
+          <el-input v-model="form.car" placeholder="请输入车系"></el-input>
+        </el-form-item>
+        <el-form-item label="VIN">
+          <el-input v-model="form.VIN" placeholder="请输入VIN"></el-input>
+        </el-form-item>
+        <el-form-item label="车主姓名">
+          <el-input
+            v-model="form.ownerName"
+            placeholder="请输入车主姓名"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="车主手机">
+          <el-input
+            v-model="form.phone"
+            placeholder="请输入车主手机"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="进场里程">
+          <el-input
+            v-model="form.mileage"
+            placeholder="请输入进场里程"
+          ></el-input>
+        </el-form-item>
+        <el-divider content-position="left">维修项目</el-divider>
+        <el-button type="primary" size="small">新增</el-button>
+        <el-button type="danger" size="small">删除所选</el-button>
+        <el-table :data="desserts">
+          <el-table-column type="selection"> </el-table-column>
+          <el-table-column
+            v-for="(item, i) in headers"
+            :key="i"
+            :prop="item.value"
+            :label="item.text"
+          >
+          </el-table-column>
+          <el-table-column fixed="right" label="操作">
+            <template>
+              <el-button type="text" size="small">
+                编辑
+              </el-button>
+              <el-button type="text" size="small">
+                移除
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-divider content-position="center">
+          <h1>总计：100 &emsp;元</h1>
+        </el-divider>
+        <div class="align-center">
+          <el-button-group>
+            <el-button size="small" type="info" icon="el-icon-printer">
+              打印工单
+            </el-button>
+            <el-button size="small" type="primary" icon="el-icon-setting">
+              本地维修历史
+            </el-button>
+            <el-button size="small" type="success" icon="el-icon-download">
+              保存
+            </el-button>
+            <el-button size="small" type="danger" icon="el-icon-delete">
+              作废
+            </el-button>
+            <el-button size="small" type="success" icon="el-icon-wallet">
+              结算
+            </el-button>
+          </el-button-group>
+        </div>
       </el-form>
     </el-card>
   </el-form>
   <!--  <v-card outlined>-->
   <!--    <v-subheader>维修工单</v-subheader>-->
-  <!--    <v-divider></v-divider>-->
 
-  <!--          <v-col cols="12" md="3">-->
-  <!--            <v-select-->
-  <!--              v-model="repairType"-->
-  <!--              :items="repairTypes"-->
-  <!--              label="维修类型"-->
-  <!--              multiple-->
-  <!--            >-->
-  <!--              <template v-slot:selection="{ item, index }">-->
-  <!--                <v-chip v-if="index < 3">-->
-  <!--                  <span>{{ item }}</span>-->
-  <!--                </v-chip>-->
-  <!--                <span v-if="index === 3" class="grey&#45;&#45;text caption"-->
-  <!--                  >(+{{ repairType.length - 3 }} 以及更多)</span-->
-  <!--                >-->
-  <!--              </template>-->
-  <!--            </v-select>-->
-  <!--          </v-col>-->
-  <!--          <v-col cols="12" md="12">-->
-  <!--            <v-textarea v-model="remarks" label="备注"></v-textarea>-->
-  <!--          </v-col>-->
-  <!--        </v-row>-->
   <!--        <v-subheader>车主车辆信息</v-subheader>-->
   <!--        <v-row>-->
-  <!--          <v-col cols="12" md="3">-->
-  <!--            <v-text-field-->
-  <!--              label="车牌号"-->
-  <!--              required-->
-  <!--              v-model="numberPlate"-->
-  <!--              @click:append="handleSearchOrder"-->
-  <!--            >-->
-  <!--            </v-text-field>-->
-  <!--          </v-col>-->
-  <!--          <v-col cols="12" md="3">-->
-  <!--            <v-select v-model="car" :items="cars" label="车系"> </v-select>-->
-  <!--          </v-col>-->
-  <!--          <v-col cols="12" md="3">-->
-  <!--            <v-text-field label="VIN" required v-model="VIN"> </v-text-field>-->
-  <!--          </v-col>-->
-  <!--          <v-col cols="12" md="3">-->
-  <!--            <v-text-field label="车主姓名" required v-model="ownerName">-->
-  <!--            </v-text-field>-->
-  <!--          </v-col>-->
-  <!--          <v-col cols="12" md="3">-->
-  <!--            <v-text-field-->
-  <!--              label="车主手机"-->
-  <!--              :counter="11"-->
-  <!--              required-->
-  <!--              v-model="phone"-->
-  <!--            >-->
-  <!--            </v-text-field>-->
-  <!--          </v-col>-->
+
   <!--          <v-col cols="12" md="3">-->
   <!--            <v-text-field label="进场里程" required v-model="mileage">-->
   <!--            </v-text-field>-->
@@ -187,6 +217,7 @@
 </template>
 
 <script>
+import api from "@/api/index";
 export default {
   name: "RepairWorkOrder",
   data() {
@@ -198,12 +229,11 @@ export default {
           value: "index"
         },
         { text: "配件代码", value: "code" },
-        { text: "配件名称", value: "name", sortable: false },
+        { text: "配件名称", value: "name" },
         { text: "数量", value: "count" },
         { text: "单价", value: "unitPrice" },
         { text: "折扣（%）", value: "discount" },
-        { text: "金额", value: "price" },
-        { text: "操作", value: "action", sortable: false }
+        { text: "金额", value: "price" }
       ],
       desserts: [
         {
@@ -225,18 +255,9 @@ export default {
           tooltip: false
         }
       ],
-      valid: true,
+      sourceLoading: true,
       dialog: false,
-      remarks: "",
-      order: "",
-      source: "",
       tmpSource: "",
-      numberPlate: "",
-      VIN: "",
-      car: "",
-      ownerName: "",
-      phone: "",
-      mileage: "",
       cars: ["a"],
       repairType: [
         {
@@ -244,26 +265,48 @@ export default {
           label: "北京"
         }
       ],
-      sourceTree: [
-        {
-          value: "Beijing",
-          label: "北京"
-        }
-      ],
+      sourceTree: [],
+      numberPlates: ["a", "a3", "a2", "a1"],
       repairTypes: ["a", "a3", "a2", "a1"],
-      form: { order: "", source: [], remarks: "" }
+      form: {
+        order: new Date().getTime(),
+        source: [],
+        remarks: "",
+        numberPlate: "",
+        car: "",
+        VIN: "",
+        ownerName: "",
+        phone: "",
+        mileage: ""
+      }
     };
   },
   computed: {},
   methods: {
-    handleSearchOrder() {
-      alert();
+    async handleGetSourceTree(bool) {
+      if (bool) {
+        this.sourceLoading = true;
+        const res = await api.customerReception.getCustomerSource();
+        this.sourceLoading = false;
+        if (res.code === 0) {
+          this.sourceTree = res.data.map(s => ({
+            value: s["id"],
+            label: s["name"]
+          }));
+        }
+      }
     },
-    handleAddSource() {
-      alert(this.tmpSource);
-    },
-    handleChangeSource(val) {
-      this.tmpSource = val;
+    async delCustomerSource(id) {
+      const res = await api.customerReception.delCustomerSource({ id });
+      if (res.code === 0) {
+        this.$message({
+          type: "success",
+          message: res.msg
+        });
+        const { sourceTree } = this;
+        const index = sourceTree.findIndex(s => s.value === id);
+        index > -1 && sourceTree.splice(index, 1);
+      }
     },
     removeItem(item, confirm = false) {
       if (confirm) {

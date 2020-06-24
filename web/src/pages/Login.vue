@@ -19,7 +19,7 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="handleLogin('ruleForm')">
-            登陆
+            登录
           </el-button>
         </el-form-item>
       </el-form>

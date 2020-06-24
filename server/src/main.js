@@ -1,4 +1,5 @@
 import Koa from "koa";
+import auth from "./session/auth";
 const Router = require("koa-router");
 const bodyParser = require("koa-bodyparser");
 
@@ -20,12 +21,10 @@ app.use(async (ctx, next) => {
 });
 
 app.use(bodyParser());
+app.use(auth);
 
 const routes = require("./router/index").routes(router);
 app.use(routes.routes()).use(routes.allowedMethods());
-
-// 初始化session池
-// require("./session/sessionPool").initSessionPool();
 
 app.listen(8900, async () => {
   await require("./db/main").main();
