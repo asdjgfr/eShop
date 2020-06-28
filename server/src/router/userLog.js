@@ -1,4 +1,4 @@
-exports.login = function (router) {
+const login = function (router) {
   router.post("/api/login", async (ctx) => {
     const { username, password, device, deviceID, session } = ctx.request.body;
     const ip = ctx.request.headers["X-Real-IP"] ?? "";
@@ -16,7 +16,7 @@ exports.login = function (router) {
   return router;
 };
 
-exports.checkLogin = function (router) {
+const checkLogin = function (router) {
   router.post("/api/checklogin", async (ctx) => {
     const { session, deviceID } = ctx.request.body;
     const checkLogin = require("../session/user").checkLogin(session, deviceID);
@@ -28,10 +28,11 @@ exports.checkLogin = function (router) {
   return router;
 };
 
-exports.logout = function (router) {
+const logout = function (router) {
   router.post("/api/logout", async (ctx) => {
     const { session } = ctx.request.body;
     ctx.body = await require("../db/user").userLogout(session);
   });
   return router;
 };
+exports.mutations = [login, checkLogin, logout];

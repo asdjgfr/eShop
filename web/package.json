@@ -13,6 +13,8 @@
     "core-js": "^3.6.5",
     "element-ui": "^2.13.2",
     "fingerprintjs2": "^2.1.0",
+    "lodash": "^4.17.15",
+    "mathjs": "^7.0.2",
     "moment": "^2.27.0",
     "qs": "^6.9.4",
     "register-service-worker": "^1.7.1",

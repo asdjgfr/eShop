@@ -21,4 +21,66 @@ const delCustomerSource = data =>
     data
   });
 
-export default { getCustomerSource, createCustomerSource, delCustomerSource };
+// 获取维修类型
+const getRepairTypes = () =>
+  service({
+    url: "/api/get-repair-types",
+    method: "post"
+  });
+// 创建维修类型
+const createRepairTypes = data =>
+  service({
+    url: "/api/create-repair-types",
+    method: "post",
+    data
+  });
+// 删除维修类型
+const delRepairType = data =>
+  service({
+    url: "/api/del-repair-type",
+    method: "post",
+    data
+  });
+
+// 获取车系
+const getCars = () =>
+  service({
+    url: "/api/get-cars",
+    method: "post"
+  });
+
+// 创建车系
+const createCars = data =>
+  service({
+    url: "/api/create-cars",
+    method: "post",
+    data
+  });
+
+// 删除车系
+const delCar = data =>
+  service({
+    url: "/api/del-car",
+    method: "post",
+    data
+  });
+// 保存账单
+const saveBill = data =>
+  service({
+    url: "/api/save-bill",
+    method: "post",
+    data
+  });
+
+export default {
+  getCustomerSource,
+  createCustomerSource,
+  delCustomerSource,
+  getRepairTypes,
+  createRepairTypes,
+  delRepairType,
+  getCars,
+  createCars,
+  delCar,
+  saveBill
+};

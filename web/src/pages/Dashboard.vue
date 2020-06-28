@@ -17,17 +17,20 @@
         </transition>
       </el-main>
     </el-container>
-    <el-footer>Footer</el-footer>
+    <el-footer>
+      <app-footer />
+    </el-footer>
   </el-container>
 </template>
 
 <script>
 import AppBar from "@/components/AppBar";
 import Navigation from "@/components/Navigation";
+import AppFooter from "@/components/AppFooter";
 import { routes } from "@/router/routes";
 export default {
   name: "Dashboard",
-  components: { Navigation, AppBar },
+  components: { Navigation, AppBar, AppFooter },
   data() {
     return {
       drawer: true,

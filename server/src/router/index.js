@@ -1,9 +1,9 @@
 exports.routes = function (router) {
-  require("./userLog").login(router);
-  require("./userLog").checkLogin(router);
-  require("./userLog").logout(router);
-  require("./customerSource").getCustomerSource(router);
-  require("./customerSource").createCustomerSource(router);
-  require("./customerSource").delCustomerSource(router);
+  require("./userLog").mutations.forEach((mutation) => {
+    mutation(router);
+  });
+  require("./customerSource").mutations.forEach((mutation) => {
+    mutation(router);
+  });
   return router;
 };
