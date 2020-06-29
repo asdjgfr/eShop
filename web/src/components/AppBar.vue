@@ -1,12 +1,6 @@
 <template>
   <el-row class="app-bar">
     <el-col :span="12">
-      <el-button
-        type="default"
-        icon="el-icon-menu"
-        @click="handleChangeDrawer"
-        style="margin-right: 10px"
-      />
       <span v-text="title ? title : mainTitle" />
     </el-col>
     <el-col :span="12" style="text-align: right">
@@ -31,7 +25,7 @@ import api from "@/api";
 const { title } = require("@/conf/config.json");
 export default {
   name: "AppBar",
-  props: ["drawer", "title"],
+  props: ["title"],
   data() {
     return {
       username: localStorage.getItem("username"),
@@ -39,9 +33,6 @@ export default {
     };
   },
   methods: {
-    handleChangeDrawer() {
-      this.$emit("update:drawer", !this.drawer);
-    },
     handleClickList(command) {
       switch (command) {
         case "logout":

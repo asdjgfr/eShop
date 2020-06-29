@@ -1,6 +1,14 @@
 .dashboard-aside {
   width: 240px;
   height: 100%;
+  position: relative;
+  padding-bottom: 40px;
+  .dashboard-aside-button {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+  }
   .el-menu {
     height: 100%;
     overflow: hidden auto;

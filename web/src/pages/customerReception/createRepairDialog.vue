@@ -67,7 +67,7 @@ export default {
       form: {
         code: "",
         name: "",
-        unitPrice: 65,
+        unitPrice: 0,
         count: 1,
         discount: 100,
         price: 0
@@ -96,10 +96,10 @@ export default {
   methods: {
     handleClose() {
       this.$emit("update:addRepairVisible", false);
-
       this.reset();
     },
     handleSubmit() {
+      this.handleAddNew();
       this.handleClose();
     },
     handleAddNew() {

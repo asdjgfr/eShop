@@ -1,10 +1,16 @@
 <template>
   <el-container>
     <el-header>
-      <app-bar :drawer.sync="drawer" :title="activeRoute.title" />
+      <app-bar :title="activeRoute.title" />
     </el-header>
     <el-container class="dashboard-container">
       <el-aside class="dashboard-aside" :width="`${drawer ? 65 : 240}px`">
+        <el-button
+          class="dashboard-aside-button"
+          @click="handleToggleDrawer"
+          :title="drawer ? '展开菜单' : '收起菜单'"
+          :icon="drawer ? 'el-icon-d-arrow-right' : 'el-icon-d-arrow-left'"
+        />
         <navigation :dashboardRoutes="dashboardRoutes" :drawer="drawer" />
       </el-aside>
       <el-main>
@@ -13,7 +19,7 @@
           leave-active-class="animate__animated animate__fadeOut"
           mode="out-in"
         >
-          <router-view></router-view>
+          <router-view v-if="routerAlive"></router-view>
         </transition>
       </el-main>
     </el-container>
@@ -31,8 +37,14 @@ import { routes } from "@/router/routes";
 export default {
   name: "Dashboard",
   components: { Navigation, AppBar, AppFooter },
+  provide() {
+    return {
+      reload: this.reload
+    };
+  },
   data() {
     return {
+      routerAlive: true,
       drawer: true,
       dashboardRoutes: routes
         .find(pRoute => pRoute.path === "/dashboard")
@@ -59,6 +71,17 @@ export default {
       const drawer = localStorage.getItem("drawer") ?? true;
       this.drawer = drawer === "true";
     });
+  },
+  methods: {
+    reload() {
+      this.routerAlive = false;
+      this.$nextTick(() => {
+        this.routerAlive = true;
+      });
+    },
+    handleToggleDrawer() {
+      this.drawer = !this.drawer;
+    }
   }
 };
 </script>

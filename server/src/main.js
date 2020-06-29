@@ -1,7 +1,10 @@
 import Koa from "koa";
 import auth from "./session/auth";
+const chalk = require("chalk");
 const Router = require("koa-router");
 const bodyParser = require("koa-bodyparser");
+
+global.chalk = chalk;
 
 const app = new Koa();
 const router = new Router();

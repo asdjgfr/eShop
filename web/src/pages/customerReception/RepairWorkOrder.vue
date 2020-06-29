@@ -3,12 +3,18 @@
     <div slot="header">
       <span>维修工单</span>
     </div>
-    <el-form ref="form" :model="form" :label-width="labelWidth" :inline="true">
+    <el-form
+      :rules="rules"
+      ref="form"
+      :model="form"
+      :label-width="labelWidth"
+      :inline="true"
+    >
       <el-divider content-position="left">工单信息</el-divider>
       <el-form-item label="工单号">
         {{ form.order }}
       </el-form-item>
-      <el-form-item label="客户来源">
+      <el-form-item label="客户来源" prop="source">
         <el-select
           v-model="form.source"
           multiple
@@ -38,13 +44,14 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="维修类型">
+      <el-form-item label="维修类型" prop="repairTypes">
         <el-select
           v-model="form.repairTypes"
           multiple
           filterable
           allow-create
           default-first-option
+          collapse-tags
           placeholder="请选择维修类型"
           @visible-change="handleGetSelector('repair', $event)"
           :loading="repairTypeLoading"
@@ -79,13 +86,15 @@
         </el-form-item>
       </div>
       <el-divider content-position="left">车主车辆信息</el-divider>
-      <el-form-item label="车牌号">
-        <el-input
+      <el-form-item label="车牌号" prop="numberPlate">
+        <el-autocomplete
           v-model="form.numberPlate"
           placeholder="请输入车牌号"
-        ></el-input>
+          :fetch-suggestions="queryCarInfo"
+          @select="handleSelectNumberPlate"
+        ></el-autocomplete>
       </el-form-item>
-      <el-form-item label="车系">
+      <el-form-item label="车系" prop="car">
         <el-select
           v-model="form.car"
           filterable
@@ -113,23 +122,35 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="VIN">
-        <el-input v-model="form.VIN" placeholder="请输入VIN"></el-input>
+      <el-form-item label="VIN" prop="VIN">
+        <el-input
+          v-model="form.VIN"
+          placeholder="请输入VIN"
+          maxlength="17"
+          show-word-limit
+        ></el-input>
       </el-form-item>
-      <el-form-item label="车主姓名">
+      <el-form-item label="车主姓名" prop="ownerName">
         <el-input
           v-model="form.ownerName"
           placeholder="请输入车主姓名"
         ></el-input>
       </el-form-item>
-      <el-form-item label="车主手机">
-        <el-input v-model="form.phone" placeholder="请输入车主手机"></el-input>
-      </el-form-item>
-      <el-form-item label="进场里程">
+      <el-form-item label="车主手机" prop="phone">
         <el-input
-          v-model="form.mileage"
-          placeholder="请输入进场里程"
+          v-model="form.phone"
+          placeholder="请输入车主手机"
+          maxlength="11"
+          show-word-limit
         ></el-input>
+      </el-form-item>
+      <el-form-item label="进场里程" prop="mileage">
+        <el-input-number
+          v-model="form.mileage"
+          :step="1"
+          :min="0"
+          placeholder="请输入进场里程"
+        />
       </el-form-item>
       <el-divider content-position="left">维修项目</el-divider>
       <el-button type="primary" size="small" @click.stop="handleAddRepair">
@@ -183,7 +204,12 @@
       </el-divider>
       <div class="align-center">
         <el-button-group>
-          <el-button size="small" type="info" icon="el-icon-printer">
+          <el-button
+            size="small"
+            type="info"
+            icon="el-icon-printer"
+            @click="handlePrint"
+          >
             打印工单
           </el-button>
           <el-button size="small" type="primary" icon="el-icon-setting">
@@ -197,11 +223,23 @@
           >
             保存{{ action }}
           </el-button>
-          <el-button size="small" type="danger" icon="el-icon-delete">
+          <el-button
+            size="small"
+            type="danger"
+            icon="el-icon-delete"
+            :disabled="id === ''"
+            @click="handleDelBill"
+          >
             作废
           </el-button>
-          <el-button size="small" type="success" icon="el-icon-wallet">
-            结算
+          <el-button
+            size="small"
+            type="success"
+            icon="el-icon-wallet"
+            :disabled="id === '' || form.finished"
+            @click="handleSaveBill(true)"
+          >
+            {{ form.finished ? "已结算" : "结算" }}
           </el-button>
         </el-button-group>
       </div>
@@ -217,11 +255,14 @@
 <script>
 import api from "@/api/index";
 import createRepairDialog from "@/pages/customerReception/createRepairDialog";
+// import printJS from "print-js";
 export default {
   name: "RepairWorkOrder",
+  inject: ["reload"],
   components: { createRepairDialog },
   data() {
     return {
+      id: "",
       labelWidth: window.labelWidth,
       addRepairVisible: false,
       headers: [
@@ -245,6 +286,32 @@ export default {
       sourceTree: [],
       multipleSelection: [],
       action: "工单",
+      rules: {
+        source: [
+          { required: true, message: "请选择客户来源", trigger: "change" }
+        ],
+        repairTypes: [
+          { required: true, message: "请选择维修类型", trigger: "change" }
+        ],
+        numberPlate: [
+          { required: true, message: "请输入车牌号", trigger: "change" }
+        ],
+        car: [{ required: true, message: "请选择车系", trigger: "change" }],
+        VIN: [
+          { required: true, message: "请输入VIN", trigger: "change" },
+          { min: 17, max: 17, message: "输入17位VIN", trigger: "change" }
+        ],
+        ownerName: [
+          { required: true, message: "请输入车主姓名", trigger: "change" }
+        ],
+        phone: [
+          { required: true, message: "请输入手机号", trigger: "change" },
+          { min: 11, max: 11, message: "输入11位手机号", trigger: "change" }
+        ],
+        mileage: [
+          { required: true, message: "请输入进场里程", trigger: "change" }
+        ]
+      },
       form: {
         order: `JY${new Date().getTime()}`,
         source: [],
@@ -255,7 +322,8 @@ export default {
         VIN: "",
         ownerName: "",
         phone: "",
-        mileage: ""
+        mileage: 0,
+        finished: false
       }
     };
   },
@@ -274,7 +342,61 @@ export default {
       }));
     }
   },
+  watch: {
+    $route() {
+      this.initBill();
+    }
+  },
+  created() {
+    this.initBill();
+  },
   methods: {
+    async handlePrint() {
+      await this.handleSaveBill();
+      // printJS({ printable: 'printJS-form', type: 'html', css: ['/assets/css/main.css?v1'] })
+    },
+    async queryCarInfo(numberPlate, cb) {
+      const res = await api.customerReception.queryCarInfo({ numberPlate });
+      cb(
+        (res?.data ?? []).map(item => ({
+          value: item.numberPlate,
+          item
+        }))
+      );
+    },
+    handleSelectNumberPlate(select) {
+      Object.keys(select.item).forEach(key => {
+        this.$set(this.form, key, select.item[key]);
+      });
+    },
+    initBill() {
+      const { id } = this.$route.query;
+      if (id) {
+        this.id = id;
+        this.handleLoadBill(id);
+        this.action = "修改";
+      }
+    },
+    async handleLoadBill(id) {
+      const loading = this.$loading({
+        lock: true,
+        fullscreen: true,
+        text: "查询中，请稍后。。。",
+        spinner: "el-icon-loading"
+      });
+      const res = await api.customerReception.queryBill({ id });
+      if (res.code === 0) {
+        this.initData(res.data);
+      }
+      loading.close();
+    },
+    initData(data) {
+      const { form } = this;
+      Object.keys(form).forEach(key => {
+        this.$set(form, key, data[key]);
+      });
+      this.desserts = data.maintenanceItems;
+    },
     async handleGetSelector(type, bool) {
       if (bool) {
         let res = {};
@@ -302,26 +424,26 @@ export default {
 
         if (res.code === 0) {
           this[dataSource] = res.data.map(r => ({
-            value: r["id"],
+            value: r["name"],
             label: r["name"]
           }));
         }
       }
     },
-    async delSelector(type, id) {
+    async delSelector(type, name) {
       let res = {};
       let dataSource = "";
       switch (type) {
         case "source":
-          res = await api.customerReception.delCustomerSource({ id });
+          res = await api.customerReception.delCustomerSource({ name });
           dataSource = "sourceTree";
           break;
         case "repair":
-          res = await api.customerReception.delRepairType({ id });
+          res = await api.customerReception.delRepairType({ name });
           dataSource = "repairTypes";
           break;
         case "car":
-          res = await api.customerReception.delCar({ id });
+          res = await api.customerReception.delCar({ name });
           dataSource = "cars";
           break;
       }
@@ -332,7 +454,7 @@ export default {
           message: res.msg
         });
         this.$_.remove(this[dataSource], function(type) {
-          return type.value === id;
+          return type.value === name;
         });
         this.$forceUpdate();
       }
@@ -354,23 +476,78 @@ export default {
         this.desserts.splice(index - 1, 1);
       }
     },
-    async handleSaveBill() {
+    handleSaveBill(finished = false) {
+      finished = finished === true;
+      if (finished) {
+        const c = confirm("确认结账？");
+        if (!c) {
+          return false;
+        }
+      }
+      return new Promise(resolve => {
+        this.$refs.form.validate(async valid => {
+          if (valid) {
+            const { id } = this;
+            const loading = this.$loading({
+              lock: true,
+              fullscreen: true,
+              text: "保存中，请稍后。。。",
+              spinner: "el-icon-loading"
+            });
+            const res = await api.customerReception.saveBill(
+              this.$_.cloneDeep({
+                ...this.form,
+                maintenanceItems: this.desserts,
+                id,
+                finished
+              })
+            );
+            if (res.code === 0) {
+              this.$message({
+                type: "success",
+                message: res.msg
+              });
+              this.$set(this.form, "finished", finished);
+            } else {
+              this.$message.error(res.msg);
+            }
+            loading.close();
+            if (id === "") {
+              await this.$router.push({
+                path: "/dashboard/customerreception",
+                query: { id: res.data }
+              });
+            }
+            resolve();
+          } else {
+            this.$message.error("请填写必填信息！");
+            resolve();
+          }
+        });
+      });
+    },
+    async handleDelBill() {
+      const c = confirm("删除后不可恢复！确认删除？");
+      if (!c) {
+        return false;
+      }
+      const { id } = this;
       const loading = this.$loading({
         lock: true,
         fullscreen: true,
-        text: "保存中，请稍后。。。",
+        text: "删除中，请稍后。。。",
         spinner: "el-icon-loading"
       });
-      const res = await api.customerReception.saveBill(
-        this.$_.cloneDeep({ ...this.form, maintenanceItems: this.desserts })
-      );
+      const res = await api.customerReception.delBill({
+        id
+      });
+
       if (res.code === 0) {
-        this.$message({
-          type: "success",
-          message: res.msg
+        this.$message.success(res.msg);
+        await this.$router.push({
+          path: "/dashboard/customerreception"
         });
-      } else {
-        this.$message.error(res.msg);
+        this.reload();
       }
       loading.close();
     }

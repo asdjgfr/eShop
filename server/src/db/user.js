@@ -14,6 +14,7 @@ const User = sequelize["define"]("user", {
   password: {
     type: Sequelize.STRING,
     allowNull: false,
+    select: false,
   },
   // 是否是管理员
   isAdmin: {

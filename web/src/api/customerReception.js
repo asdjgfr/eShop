@@ -1,5 +1,7 @@
 // 客户接待
-import service from "@/api/service";
+import server from "@/api/service";
+const { service, CancelToken } = server;
+
 // 获取客户来源
 const getCustomerSource = () =>
   service({
@@ -71,6 +73,35 @@ const saveBill = data =>
     method: "post",
     data
   });
+// 查询账单
+const queryBill = data =>
+  service({
+    url: "/api/query-bill",
+    method: "post",
+    data
+  });
+// 删除账单
+const delBill = data =>
+  service({
+    url: "/api/del-bill",
+    method: "post",
+    data
+  });
+// 查找车主信息
+let cancelQueryCarInfo = null;
+const queryCarInfo = data => {
+  if (cancelQueryCarInfo !== null) {
+    cancelQueryCarInfo();
+  }
+  return service({
+    url: "/api/query-car-info",
+    method: "post",
+    data,
+    cancelToken: new CancelToken(function executor(c) {
+      cancelQueryCarInfo = c;
+    })
+  });
+};
 
 export default {
   getCustomerSource,
@@ -82,5 +113,8 @@ export default {
   getCars,
   createCars,
   delCar,
-  saveBill
+  saveBill,
+  queryBill,
+  delBill,
+  queryCarInfo
 };

@@ -1,5 +1,5 @@
 const { sequelize, Sequelize } = require("./main");
-const { tableFilter } = require("../pubFn/db");
+const { Op } = Sequelize;
 // 客户来源表
 const customerSource = sequelize["define"]("customerSource", {
   name: {
@@ -9,11 +9,12 @@ const customerSource = sequelize["define"]("customerSource", {
   },
 });
 
-exports.createCustomerSource = async function (names) {
+const createCustomerSource = async function (names) {
   // 新建客户来源
   await createByName(customerSource, names);
   return { code: 0, msg: "新建客户来源成功！" };
 };
+exports.createCustomerSource = createCustomerSource;
 
 exports.getCustomerSource = async function () {
   // 查找所有客户来源
@@ -21,11 +22,11 @@ exports.getCustomerSource = async function () {
   return { code: 0, data };
 };
 
-exports.delCustomerSource = async function (id) {
+exports.delCustomerSource = async function (name) {
   // 根据ID删除客户来源
   await customerSource.destroy({
     where: {
-      id,
+      name,
     },
   });
   return { code: 0, msg: "删除客户来源成功！" };
@@ -40,24 +41,24 @@ const repairType = sequelize["define"]("repairType", {
   },
 });
 
-exports.createRepairTypes = async function (names) {
+const createRepairTypes = async function (names) {
   // 新建客户来源
   await createByName(repairType, names);
   return { code: 0, msg: "新建维修类型成功！" };
 };
+exports.createRepairTypes = createRepairTypes;
 
 exports.getRepairTypes = async function () {
   // 查找所有维修类型
   const data = await repairType.findAll();
-  console.log("---------------------", data);
   return { code: 0, data };
 };
 
-exports.delRepairType = async function (id) {
+exports.delRepairType = async function (name) {
   // 根据ID删除维修类型
   await repairType.destroy({
     where: {
-      id,
+      name,
     },
   });
   return { code: 0, msg: "删除维修类型成功！" };
@@ -72,11 +73,12 @@ const cars = sequelize["define"]("cars", {
   },
 });
 
-exports.createCars = async function (names) {
+const createCars = async function (names) {
   // 新建车系
   await createByName(cars, names);
   return { code: 0, msg: "新建车系成功！" };
 };
+exports.createCars = createCars;
 
 exports.getCars = async function () {
   // 查找所有车系
@@ -84,15 +86,91 @@ exports.getCars = async function () {
   return { code: 0, data };
 };
 
-exports.delCar = async function (id) {
+exports.delCar = async function (name) {
   // 根据ID删除车系
   await cars.destroy({
     where: {
-      id,
+      name,
     },
   });
   return { code: 0, msg: "删除车系成功！" };
 };
+
+// 车辆信息
+const carInfo = sequelize["define"]("carInfo", {
+  numberPlate: {
+    // 车牌号
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  car: {
+    // 车系
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  ownerName: {
+    // 车主姓名
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  VIN: {
+    // VIN
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  phone: {
+    // 车主手机
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  mileage: {
+    // 进场里程
+    type: Sequelize.DOUBLE,
+    allowNull: false,
+  },
+  session: {
+    // session
+    type: Sequelize.STRING,
+    allowNull: false,
+    select: false,
+  },
+  deviceID: {
+    // 设备指纹
+    type: Sequelize.STRING,
+    allowNull: false,
+    select: false,
+  },
+});
+
+const createCarInfo = async function (defaults) {
+  // 新建车辆信息
+  const { numberPlate } = defaults;
+  const [data, created] = await carInfo.findOrCreate({
+    where: { numberPlate: numberPlate.toString().toUpperCase() },
+    defaults,
+  });
+  if (!created) {
+    Object.keys(defaults).forEach((key) => {
+      data[key] = defaults[key];
+    });
+    await data.save();
+  }
+  return { code: 0, msg: `${created ? "新建" : "更新"}车辆信息成功！"` };
+};
+exports.createCarInfo = createCarInfo;
+
+exports.queryCarInfoLike = async function (numberPlate) {
+  // 模糊查询车辆信息
+  const data = await carInfo.findAll({
+    where: {
+      numberPlate: {
+        [Op.like]: `%${numberPlate.toUpperCase()}%`,
+      },
+    },
+  });
+  return { code: 0, data };
+};
+
 // 工单
 const bills = sequelize["define"]("bills", {
   order: {
@@ -104,49 +182,41 @@ const bills = sequelize["define"]("bills", {
     // 客户来源
     type: Sequelize.JSON,
     allowNull: false,
-    defaultValue: [],
   },
   repairTypes: {
     // 维修类型
     type: Sequelize.JSON,
     allowNull: false,
-    defaultValue: [],
   },
   remarks: {
     // 备注
     type: Sequelize.TEXT,
     allowNull: false,
-    defaultValue: "",
   },
   numberPlate: {
     // 车牌号
     type: Sequelize.STRING,
     allowNull: false,
-    defaultValue: "",
   },
   car: {
     // 车系
     type: Sequelize.STRING,
     allowNull: false,
-    defaultValue: "",
   },
   VIN: {
     // VIN
     type: Sequelize.STRING,
     allowNull: false,
-    defaultValue: "",
   },
   ownerName: {
     // 车主姓名
     type: Sequelize.STRING,
     allowNull: false,
-    defaultValue: "",
   },
   phone: {
     // 车主手机
     type: Sequelize.STRING,
     allowNull: false,
-    defaultValue: "",
   },
   mileage: {
     // 进场里程
@@ -158,62 +228,117 @@ const bills = sequelize["define"]("bills", {
     // 维修项目
     type: Sequelize.JSON,
     allowNull: false,
-    defaultValue: [],
   },
   deviceID: {
     // 设备ID
     type: Sequelize.STRING,
     allowNull: false,
-    defaultValue: "",
+    select: false,
   },
   session: {
     // 设备ID
     type: Sequelize.STRING,
     allowNull: false,
-    defaultValue: "",
+    select: false,
+  },
+  finished: {
+    // 是否完成交易
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
   },
 });
+
 exports.saveBill = async function (params) {
-  const {
-    order = `JY${new Date().getTime()}`,
-    source = [],
-    repairTypes = [],
-    remarks = "",
-    numberPlate = "",
-    car = "",
-    VIN = "",
-    ownerName = "",
-    phone = "",
-    mileage = 0,
-    maintenanceItems = [],
-    session = "",
-    deviceID = "",
+  let {
+    order,
+    source,
+    repairTypes,
+    remarks,
+    numberPlate,
+    car,
+    VIN,
+    ownerName,
+    phone,
+    mileage,
+    maintenanceItems,
+    session,
+    deviceID,
+    id,
+    finished,
   } = params;
-  if (session === "" || deviceID === "") {
-    return { code: 403, msg: "保存失败，请重新登录！" };
-  } else {
-    console.log(
-      "----------------------------",
-      mileage === "",
-      "----------------"
-    );
-    await bills.create({
-      order,
-      source,
-      repairTypes,
-      remarks,
-      numberPlate,
-      car,
-      VIN,
-      ownerName,
-      phone,
-      mileage,
-      maintenanceItems,
-      session,
-      deviceID,
+  order = order || `JY${new Date().getTime()}`;
+  source = source || [];
+  repairTypes = repairTypes || [];
+  numberPlate = numberPlate || "";
+  car = car || "";
+  VIN = VIN || "";
+  remarks = remarks || "";
+  ownerName = ownerName || "";
+  phone = phone || "";
+  mileage = mileage || 0;
+  maintenanceItems = maintenanceItems || [];
+  await createCustomerSource(source);
+  await createRepairTypes(repairTypes);
+  await createCars(car);
+  await createCarInfo({
+    numberPlate,
+    car,
+    VIN,
+    ownerName,
+    phone,
+    mileage,
+    session,
+    deviceID,
+  });
+
+  const defaults = {
+    order,
+    source,
+    repairTypes,
+    remarks,
+    numberPlate,
+    car,
+    VIN,
+    ownerName,
+    phone,
+    mileage,
+    maintenanceItems,
+    session,
+    deviceID,
+    finished,
+  };
+  const [data, created] = await bills.findOrCreate({
+    where: { id },
+    defaults,
+  });
+  if (!created) {
+    Object.keys(defaults).forEach((key) => {
+      data[key] = defaults[key];
     });
-    return { code: 0, msg: "保存成功！" };
+    await data.save();
   }
+  return {
+    code: 0,
+    msg: created ? "保存成功！" : "更新成功！",
+    data: data.id,
+  };
+};
+
+exports.queryBill = async function (id) {
+  const data = await bills.findOne({ where: { id } });
+  if (data === null) {
+    return { code: 205, msg: "没有对应工单！" };
+  }
+  return { code: 0, msg: "查找成功！", data };
+};
+
+exports.delBill = async function (id) {
+  await bills.destroy({
+    where: {
+      id,
+    },
+  });
+  return { code: 0, msg: "删除工单成功！" };
 };
 
 function createByName(model, names) {
@@ -223,7 +348,7 @@ function createByName(model, names) {
   return Promise.all(
     names.map((name) =>
       model.findOrCreate({
-        where: { name },
+        where: { name: name.trim() },
       })
     )
   );
@@ -233,7 +358,7 @@ exports.checkCustomerSource = async function () {
   // 同步数据库
   let res = {};
   try {
-    await sequelize.sync();
+    await sequelize.sync({ alter: true });
     res = { code: 0, msg: "客户接待同步成功！" };
     console.log("客户接待所有表同步成功！");
   } catch (e) {

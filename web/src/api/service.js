@@ -3,7 +3,7 @@ import qs from "qs";
 import router from "@/router/router";
 import { Message, Loading } from "element-ui";
 import needGlobalLoading from "./needGlobalLoading";
-
+const CancelToken = axios.CancelToken;
 // eslint-disable-next-line no-unused-vars
 let loading = null;
 const service = axios.create({
@@ -17,14 +17,14 @@ service.interceptors.request.use(
     }
     config.method === "post"
       ? (config.data = qs.stringify({
+          ...config.data,
           session: localStorage.getItem("session") ?? "",
-          deviceID: localStorage.getItem("deviceID") ?? "",
-          ...config.data
+          deviceID: localStorage.getItem("deviceID") ?? ""
         }))
       : (config.params = {
+          ...config.params,
           session: localStorage.getItem("session") ?? "",
-          deviceID: localStorage.getItem("deviceID") ?? "",
-          ...config.params
+          deviceID: localStorage.getItem("deviceID") ?? ""
         });
     config.headers["Content-Type"] = "application/x-www-form-urlencoded";
     return config;
@@ -74,4 +74,4 @@ service.interceptors.response.use(
   }
 );
 
-export default service;
+export default { service, CancelToken };

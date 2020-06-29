@@ -16,8 +16,9 @@ const getCustomerSource = function (router) {
 
 const delCustomerSource = function (router) {
   router.post("/api/del-customer-source", async (ctx) => {
-    const { id } = ctx.request.body;
-    ctx.body = await require("../db/customerSource").delCustomerSource(id);
+    ctx.body = await require("../db/customerSource").delCustomerSource(
+      ctx.request.body.name
+    );
   });
   return router;
 };
@@ -41,8 +42,9 @@ const createRepairTypes = function (router) {
 
 const delRepairType = function (router) {
   router.post("/api/del-repair-type", async (ctx) => {
-    const { id } = ctx.request.body;
-    ctx.body = await require("../db/customerSource").delRepairType(id);
+    ctx.body = await require("../db/customerSource").delRepairType(
+      ctx.request.body.name
+    );
   });
   return router;
 };
@@ -64,8 +66,9 @@ const createCars = function (router) {
 
 const delCar = function (router) {
   router.post("/api/del-car", async (ctx) => {
-    const { id } = ctx.request.body;
-    ctx.body = await require("../db/customerSource").delCar(id);
+    ctx.body = await require("../db/customerSource").delCar(
+      ctx.request.body.name
+    );
   });
   return router;
 };
@@ -73,6 +76,57 @@ const delCar = function (router) {
 const saveBill = function (router) {
   router.post("/api/save-bill", async (ctx) => {
     ctx.body = await require("../db/customerSource").saveBill(ctx.request.body);
+  });
+  return router;
+};
+
+const queryBill = function (router) {
+  router.post("/api/query-bill", async (ctx) => {
+    ctx.body = await require("../db/customerSource").queryBill(
+      ctx.request.body.id
+    );
+  });
+  return router;
+};
+const delBill = function (router) {
+  router.post("/api/del-bill", async (ctx) => {
+    ctx.body = await require("../db/customerSource").delBill(
+      ctx.request.body.id
+    );
+  });
+  return router;
+};
+
+const createCarInfo = function (router) {
+  router.post("/api/create-car-info", async (ctx) => {
+    const {
+      numberPlate,
+      car,
+      VIN,
+      ownerName,
+      phone,
+      mileage,
+      session,
+      deviceID,
+    } = ctx.request.body;
+    ctx.body = await require("../db/customerSource").createCarInfo({
+      numberPlate,
+      car,
+      VIN,
+      ownerName,
+      phone,
+      mileage,
+      session,
+      deviceID,
+    });
+  });
+  return router;
+};
+const queryCarInfoLike = function (router) {
+  router.post("/api/query-car-info", async (ctx) => {
+    ctx.body = await require("../db/customerSource").queryCarInfoLike(
+      ctx.request.body.numberPlate
+    );
   });
   return router;
 };
@@ -88,4 +142,8 @@ exports.mutations = [
   createCars,
   delCar,
   saveBill,
+  queryBill,
+  delBill,
+  queryCarInfoLike,
+  createCarInfo,
 ];

@@ -1,8 +1,14 @@
+const remove = require("lodash/remove");
 const login = function (router) {
   router.post("/api/login", async (ctx) => {
     const { username, password, device, deviceID, session } = ctx.request.body;
     const ip = ctx.request.headers["X-Real-IP"] ?? "";
     const realIP = ctx.request.headers["X-Forwarded-For"] ?? "";
+    const { sessionPool } = require("../session/sessionPool");
+    remove(
+      sessionPool,
+      (s) => s.session !== session && s.deviceID === deviceID
+    );
     ctx.body = await require("../db/user").userLogin(
       username,
       password,
@@ -17,7 +23,7 @@ const login = function (router) {
 };
 
 const checkLogin = function (router) {
-  router.post("/api/checklogin", async (ctx) => {
+  router.post("/api/check-login", async (ctx) => {
     const { session, deviceID } = ctx.request.body;
     const checkLogin = require("../session/user").checkLogin(session, deviceID);
     ctx.body = {

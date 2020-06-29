@@ -1,5 +1,5 @@
-import service from "./service";
-
+import server from "./service";
+const { service } = server;
 const login = data =>
   service({
     url: "/api/login",
@@ -9,7 +9,7 @@ const login = data =>
 
 const checkLogin = data =>
   service({
-    url: "/api/checklogin",
+    url: "/api/check-login",
     method: "post",
     data
   });
@@ -21,4 +21,4 @@ const logout = data =>
     data
   });
 
-export default { login, checkLogin, logout, a: "5454" };
+export default { login, checkLogin, logout };
