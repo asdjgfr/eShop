@@ -1,12 +1,12 @@
 const path = require("path");
-const fs = require("fs");
 const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
 const nodeExternals = require("webpack-node-externals");
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = new SpeedMeasurePlugin().wrap({
   entry: ["@babel/polyfill", path.resolve(__dirname, "./src/main.js")],
   output: {
-    filename: "bundle.js",
+    filename: "carManagement.js",
     path: path.resolve(__dirname, "dist"),
   },
   externals: [nodeExternals()],
@@ -24,5 +24,19 @@ module.exports = new SpeedMeasurePlugin().wrap({
         },
       },
     ],
+  },
+  plugins: [
+    new CopyPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, "src", "static"),
+          to: path.resolve(__dirname, "dist", "static"),
+        },
+      ],
+    }),
+  ],
+  node: {
+    __dirname: false,
+    __filename: false,
   },
 });

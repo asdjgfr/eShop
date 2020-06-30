@@ -255,7 +255,7 @@
 <script>
 import api from "@/api/index";
 import createRepairDialog from "@/pages/customerReception/createRepairDialog";
-// import printJS from "print-js";
+import { base64ToBlobPDF } from "@/lib/blob";
 export default {
   name: "RepairWorkOrder",
   inject: ["reload"],
@@ -352,8 +352,11 @@ export default {
   },
   methods: {
     async handlePrint() {
-      await this.handleSaveBill();
-      // printJS({ printable: 'printJS-form', type: 'html', css: ['/assets/css/main.css?v1'] })
+      const saveBill = await this.handleSaveBill();
+      if (saveBill) {
+        const pdf = await api.billManagement.buildBill({ id: this.id });
+        window.open(URL.createObjectURL(base64ToBlobPDF(pdf.data)));
+      }
     },
     async queryCarInfo(numberPlate, cb) {
       const res = await api.customerReception.queryCarInfo({ numberPlate });
@@ -518,10 +521,10 @@ export default {
                 query: { id: res.data }
               });
             }
-            resolve();
+            resolve(true);
           } else {
             this.$message.error("请填写必填信息！");
-            resolve();
+            resolve(false);
           }
         });
       });

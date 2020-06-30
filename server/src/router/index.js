@@ -5,5 +5,8 @@ exports.routes = function (router) {
   require("./customerSource").mutations.forEach((mutation) => {
     mutation(router);
   });
+  require("./billManagement").mutations.forEach((mutation) => {
+    mutation(router);
+  });
   return router;
 };

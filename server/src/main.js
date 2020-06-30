@@ -3,8 +3,10 @@ import auth from "./session/auth";
 const chalk = require("chalk");
 const Router = require("koa-router");
 const bodyParser = require("koa-bodyparser");
+const path = require("path");
 
 global.chalk = chalk;
+global.__static = path.resolve(__dirname, "./static/");
 
 const app = new Koa();
 const router = new Router();
