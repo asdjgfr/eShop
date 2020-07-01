@@ -73,30 +73,6 @@ const delCar = function (router) {
   return router;
 };
 
-const saveBill = function (router) {
-  router.post("/api/save-bill", async (ctx) => {
-    ctx.body = await require("../db/customerSource").saveBill(ctx.request.body);
-  });
-  return router;
-};
-
-const queryBill = function (router) {
-  router.post("/api/query-bill", async (ctx) => {
-    ctx.body = await require("../db/customerSource").queryBill(
-      ctx.request.body.id
-    );
-  });
-  return router;
-};
-const delBill = function (router) {
-  router.post("/api/del-bill", async (ctx) => {
-    ctx.body = await require("../db/customerSource").delBill(
-      ctx.request.body.id
-    );
-  });
-  return router;
-};
-
 const createCarInfo = function (router) {
   router.post("/api/create-car-info", async (ctx) => {
     const {
@@ -141,9 +117,6 @@ exports.mutations = [
   getCars,
   createCars,
   delCar,
-  saveBill,
-  queryBill,
-  delBill,
   queryCarInfoLike,
   createCarInfo,
 ];

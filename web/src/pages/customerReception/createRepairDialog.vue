@@ -120,7 +120,7 @@ export default {
           this.$set(
             form,
             "price",
-            this.$math.format(count * unitPrice * (discount / 100), {
+            this.$_math.format(count * unitPrice * (discount / 100), {
               notation: "fixed",
               precision: 2
             })
@@ -130,7 +130,7 @@ export default {
           this.$set(
             form,
             "discount",
-            this.$math.format((price / (count * unitPrice)) * 100, {
+            this.$_math.format((price / (count * unitPrice)) * 100, {
               notation: "fixed",
               precision: 2
             })

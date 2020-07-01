@@ -1,0 +1,67 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+ul {
+  list-style: none;
+}
+.print-bill {
+  width: 595.28pt;
+  margin: 0 auto;
+  header {
+    text-align: center;
+    font-size: 24pt;
+  }
+  .print-bill-logo {
+    display: block;
+    height: 30pt;
+    margin-top: 10px;
+    margin-bottom: 12pt;
+  }
+  .bill-info {
+    display: flex;
+    flex-flow: row wrap;
+    li {
+      padding: 0 10pt 24pt;
+      flex: 0 0 33%;
+      box-sizing: border-box;
+    }
+  }
+  hr {
+    margin: 24pt 0;
+  }
+  .bill-sub-header {
+    font-size: 16pt;
+    text-align: left;
+    margin-bottom: 14pt;
+  }
+  .el-table {
+    color: #000;
+    thead {
+      color: #000;
+    }
+    margin: 10pt 0;
+  }
+  .bill-sub-footer {
+    text-align: right;
+  }
+  .bill-confirm {
+    display: flex;
+    flex-flow: row wrap;
+    li {
+      flex: 0 0 33%;
+    }
+  }
+  .bill-footer {
+    display: flex;
+    div {
+      flex: 0 0 50%;
+    }
+    .bill-sign-date {
+      display: flex;
+      span {
+        flex: 0 0 24%;
+      }
+    }
+  }
+}

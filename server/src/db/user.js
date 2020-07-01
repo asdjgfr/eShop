@@ -1,76 +1,7 @@
 const uuidV1 = require("uuid").v1;
-const { sequelize, Sequelize } = require("./main");
 const { tableFilter } = require("../pubFn/db");
 const { cryptoPassword } = require("../crypto/main");
-
-// 用户表
-const User = sequelize["define"]("user", {
-  username: {
-    // 用户名
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-  // 密码
-  password: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    select: false,
-  },
-  // 是否是管理员
-  isAdmin: {
-    // 是否拥有管理员权限，默认否
-    type: Sequelize.BOOLEAN,
-    allowNull: false,
-    defaultValue: false,
-  },
-});
-// 用户操作表
-const UserLog = sequelize["define"]("userLog", {
-  username: {
-    // 用户名
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-  // 登陆时间
-  loginTime: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-  // 登出时间
-  logoutTime: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    defaultValue: "",
-  },
-  // 设备信息
-  device: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-  // 设备ID
-  deviceID: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-  // 动作
-  action: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    defaultValue: "",
-  },
-  // X-Forwarded-For获取的ip
-  ip: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    defaultValue: "",
-  },
-  // nginx获取的ip
-  realIP: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    defaultValue: "",
-  },
-});
+const { User, UserLog } = require("./dataBase");
 
 async function createUser(username, password, isAdmin = false) {
   const filterUsers = await tableFilter(User, ["username", username]);
@@ -87,13 +18,6 @@ async function createUser(username, password, isAdmin = false) {
 }
 
 exports.checkAdminAndCreate = async function () {
-  // 同步数据库
-  try {
-    await sequelize.sync();
-    console.log("user表同步成功！");
-  } catch (e) {
-    console.log("user表同步失败：", e);
-  }
   // 查看是否有admin用户，没有则新建
   const filterUsers = await tableFilter(User, ["isAdmin", true]);
   if (!filterUsers.length) {

@@ -23,4 +23,9 @@ exports.config = {
     },
     timezone: "+08:00",
   },
+  company: {
+    name: "公司名称",
+    address: "公司地址",
+    phones: ["门店电话"],
+  },
 };

@@ -331,7 +331,7 @@ export default {
       return this.desserts.map((item, i) => ({
         ...item,
         index: i + 1,
-        price: this.$math.format(
+        price: this.$_math.format(
           item.count * item.unitPrice * (item.discount / 100),
           {
             notation: "fixed",
