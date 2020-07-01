@@ -1,20 +1,14 @@
 import axios from "axios";
 import qs from "qs";
 import router from "@/router/router";
-import { Message, Loading } from "element-ui";
-import needGlobalLoading from "./needGlobalLoading";
+import { Message } from "element-ui";
 const CancelToken = axios.CancelToken;
-// eslint-disable-next-line no-unused-vars
-let loading = null;
 const service = axios.create({
   timeout: 5000 // 请求超时时间
 });
 /****** request拦截器==>对请求参数做处理 ******/
 service.interceptors.request.use(
   config => {
-    if (needGlobalLoading.has(config.url)) {
-      loading = Loading.service({ fullscreen: true, lock: true });
-    }
     config.method === "post"
       ? (config.data = qs.stringify({
           ...config.data,
@@ -42,7 +36,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   async response => {
     //成功请求到数据
-    loading && loading.close();
+    window.globalLoading.close();
     //这里根据后端提供的数据进行对应的处理
     if (response.data.code === 401) {
       // 登录失效
@@ -60,12 +54,13 @@ service.interceptors.response.use(
         type: "error"
       });
     }
+    window.globalLoading.close();
     return response.data;
   },
   error => {
     //响应错误处理
     console.warn(JSON.stringify(error));
-    loading && loading.close();
+    window.globalLoading.close();
     Message({
       message: error.message ?? "网络异常，请重试！",
       type: "error"

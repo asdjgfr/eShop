@@ -255,7 +255,6 @@
 <script>
 import api from "@/api/index";
 import createRepairDialog from "@/pages/customerReception/createRepairDialog";
-import { base64ToBlobPDF } from "@/lib/blob";
 export default {
   name: "RepairWorkOrder",
   inject: ["reload"],
@@ -353,10 +352,14 @@ export default {
   methods: {
     async handlePrint() {
       const saveBill = await this.handleSaveBill();
-      if (saveBill) {
-        const pdf = await api.billManagement.buildBill({ id: this.id });
-        window.open(URL.createObjectURL(base64ToBlobPDF(pdf.data)));
+      if (saveBill === false) {
+        return saveBill;
       }
+      let routeData = this.$router.resolve({
+        path: "/print-bill",
+        query: { id: saveBill.id }
+      });
+      window.open(routeData.href, "_blank");
     },
     async queryCarInfo(numberPlate, cb) {
       const res = await api.customerReception.queryCarInfo({ numberPlate });
@@ -381,7 +384,7 @@ export default {
       }
     },
     async handleLoadBill(id) {
-      const loading = this.$loading({
+      window.globalLoading({
         lock: true,
         fullscreen: true,
         text: "查询中，请稍后。。。",
@@ -391,7 +394,6 @@ export default {
       if (res.code === 0) {
         this.initData(res.data);
       }
-      loading.close();
     },
     initData(data) {
       const { form } = this;
@@ -491,7 +493,7 @@ export default {
         this.$refs.form.validate(async valid => {
           if (valid) {
             const { id } = this;
-            const loading = this.$loading({
+            window.globalLoading({
               lock: true,
               fullscreen: true,
               text: "保存中，请稍后。。。",
@@ -514,14 +516,13 @@ export default {
             } else {
               this.$message.error(res.msg);
             }
-            loading.close();
             if (id === "") {
               await this.$router.push({
                 path: "/dashboard/customerreception",
                 query: { id: res.data }
               });
             }
-            resolve(true);
+            resolve({ id: res.data });
           } else {
             this.$message.error("请填写必填信息！");
             resolve(false);
@@ -535,9 +536,7 @@ export default {
         return false;
       }
       const { id } = this;
-      const loading = this.$loading({
-        lock: true,
-        fullscreen: true,
+      window.globalLoading({
         text: "删除中，请稍后。。。",
         spinner: "el-icon-loading"
       });
@@ -552,7 +551,6 @@ export default {
         });
         this.reload();
       }
-      loading.close();
     }
   }
 };

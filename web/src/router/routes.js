@@ -7,6 +7,7 @@ import CustomerReception from "../pages/CustomerReception";
 import FinancialManagement from "../pages/FinancialManagement";
 import InventoryManagement from "../pages/InventoryManagement";
 import MaintenanceManagement from "../pages/MaintenanceManagement";
+import PrintBill from "@/pages/PrintBill";
 
 export const routes = [
   { path: "/login", component: Login },
@@ -48,6 +49,7 @@ export const routes = [
       }
     ]
   },
+  { path: "/print-bill", component: PrintBill },
   { path: "/404", component: NotFound },
   {
     // 会匹配所有路径

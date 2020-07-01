@@ -65,8 +65,7 @@ export default {
       this.$refs.ruleForm.validate(async valid => {
         if (valid) {
           const { username, password } = this.ruleForm;
-          this.$loading({
-            fullscreen: true,
+          window.globalLoading({
             text: "登录中。。。"
           });
           const res = await api.user.login({

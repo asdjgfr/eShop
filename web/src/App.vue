@@ -32,9 +32,7 @@ export default {
   },
   methods: {
     async checkLogin(text = "检查登录状态。。。") {
-      const loading = this.$loading({
-        fullscreen: true,
-        lock: true,
+      window.globalLoading({
         text
       });
       if (localStorage.getItem("deviceID") == null) {
@@ -59,7 +57,6 @@ export default {
       if (res.code !== 0 && this.$route.path !== "/login") {
         await this.$router.push("/login");
       }
-      loading.close();
     }
   }
 };

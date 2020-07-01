@@ -42,8 +42,7 @@ export default {
     },
     async handleLogout() {
       const session = localStorage.getItem("session");
-      this.$loading({
-        fullscreen: true,
+      window.globalLoading({
         text: "注销中。。。"
       });
       const res = await api.user.logout({
