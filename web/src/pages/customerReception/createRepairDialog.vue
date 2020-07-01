@@ -1,12 +1,6 @@
 <template>
   <el-dialog title="收货地址" :visible="addRepairVisible">
-    <el-form
-      ref="form"
-      :model="form"
-      :rules="rules"
-      :label-width="labelWidth"
-      size="small"
-    >
+    <el-form ref="form" :model="form" :rules="rules" :label-width="labelWidth">
       <el-form-item label="配件代码" prop="code">
         <el-input v-model="form.code" />
       </el-form-item>

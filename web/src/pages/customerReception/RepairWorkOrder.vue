@@ -36,7 +36,6 @@
             <el-button
               style="float: right;margin-right: 20px"
               type="danger"
-              size="small"
               icon="el-icon-delete"
               round
               @click.stop="delSelector('source', item.value)"
@@ -66,7 +65,6 @@
             <el-button
               style="float: right;margin-right: 20px"
               type="danger"
-              size="small"
               icon="el-icon-delete"
               round
               @click.stop="delSelector('repair', item.value)"
@@ -114,7 +112,6 @@
             <el-button
               style="float: right;margin-right: 20px"
               type="danger"
-              size="small"
               icon="el-icon-delete"
               round
               @click.stop="delSelector('car', item.value)"
@@ -153,12 +150,11 @@
         />
       </el-form-item>
       <el-divider content-position="left">维修项目</el-divider>
-      <el-button type="primary" size="small" @click.stop="handleAddRepair">
+      <el-button type="primary" @click.stop="handleAddRepair">
         新增
       </el-button>
       <el-button
         type="danger"
-        size="small"
         @click.stop="handleRemoveItem"
         :disabled="!multipleSelection.length"
       >
@@ -178,14 +174,10 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作">
           <template slot-scope="scope">
-            <el-button type="text" size="small">
+            <el-button type="text">
               编辑
             </el-button>
-            <el-button
-              type="text"
-              size="small"
-              @click="handleRemoveItem(scope.row.index)"
-            >
+            <el-button type="text" @click="handleRemoveItem(scope.row.index)">
               移除
             </el-button>
           </template>
@@ -204,19 +196,17 @@
       </el-divider>
       <div class="align-center">
         <el-button-group>
-          <el-button
-            size="small"
-            type="info"
-            icon="el-icon-printer"
-            @click="handlePrint"
-          >
+          <el-button type="info" icon="el-icon-printer" @click="handlePrint">
             打印工单
           </el-button>
-          <el-button size="small" type="primary" icon="el-icon-setting">
+          <el-button
+            type="primary"
+            icon="el-icon-setting"
+            @click="drawerVisible = true"
+          >
             本地维修历史
           </el-button>
           <el-button
-            size="small"
             type="success"
             icon="el-icon-download"
             @click="handleSaveBill"
@@ -224,7 +214,6 @@
             保存{{ action }}
           </el-button>
           <el-button
-            size="small"
             type="danger"
             icon="el-icon-delete"
             :disabled="id === ''"
@@ -233,7 +222,6 @@
             作废
           </el-button>
           <el-button
-            size="small"
             type="success"
             icon="el-icon-wallet"
             :disabled="id === '' || form.finished"
@@ -249,21 +237,32 @@
       :labelWidth="labelWidth"
       :desserts="desserts"
     />
+    <el-drawer
+      title="本地维修历史"
+      :with-header="false"
+      :visible.sync="drawerVisible"
+      direction="ltr"
+      size="70%"
+    >
+      <query-bills v-if="drawerVisible" />
+    </el-drawer>
   </el-card>
 </template>
 
 <script>
 import api from "@/api/index";
 import createRepairDialog from "@/pages/customerReception/createRepairDialog";
+import QueryBills from "@/components/QueryBills";
 export default {
   name: "RepairWorkOrder",
   inject: ["reload"],
-  components: { createRepairDialog },
+  components: { createRepairDialog, QueryBills },
   data() {
     return {
       id: "",
       labelWidth: window.labelWidth,
       addRepairVisible: false,
+      drawerVisible: false,
       headers: [
         {
           text: "序号",

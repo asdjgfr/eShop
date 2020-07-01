@@ -2,6 +2,26 @@ html,
 body {
   margin: 0;
 }
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  background-color: #f5f5f5;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  background-color: #f5f5f5;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #8d8d8d;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
 .align-center {
   text-align: center;
 }
@@ -35,4 +55,8 @@ body {
     top: 5px !important;
     right: 0 !important;
   }
+}
+.el-drawer,
+.el-scrollbar__wrap {
+  overflow: hidden auto !important;
 }

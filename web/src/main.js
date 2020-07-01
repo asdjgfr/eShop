@@ -9,7 +9,7 @@ import animated from "animate.css";
 const { labelWidth } = require("@/conf/config.json");
 
 Vue.use(animated);
-Vue.use(ElementUI.ElementUI);
+Vue.use(ElementUI.ElementUI, { size: "small" });
 Vue.config.productionTip = false;
 Vue.prototype.$_moment = require("moment");
 Vue.prototype.$_ = require("lodash");
