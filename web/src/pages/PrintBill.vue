@@ -165,13 +165,7 @@ export default {
               this.$set(item, "value", data["company"]["phones"]);
               break;
             case "updatedAt":
-              this.$set(
-                item,
-                "value",
-                this.$_moment(data["updatedAt"]).format(
-                  "YYYY年MM月DD日HH:mm:ss"
-                )
-              );
+              this.$set(item, "value", this.$_localTime(data["updatedAt"]));
               break;
             default:
               this.$set(item, "value", data[key]);

@@ -11,8 +11,7 @@
             :key="item.value"
             :label="item.label"
             :value="item.value"
-          >
-          </el-option>
+          />
         </el-select>
       </el-form-item>
       <el-form-item label="起止日期">
@@ -25,20 +24,24 @@
           start-placeholder="开始日期"
           end-placeholder="结束日期"
           :picker-options="pickerOptions"
-        >
-        </el-date-picker>
+        />
       </el-form-item>
       <el-form-item label="车牌号">
-        <el-input
-          v-model="form.numberPlate"
-          placeholder="请输入车牌号"
-        ></el-input>
+        <el-input v-model="form.numberPlate" placeholder="请输入车牌号" />
       </el-form-item>
       <el-form-item label="VIN">
-        <el-input v-model="form.VIN" placeholder="请输入VIN"></el-input>
+        <el-input v-model="form.VIN" placeholder="请输入VIN" />
+      </el-form-item>
+      <el-form-item label="手机号">
+        <el-input
+          v-model="form.phone"
+          placeholder="请输入车主手机"
+          maxlength="11"
+          show-word-limit
+        />
       </el-form-item>
       <el-form-item label="工单号">
-        <el-input v-model="form.order" placeholder="请输入工单号"></el-input>
+        <el-input v-model="form.order" placeholder="请输入工单号" />
       </el-form-item>
     </el-form>
     <el-table :data="tableData">
@@ -60,15 +63,27 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination layout="prev, pager, next" :total="1000" :page-size="20" />
+    <el-pagination
+      layout="prev, pager, next"
+      :total="total"
+      :page-size="limit"
+      @current-change="handleChangeOffset"
+    />
   </el-card>
 </template>
 
 <script>
+import api from "@/api";
+const { limit } = require("@/conf/config.json");
+
 export default {
   name: "QueryBills",
+  props: ["numberPlate", "VIN", "phone", "autoQuery"],
   data() {
     return {
+      limit,
+      offset: 0,
+      total: 0,
       headers: [
         {
           text: "序号",
@@ -134,11 +149,52 @@ export default {
         createdAtInterval: [],
         numberPlate: "",
         VIN: "",
+        phone: "",
         order: ""
       }
     };
   },
+  created() {
+    const { form } = this;
+    const VIN = this.VIN ?? "";
+    const numberPlate = this.numberPlate ?? "";
+    const phone = this.phone ?? "";
+    this.$set(form, "numberPlate", numberPlate);
+    this.$set(form, "VIN", VIN);
+    this.$set(form, "phone", phone);
+  },
+  mounted() {
+    if (this.autoQuery) {
+      this.handleQuery();
+    }
+  },
   methods: {
+    handleChangeOffset(offset) {
+      console.log(offset);
+      this.offset = offset - 1;
+      this.handleQuery();
+    },
+    async handleQuery() {
+      const { form, offset } = this;
+      const params = { limit, offset: offset };
+      Object.keys(this.form).forEach(key => {
+        params[key] = form[key];
+      });
+      const res = await api.customerReception.queryBill(params);
+      if (res.code === 0) {
+        this.total = this.tableData.length;
+        this.tableData.splice(
+          0,
+          this.tableData.length,
+          ...res.data.map((item, i) => ({
+            ...item,
+            index: i + 1,
+            createdAt: this.$_localTime(item.createdAt),
+            finished: item.finished ? "已完成" : "未完成"
+          }))
+        );
+      }
+    },
     handleRemove() {}
   }
 };

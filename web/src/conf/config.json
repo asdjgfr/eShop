@@ -1,5 +1,6 @@
 {
   "title": "君友智能管理系统",
   "labelWidth": "100px",
-  "version": "0.0.1"
+  "version": "0.0.1",
+  "limit": 20
 }

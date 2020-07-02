@@ -74,12 +74,21 @@ const saveBill = data =>
     data
   });
 // 查询账单
-const queryBill = data =>
-  service({
+let cancelQueryBill = null;
+const queryBill = data => {
+  if (cancelQueryBill !== null) {
+    cancelQueryBill();
+  }
+  return service({
     url: "/api/query-bill",
     method: "post",
-    data
+    data,
+    cancelToken: new CancelToken(function executor(c) {
+      cancelQueryBill = c;
+    })
   });
+};
+
 // 删除账单
 const delBill = data =>
   service({

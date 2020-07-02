@@ -25,6 +25,7 @@ exports.saveBill = async function (params) {
     finished,
   } = params;
   order = order || `JY${new Date().getTime()}`;
+  id = id || "";
   source = source || [];
   repairTypes = repairTypes || [];
   numberPlate = numberPlate || "";
@@ -94,7 +95,11 @@ exports.queryBill = async function (params) {
   const query = {};
   const keys = Object.keys(params);
   const onlyID = keys.length === 1 && keys[0] === "id";
-  keys.forEach((key) => {
+  for (let i = 0, len = keys.length; i < len; i++) {
+    const key = keys[i];
+    if (key === "limit" || key === "offset") {
+      continue;
+    }
     if (key === "createdAtInterval") {
       if (Array.isArray(params[key]) && params[key].length === 2) {
         query["createdAt"] = {
@@ -109,11 +114,18 @@ exports.queryBill = async function (params) {
         $like: `%${params[key]}%`,
       };
     }
-  });
+  }
   let data = null;
   const options = {
     where: { ...query, deleted: false },
   };
+  if (params.limit !== undefined) {
+    options.limit = Number(params.limit);
+  }
+  if (params.offset !== undefined) {
+    options.offset = Number(params.offset);
+  }
+  yellowLog(options, params.limit, params.offset);
   if (onlyID) {
     data = await bills.findOne(options);
   } else {

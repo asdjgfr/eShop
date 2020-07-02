@@ -85,12 +85,10 @@
       </div>
       <el-divider content-position="left">车主车辆信息</el-divider>
       <el-form-item label="车牌号" prop="numberPlate">
-        <el-autocomplete
-          v-model="form.numberPlate"
-          placeholder="请输入车牌号"
-          :fetch-suggestions="queryCarInfo"
-          @select="handleSelectNumberPlate"
-        ></el-autocomplete>
+        <number-plate
+          :numberPlate.sync="form.numberPlate"
+          :handleSelectNumberPlate="handleSelectNumberPlate"
+        />
       </el-form-item>
       <el-form-item label="车系" prop="car">
         <el-select
@@ -244,7 +242,13 @@
       direction="ltr"
       size="70%"
     >
-      <query-bills v-if="drawerVisible" />
+      <query-bills
+        v-if="drawerVisible"
+        :numberPlate="form.numberPlate"
+        :VIN="form.VIN"
+        :phone="form.phone"
+        :autoQuery="true"
+      />
     </el-drawer>
   </el-card>
 </template>
@@ -253,10 +257,11 @@
 import api from "@/api/index";
 import createRepairDialog from "@/pages/customerReception/createRepairDialog";
 import QueryBills from "@/components/QueryBills";
+import NumberPlate from "@/components/NumberPlate";
 export default {
   name: "RepairWorkOrder",
   inject: ["reload"],
-  components: { createRepairDialog, QueryBills },
+  components: { createRepairDialog, QueryBills, NumberPlate },
   data() {
     return {
       id: "",
@@ -359,15 +364,6 @@ export default {
         query: { id: saveBill.id }
       });
       window.open(routeData.href, "_blank");
-    },
-    async queryCarInfo(numberPlate, cb) {
-      const res = await api.customerReception.queryCarInfo({ numberPlate });
-      cb(
-        (res?.data ?? []).map(item => ({
-          value: item.numberPlate,
-          item
-        }))
-      );
     },
     handleSelectNumberPlate(select) {
       Object.keys(select.item).forEach(key => {

@@ -15,6 +15,8 @@ const queryBill = function (router) {
       numberPlate: "",
       VIN: "",
       car: "",
+      limit: "",
+      offset: "",
     };
     const { body } = ctx.request;
     Object.keys(params).forEach((key) => {
