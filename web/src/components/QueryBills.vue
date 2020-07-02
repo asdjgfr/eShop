@@ -17,7 +17,7 @@
       </el-form-item>
       <el-form-item label="起止日期">
         <el-date-picker
-          v-model="form.date"
+          v-model="form.createdAtInterval"
           type="datetimerange"
           align="right"
           unlink-panels
@@ -87,7 +87,7 @@ export default {
       billTypes: [
         {
           label: "全部",
-          value: "all"
+          value: ""
         },
         {
           label: "已完成",
@@ -130,8 +130,8 @@ export default {
         ]
       },
       form: {
-        finished: "all",
-        date: [],
+        finished: "",
+        createdAtInterval: [],
         numberPlate: "",
         VIN: "",
         order: ""

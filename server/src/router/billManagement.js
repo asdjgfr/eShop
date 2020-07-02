@@ -7,9 +7,27 @@ const saveBill = function (router) {
 
 const queryBill = function (router) {
   router.post("/api/query-bill", async (ctx) => {
-    ctx.body = await require("../db/billManagement").queryBill(
-      ctx.request.body.id
-    );
+    const params = {
+      finished: "",
+      id: "",
+      createdAtInterval: [],
+      order: "",
+      numberPlate: "",
+      VIN: "",
+      car: "",
+    };
+    const { body } = ctx.request;
+    Object.keys(params).forEach((key) => {
+      if (
+        (Array.isArray(body[key]) && body[key].length !== 0) ||
+        (body[key] !== "" && body[key] !== undefined && body[key] !== null)
+      ) {
+        params[key] = body[key];
+      } else {
+        delete params[key];
+      }
+    });
+    ctx.body = await require("../db/billManagement").queryBill(params);
   });
   return router;
 };

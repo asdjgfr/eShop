@@ -85,27 +85,71 @@ exports.saveBill = async function (params) {
   };
 };
 
-exports.queryBill = async function (id) {
-  const data = await bills.findOne({ where: { id } });
+exports.queryBill = async function (params) {
+  if (
+    Array.isArray(params.createdAtInterval) &&
+    params.createdAtInterval.length === 2
+  ) {
+  }
+  const query = {};
+  const keys = Object.keys(params);
+  const onlyID = keys.length === 1 && keys[0] === "id";
+  keys.forEach((key) => {
+    if (key === "createdAtInterval") {
+      if (Array.isArray(params[key]) && params[key].length === 2) {
+        query["createdAt"] = {
+          $gte: `%${params[key][0]}%`,
+          $lte: `%${params[key][1]}%`,
+        };
+      }
+    } else if (key === "id") {
+      query[key] = params[key];
+    } else {
+      query[key] = {
+        $like: `%${params[key]}%`,
+      };
+    }
+  });
+  let data = null;
+  const options = {
+    where: { ...query, deleted: false },
+  };
+  if (onlyID) {
+    data = await bills.findOne(options);
+  } else {
+    data = await bills.findAll(options);
+  }
   const { company } = require("../config").config;
-  if (data === null) {
+  if (data === null || data.length === 0) {
     return { code: 205, msg: "没有对应工单！" };
   }
   return {
     code: 0,
     msg: "查找成功！",
-    data: {
-      ...JSON.parse(JSON.stringify(data)),
-      company,
-    },
+    data: Array.isArray(data)
+      ? data.map((d) => ({
+          ...JSON.parse(JSON.stringify(d)),
+          company,
+        }))
+      : {
+          ...JSON.parse(JSON.stringify(data)),
+          company,
+        },
   };
 };
 
 exports.delBill = async function (id) {
-  await bills.destroy({
-    where: {
-      id,
-    },
-  });
+  let data = {};
+  try {
+    data = await bills.findOne({ where: { id } });
+  } catch (e) {
+    return { code: 1, msg: `删除工单失败！${JSON.stringify(e)}` };
+  }
+  data.deleted = true;
+  try {
+    await data.save();
+  } catch (e) {
+    return { code: 1, msg: `删除工单失败！${JSON.stringify(e)}` };
+  }
   return { code: 0, msg: "删除工单成功！" };
 };

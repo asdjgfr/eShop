@@ -6,6 +6,17 @@ const bodyParser = require("koa-bodyparser");
 const path = require("path");
 
 global.chalk = chalk;
+global.yellowLog = (...params) => {
+  for (let i = 0, len = params.length; i < len; i++) {
+    try {
+      params[i] = JSON.stringify(params[i]);
+    } catch (e) {
+      params[i] = params[i];
+    }
+  }
+  console.log(...params.map((p) => chalk.yellow(p)));
+};
+
 global.__static = path.resolve(__dirname, "./static/");
 
 const app = new Koa();

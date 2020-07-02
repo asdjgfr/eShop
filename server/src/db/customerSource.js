@@ -1,11 +1,4 @@
-const {
-  Sequelize,
-  customerSource,
-  repairType,
-  cars,
-  carInfo,
-} = require("./dataBase");
-const { Op } = Sequelize;
+const { customerSource, repairType, cars, carInfo } = require("./dataBase");
 exports.createCustomerSource = async function (names) {
   // 新建客户来源
   await createByName(customerSource, names);
@@ -96,7 +89,7 @@ exports.queryCarInfoLike = async function (numberPlate) {
   const data = await carInfo.findAll({
     where: {
       numberPlate: {
-        [Op.like]: `%${numberPlate.toUpperCase()}%`,
+        $like: `%${numberPlate.toUpperCase()}%`,
       },
     },
   });
