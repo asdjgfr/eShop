@@ -77,7 +77,7 @@ const saveBill = data =>
 let cancelQueryBill = null;
 const queryBill = data => {
   if (cancelQueryBill !== null) {
-    cancelQueryBill();
+    cancelQueryBill("cancelByUser");
   }
   return service({
     url: "/api/query-bill",
@@ -85,6 +85,7 @@ const queryBill = data => {
     data,
     cancelToken: new CancelToken(function executor(c) {
       cancelQueryBill = c;
+      return { code: 555 };
     })
   });
 };
@@ -100,7 +101,7 @@ const delBill = data =>
 let cancelQueryCarInfo = null;
 const queryCarInfo = data => {
   if (cancelQueryCarInfo !== null) {
-    cancelQueryCarInfo();
+    cancelQueryCarInfo("cancelByUser");
   }
   return service({
     url: "/api/query-car-info",

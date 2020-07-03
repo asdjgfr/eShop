@@ -44,7 +44,7 @@
         <el-input v-model="form.order" placeholder="请输入工单号" />
       </el-form-item>
     </el-form>
-    <el-table :data="tableData">
+    <el-table :data="tableData" v-loading="tableLoading">
       <el-table-column
         v-for="(item, i) in headers"
         :key="i"
@@ -84,6 +84,7 @@ export default {
       limit,
       offset: 0,
       total: 0,
+      tableLoading: true,
       headers: [
         {
           text: "序号",
@@ -170,30 +171,31 @@ export default {
   },
   methods: {
     handleChangeOffset(offset) {
-      console.log(offset);
-      this.offset = offset - 1;
+      this.offset = limit * (offset - 1);
       this.handleQuery();
     },
     async handleQuery() {
       const { form, offset } = this;
+      this.tableLoading = true;
       const params = { limit, offset: offset };
       Object.keys(this.form).forEach(key => {
         params[key] = form[key];
       });
       const res = await api.customerReception.queryBill(params);
       if (res.code === 0) {
-        this.total = this.tableData.length;
+        this.total = res.length;
         this.tableData.splice(
           0,
           this.tableData.length,
           ...res.data.map((item, i) => ({
             ...item,
-            index: i + 1,
+            index: offset + i + 1,
             createdAt: this.$_localTime(item.createdAt),
             finished: item.finished ? "已完成" : "未完成"
           }))
         );
       }
+      this.tableLoading = false;
     },
     handleRemove() {}
   }

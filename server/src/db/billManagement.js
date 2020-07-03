@@ -129,17 +129,18 @@ exports.queryBill = async function (params) {
   if (onlyID) {
     data = await bills.findOne(options);
   } else {
-    data = await bills.findAll(options);
+    data = await bills.findAndCountAll(options);
   }
+  yellowLog(data);
   const { company } = require("../config").config;
-  if (data === null || data.length === 0) {
+  if (data === null || (data.rows !== undefined && data.rows.length === 0)) {
     return { code: 205, msg: "没有对应工单！" };
   }
   return {
     code: 0,
     msg: "查找成功！",
-    data: Array.isArray(data)
-      ? data.map((d) => ({
+    data: Array.isArray(data.rows)
+      ? data.rows.map((d) => ({
           ...JSON.parse(JSON.stringify(d)),
           company,
         }))
@@ -147,6 +148,7 @@ exports.queryBill = async function (params) {
           ...JSON.parse(JSON.stringify(data)),
           company,
         },
+    length: data.count || 0,
   };
 };
 

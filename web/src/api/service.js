@@ -61,10 +61,12 @@ service.interceptors.response.use(
     //响应错误处理
     console.warn(JSON.stringify(error));
     window.globalLoading.close();
-    Message({
-      message: error.message ?? "网络异常，请重试！",
-      type: "error"
-    });
+    if (error.message !== "cancelByUser") {
+      Message({
+        message: error.message ?? "网络异常，请重试！",
+        type: "error"
+      });
+    }
     return Promise.reject(error);
   }
 );
