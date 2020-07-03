@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: "FinancialManagement",
+  name: "FinancialManagement"
 };
 </script>
 

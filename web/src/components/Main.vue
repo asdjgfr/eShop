@@ -7,7 +7,7 @@ export default {
   name: "Main",
   data() {
     return {
-      overlay: false,
+      overlay: false
     };
   },
   mounted() {
@@ -16,8 +16,8 @@ export default {
   methods: {
     checkLogin() {
       this.$router.push("login");
-    },
-  },
+    }
+  }
 };
 </script>
 

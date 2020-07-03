@@ -20,7 +20,7 @@
 
 <script>
 export default {
-  name: "CustomerManagement",
+  name: "CustomerManagement"
 };
 </script>
 
