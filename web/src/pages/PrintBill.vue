@@ -1,7 +1,6 @@
 <template>
   <div class="print-bill">
     <header>机动车维修清单</header>
-    <img class="print-bill-logo" alt="君友" :src="logoImg" />
     <ul class="bill-info">
       <li v-for="(item, i) in billInfo" :key="i">
         <span v-text="item.label"></span>：
@@ -55,7 +54,6 @@ export default {
   data() {
     return {
       id: "",
-      logoImg: require("@/assets/logo.png"),
       printData: {},
       billInfo: [
         {

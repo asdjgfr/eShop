@@ -8,6 +8,9 @@ ul {
 .print-bill {
   width: 595.28pt;
   margin: 0 auto;
+  > header {
+    margin-bottom: 24pt;
+  }
   header {
     text-align: center;
     font-size: 24pt;
