@@ -2,13 +2,15 @@
 export default {
   name: "Navigation",
   props: ["drawer", "dashboardRoutes"],
-  data() {
-    return {};
+  computed: {
+    routePath() {
+      return this.$route.path;
+    }
   },
   render() {
     return (
       <el-menu
-        default-active={this.dashboardRoutes[0]?.path ?? ""}
+        default-active={this.routePath}
         onOpen={this.handleOpen}
         onClose={this.handleClose}
         onSelect={this.handleSelect}
