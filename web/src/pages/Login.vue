@@ -2,7 +2,7 @@
   <div class="login">
     <video :src="videoSrc" autoplay muted loop></video>
     <el-card shadow="always" width="370">
-      <div slot="header">
+      <div slot="header" class="align-center">
         <span v-text="title" />
       </div>
       <el-form
