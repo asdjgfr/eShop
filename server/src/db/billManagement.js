@@ -5,6 +5,7 @@ const {
   createCars,
   createCarInfo,
 } = require("./customerSource");
+const { arraySum, numToChinese } = require("../pubFn/libs");
 
 exports.saveBill = async function (params) {
   let {
@@ -87,6 +88,13 @@ exports.saveBill = async function (params) {
 };
 
 exports.queryBill = async function (params) {
+  // 全部订单金额
+  let totalPrice = 0;
+  // 大写
+  let totalPriceCN = "";
+  // 查找结果订单金额
+  let filterTotalPrice = 0;
+  let filterTotalPriceCN = "";
   if (
     Array.isArray(params.createdAtInterval) &&
     params.createdAtInterval.length === 2
@@ -103,8 +111,8 @@ exports.queryBill = async function (params) {
     if (key === "createdAtInterval") {
       if (Array.isArray(params[key]) && params[key].length === 2) {
         query["createdAt"] = {
-          $gte: `%${params[key][0]}%`,
-          $lte: `%${params[key][1]}%`,
+          $gte: new Date(params[key][0]),
+          $lte: new Date(params[key][1]),
         };
       }
     } else if (key === "id") {
@@ -115,6 +123,7 @@ exports.queryBill = async function (params) {
       };
     }
   }
+  yellowLog(query);
   let data = null;
   const options = {
     where: { ...query, deleted: false },
@@ -125,13 +134,22 @@ exports.queryBill = async function (params) {
   if (params.offset !== undefined) {
     options.offset = Number(params.offset);
   }
-  yellowLog(options, params.limit, params.offset);
   if (onlyID) {
     data = await bills.findOne(options);
+    if (data !== null) {
+      filterTotalPrice = data.receipts;
+      totalPrice = data.receipts;
+    }
   } else {
     data = await bills.findAndCountAll(options);
+    const allBills = await bills.findAll({
+      where: { deleted: false },
+    });
+    filterTotalPrice = arraySum(data.rows, "receipts");
+    totalPrice = arraySum(allBills, "receipts");
   }
-  yellowLog(data);
+  filterTotalPriceCN = numToChinese(filterTotalPrice);
+  totalPriceCN = numToChinese(totalPrice);
   const { company } = require("../config").config;
   if (data === null || (data.rows !== undefined && data.rows.length === 0)) {
     return { code: 205, msg: "没有对应工单！" };
@@ -149,6 +167,10 @@ exports.queryBill = async function (params) {
           company,
         },
     length: data.count || 0,
+    filterTotalPrice,
+    filterTotalPriceCN,
+    totalPrice,
+    totalPriceCN,
   };
 };
 

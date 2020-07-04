@@ -3,7 +3,7 @@
     :value="numberPlate"
     placeholder="请输入车牌号"
     :fetch-suggestions="queryCarInfo"
-    @select="handleSelectNumberPlate"
+    @select="handleSelectNumberPlate ? handleSelectNumberPlate($event) : void 0"
     @input="handleInput"
   ></el-autocomplete>
 </template>

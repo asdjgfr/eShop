@@ -1,7 +1,7 @@
 <template>
   <el-card class="box-card">
     <div slot="header">
-      <span>维修工单</span>
+      <span v-text="`维修工单 - ${form.order}`"></span>
     </div>
     <el-form
       :rules="rules"
@@ -248,6 +248,7 @@
         :VIN="form.VIN"
         :phone="form.phone"
         :autoQuery="true"
+        :drawerVisible.sync="drawerVisible"
       />
     </el-drawer>
   </el-card>

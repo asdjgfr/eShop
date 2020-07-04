@@ -1,10 +1,13 @@
 <template>
-  <div>维修管理</div>
+  <query-bills />
 </template>
 
 <script>
+import QueryBills from "@/components/QueryBills";
+
 export default {
-  name: "MaintenanceManagement"
+  name: "MaintenanceManagement",
+  components: { QueryBills }
 };
 </script>
 
