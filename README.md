@@ -1,4 +1,4 @@
-## 4s 店管理平台
+## 汽车养护管理平台
 
 
 
@@ -7,5 +7,5 @@
 | pc     | pc客户端，基于Electron |
 | phone  | 手机客户端，基于uniapp |
 | server | 服务端，基于NodeJs     |
-| web    | web端，使用vuetifyjs   |
+| web    | web端，使用Vue.js      |
 
