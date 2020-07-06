@@ -69,31 +69,77 @@ exports.delCar = async function (name) {
 
 const createCarInfo = async function (defaults) {
   // 新建车辆信息
-  const { numberPlate } = defaults;
-  const [data, created] = await carInfo.findOrCreate({
-    where: { numberPlate: numberPlate.toString().toUpperCase() },
-    defaults,
-  });
+  const { numberPlate, id } = defaults;
+  let [data, created] = [null, false];
+  if (id !== undefined) {
+    data = await carInfo.findByPk(id);
+    created = false;
+  } else {
+    [data, created] = await carInfo.findOrCreate({
+      where: { numberPlate: numberPlate.toString().toUpperCase() },
+      defaults,
+    });
+  }
+  if (data === null) {
+    return { code: 205, msg: "未找到车辆信息！" };
+  }
   if (!created) {
     Object.keys(defaults).forEach((key) => {
-      data[key] = defaults[key];
+      const tmp = defaults[key];
+      if (![undefined, null, ""].some((t) => t === tmp)) {
+        data[key] = tmp;
+      }
     });
     await data.save();
   }
-  return { code: 0, msg: `${created ? "新建" : "更新"}车辆信息成功！"` };
+  return { code: 0, msg: `${created ? "新建" : "更新"}车辆信息成功！` };
 };
 exports.createCarInfo = createCarInfo;
 
-exports.queryCarInfoLike = async function (numberPlate) {
+exports.queryCarInfoLike = async function (params) {
+  const options = { where: {} };
+  const keys = Object.keys(params);
+  for (let i = 0, len = keys.length; i < len; i++) {
+    const key = keys[i];
+    if (
+      key === "limit" ||
+      key === "offset" ||
+      params[key] === undefined ||
+      params[key] === null
+    ) {
+      continue;
+    }
+    if (key === "id") {
+      options.where[key] = params[key];
+    } else {
+      options.where[key] = {
+        $like: `%${
+          key === "numberPlate"
+            ? params[key].toString().toUpperCase()
+            : params[key]
+        }%`,
+      };
+    }
+  }
+  if (!isNaN(Number(params.limit))) {
+    options.limit = Number(params.limit);
+  }
+  if (!isNaN(Number(params.offset))) {
+    options.offset = Number(params.offset);
+  }
   // 模糊查询车辆信息
-  const data = await carInfo.findAll({
+  const data = await carInfo.findAndCountAll(options);
+  return { code: 0, data: data.rows, length: data.count || 0 };
+};
+
+exports.delCarInfo = async function (id) {
+  // 删除车辆信息
+  await carInfo.destroy({
     where: {
-      numberPlate: {
-        $like: `%${numberPlate.toUpperCase()}%`,
-      },
+      id,
     },
   });
-  return { code: 0, data };
+  return { code: 0, msg: "删除客户信息成功！" };
 };
 
 function createByName(model, names) {

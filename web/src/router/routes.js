@@ -8,10 +8,11 @@ import FinancialManagement from "../pages/FinancialManagement";
 import InventoryManagement from "../pages/InventoryManagement";
 import MaintenanceManagement from "../pages/MaintenanceManagement";
 import PrintBill from "@/pages/PrintBill";
+const { title } = require("@/conf/config.json");
 
 export const routes = [
-  { path: "/login", component: Login },
-  { path: "/", component: Main },
+  { path: "/login", component: Login, meta: { title: "登录" } },
+  { path: "/", component: Main, meta: { title } },
   {
     path: "/dashboard",
     component: Dashboard,
@@ -20,37 +21,37 @@ export const routes = [
       {
         path: "customerreception",
         component: CustomerReception,
-        title: "客户接待",
+        meta: { title: "客户接待" },
         icon: "el-icon-s-custom"
       },
       {
         path: "inventorymanagement",
         component: InventoryManagement,
-        title: "库存管理",
+        meta: { title: "库存管理" },
         icon: "el-icon-s-home"
       },
       {
         path: "maintenancemanagement",
         component: MaintenanceManagement,
-        title: "维修管理",
+        meta: { title: "维修管理" },
         icon: "el-icon-setting"
       },
       {
         path: "customermanagement",
         component: CustomerManagement,
-        title: "客户管理",
+        meta: { title: "客户管理" },
         icon: "el-icon-user"
       },
       {
         path: "financialmanagement",
         component: FinancialManagement,
-        title: "财务管理",
+        meta: { title: "财务管理" },
         icon: "el-icon-money"
       }
     ]
   },
-  { path: "/print-bill", component: PrintBill },
-  { path: "/404", component: NotFound },
+  { path: "/print-bill", component: PrintBill, meta: { title: "打印工单" } },
+  { path: "/404", component: NotFound, meta: { title: "404页面未找到" } },
   {
     // 会匹配所有路径
     path: "*",

@@ -8,7 +8,6 @@ import "./registerServiceWorker";
 import animated from "animate.css";
 
 const moment = require("moment");
-const { labelWidth } = require("@/conf/config.json");
 
 Vue.use(animated);
 Vue.use(ElementUI.ElementUI, { size: "small" });
@@ -21,7 +20,6 @@ Vue.prototype.$_localTime = date => {
   return moment(date).format("YYYY年MM月DD日HH:mm:ss");
 };
 
-window.labelWidth = labelWidth;
 window.globalLoading = ElementUI.Loading;
 window.$_vue = new Vue({
   router,

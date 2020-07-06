@@ -60,3 +60,12 @@ body {
 .el-scrollbar__wrap {
   overflow: hidden auto !important;
 }
+
+.not-found {
+  width: 100vw;
+  height: 100vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}

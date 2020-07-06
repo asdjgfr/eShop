@@ -84,6 +84,7 @@ const createCarInfo = function (router) {
       mileage,
       session,
       deviceID,
+      id,
     } = ctx.request.body;
     ctx.body = await require("../db/customerSource").createCarInfo({
       numberPlate,
@@ -94,14 +95,40 @@ const createCarInfo = function (router) {
       mileage,
       session,
       deviceID,
+      id,
     });
   });
   return router;
 };
 const queryCarInfoLike = function (router) {
   router.post("/api/query-car-info", async (ctx) => {
-    ctx.body = await require("../db/customerSource").queryCarInfoLike(
-      ctx.request.body.numberPlate
+    const {
+      numberPlate,
+      car,
+      ownerName,
+      VIN,
+      phone,
+      mileage,
+      limit,
+      offset,
+    } = ctx.request.body;
+    ctx.body = await require("../db/customerSource").queryCarInfoLike({
+      numberPlate,
+      car,
+      ownerName,
+      VIN,
+      phone,
+      mileage,
+      limit,
+      offset,
+    });
+  });
+  return router;
+};
+const delCarInfo = function (router) {
+  router.post("/api/del-car-info", async (ctx) => {
+    ctx.body = await require("../db/customerSource").delCarInfo(
+      ctx.request.body.id
     );
   });
   return router;
@@ -119,4 +146,5 @@ exports.mutations = [
   delCar,
   queryCarInfoLike,
   createCarInfo,
+  delCarInfo,
 ];

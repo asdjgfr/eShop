@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "4s店管理系统",
   "scripts": {
-    "dev": "npx webpack --config webpack.config.js && node .\\dist\\carManagement.js",
+    "dev": "npx webpack --config webpack.dev.config.js &&node .\\dist\\carManagement.js",
     "build": "npx webpack --config webpack.config.js"
   },
   "dependencies": {

@@ -97,16 +97,14 @@
 <script>
 import api from "@/api";
 import NumberPlate from "@/components/NumberPlate";
-const { limit } = require("@/conf/config.json");
 
 export default {
   name: "QueryBills",
-  inject: ["reload"],
+  inject: ["reload", "limit"],
   components: { NumberPlate },
   props: ["numberPlate", "VIN", "phone", "autoQuery"],
   data() {
     return {
-      limit,
       id: "",
       offset: 0,
       total: 0,
@@ -206,13 +204,13 @@ export default {
       this.$refs.form.resetFields();
     },
     handleChangeOffset(offset) {
-      this.offset = limit * (offset - 1);
+      this.offset = this.limit * (offset - 1);
       this.handleQuery();
     },
     async handleQuery() {
       const { form, offset } = this;
       this.tableLoading = true;
-      const params = { limit, offset: offset };
+      const params = { limit: this.limit, offset: offset };
       Object.keys(this.form).forEach(key => {
         params[key] = form[key];
       });

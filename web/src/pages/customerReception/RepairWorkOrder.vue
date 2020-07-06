@@ -261,12 +261,11 @@ import QueryBills from "@/components/QueryBills";
 import NumberPlate from "@/components/NumberPlate";
 export default {
   name: "RepairWorkOrder",
-  inject: ["reload"],
+  inject: ["reload", "labelWidth"],
   components: { createRepairDialog, QueryBills, NumberPlate },
   data() {
     return {
       id: "",
-      labelWidth: window.labelWidth,
       addRepairVisible: false,
       drawerVisible: false,
       headers: [

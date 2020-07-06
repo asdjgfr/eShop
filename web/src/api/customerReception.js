@@ -112,6 +112,22 @@ const queryCarInfo = data => {
     })
   });
 };
+// 删除车辆信息
+const delCarInfo = data => {
+  return service({
+    url: "/api/del-car-info",
+    method: "post",
+    data
+  });
+};
+// 新建或更新车主信息
+const createCarInfo = data => {
+  return service({
+    url: "/api/create-car-info",
+    method: "post",
+    data
+  });
+};
 
 export default {
   getCustomerSource,
@@ -126,5 +142,7 @@ export default {
   saveBill,
   queryBill,
   delBill,
-  queryCarInfo
+  queryCarInfo,
+  delCarInfo,
+  createCarInfo
 };

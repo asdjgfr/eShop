@@ -4,9 +4,11 @@
  * device 设备信息
  * ip 登陆ip
  * */
-exports.sessionPool = [
-  {
+const sessionPool = [];
+if (process.env.NODE_ENV === "development") {
+  sessionPool.push({
     session: "test",
     deviceID: "test",
-  },
-];
+  });
+}
+exports.sessionPool = sessionPool;

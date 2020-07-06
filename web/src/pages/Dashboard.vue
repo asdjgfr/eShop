@@ -34,12 +34,15 @@ import AppBar from "@/components/AppBar";
 import Navigation from "@/components/Navigation";
 import AppFooter from "@/components/AppFooter";
 import { routes } from "@/router/routes";
+const { labelWidth, limit } = require("@/conf/config.json");
 export default {
   name: "Dashboard",
   components: { Navigation, AppBar, AppFooter },
   provide() {
     return {
-      reload: this.reload
+      reload: this.reload,
+      labelWidth,
+      limit
     };
   },
   data() {
@@ -49,7 +52,7 @@ export default {
       dashboardRoutes: routes
         .find(pRoute => pRoute.path === "/dashboard")
         .children.map(cRoute => ({
-          title: cRoute.title,
+          title: cRoute.meta.title,
           icon: cRoute.icon,
           path: `/dashboard/${cRoute.path}`
         }))

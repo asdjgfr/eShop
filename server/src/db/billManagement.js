@@ -123,7 +123,6 @@ exports.queryBill = async function (params) {
       };
     }
   }
-  yellowLog(query);
   let data = null;
   const options = {
     where: { ...query, deleted: false },

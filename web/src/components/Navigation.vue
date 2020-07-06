@@ -11,8 +11,6 @@ export default {
     return (
       <el-menu
         default-active={this.routePath}
-        onOpen={this.handleOpen}
-        onClose={this.handleClose}
         onSelect={this.handleSelect}
         collapse={this.drawer}
       >
@@ -52,12 +50,6 @@ export default {
       if (this.$route.path !== path) {
         this.$router.push(path);
       }
-    },
-    handleOpen(key, keyPath) {
-      console.log(key, keyPath);
-    },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath);
     }
   }
 };
