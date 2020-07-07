@@ -12,7 +12,7 @@ export default {
   name: "NotFound",
   data() {
     return {
-      bg: require("@/assets/404.gif")
+      bg: require("@/assets/404.webp")
     };
   },
   methods: {
