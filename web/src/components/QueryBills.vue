@@ -220,7 +220,7 @@ export default {
         this.reload();
       } else {
         await this.$router.push({
-          path: "/dashboard/customerreception",
+          path: "/dashboard/customer-reception",
           query: { id: ID }
         });
         this.$emit("update:drawerVisible", false);

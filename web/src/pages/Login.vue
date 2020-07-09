@@ -84,7 +84,7 @@ export default {
             localStorage.setItem("password", password);
             localStorage.setItem("session", res.session);
             sessionStorage.setItem("isAdmin", res.isAdmin);
-            await this.$router.push("/dashboard/customerreception");
+            await this.$router.push("/dashboard/customer-reception");
           }
         } else {
           return false;

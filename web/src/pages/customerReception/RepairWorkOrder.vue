@@ -513,7 +513,7 @@ export default {
             }
             if (id === "") {
               await this.$router.push({
-                path: "/dashboard/customerreception",
+                path: "/dashboard/customer-reception",
                 query: { id: res.data }
               });
             }
@@ -542,7 +542,7 @@ export default {
       if (res.code === 0) {
         this.$message.success(res.msg);
         await this.$router.push({
-          path: "/dashboard/customerreception"
+          path: "/dashboard/customer-reception"
         });
         this.reload();
       }

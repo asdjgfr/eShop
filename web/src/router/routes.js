@@ -1,5 +1,4 @@
 import Login from "../pages/Login";
-import Main from "../components/Main";
 import NotFound from "../components/NotFound";
 import Dashboard from "../pages/Dashboard";
 import CustomerManagement from "../pages/CustomerManagement";
@@ -8,42 +7,41 @@ import FinancialManagement from "../pages/FinancialManagement";
 import InventoryManagement from "../pages/InventoryManagement";
 import MaintenanceManagement from "../pages/MaintenanceManagement";
 import PrintBill from "@/pages/PrintBill";
-const { title } = require("@/conf/config.json");
 
 export const routes = [
   { path: "/login", component: Login, meta: { title: "登录" } },
-  { path: "/", component: Main, meta: { title } },
+  { path: "/", redirect: "/dashboard/customer-reception" },
   {
     path: "/dashboard",
     component: Dashboard,
-    redirect: "/dashboard/customerreception",
+    redirect: "/dashboard/customer-reception",
     children: [
       {
-        path: "customerreception",
+        path: "customer-reception",
         component: CustomerReception,
         meta: { title: "客户接待" },
         icon: "el-icon-s-custom"
       },
       {
-        path: "inventorymanagement",
+        path: "inventory-management",
         component: InventoryManagement,
         meta: { title: "库存管理" },
         icon: "el-icon-s-home"
       },
       {
-        path: "maintenancemanagement",
+        path: "maintenance-management",
         component: MaintenanceManagement,
         meta: { title: "维修管理" },
         icon: "el-icon-setting"
       },
       {
-        path: "customermanagement",
+        path: "customer-management",
         component: CustomerManagement,
         meta: { title: "客户管理" },
         icon: "el-icon-user"
       },
       {
-        path: "financialmanagement",
+        path: "financial-management",
         component: FinancialManagement,
         meta: { title: "财务管理" },
         icon: "el-icon-money"
