@@ -190,6 +190,7 @@ const carInfo = sequelize["define"]("carInfo", {
   },
 });
 exports.carInfo = carInfo;
+
 // 工单
 const bills = sequelize["define"]("bills", {
   order: {
@@ -284,6 +285,93 @@ const bills = sequelize["define"]("bills", {
   },
 });
 exports.bills = bills;
+
+// 库存
+const inventory = sequelize["define"]("inventory", {
+  name: {
+    // 名称
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  supplier: {
+    // 供货商
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  type: {
+    // 配件种类
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  code: {
+    // 配件代码
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  count: {
+    // 库存量
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
+  costPrice: {
+    // 成本价
+    type: Sequelize.DOUBLE,
+    allowNull: false,
+  },
+  totalCostPrice: {
+    // 成本金额
+    type: Sequelize.DOUBLE,
+    allowNull: false,
+  },
+  sellingPrice: {
+    // 销售价
+    type: Sequelize.DOUBLE,
+    allowNull: false,
+  },
+  lastPurchasePrice: {
+    // 最新进价
+    type: Sequelize.DOUBLE,
+    allowNull: false,
+  },
+  guidePrice: {
+    // 销售指导价
+    type: Sequelize.DOUBLE,
+    allowNull: false,
+  },
+  unit: {
+    // 单位
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  minCount: {
+    // 最小包装数
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
+  storageTime: {
+    // 最新入库时间
+    type: Sequelize.DATE,
+    allowNull: false,
+  },
+  deliveryTime: {
+    // 最新出库时间
+    type: Sequelize.DATE,
+    defaultValue: null,
+  },
+  session: {
+    // session
+    type: Sequelize.STRING,
+    allowNull: false,
+    select: false,
+  },
+  deviceID: {
+    // 设备指纹
+    type: Sequelize.STRING,
+    allowNull: false,
+    select: false,
+  },
+});
+exports.inventory = inventory;
 
 exports.initDB = async function () {
   let res = {};

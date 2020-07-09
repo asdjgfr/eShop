@@ -55,11 +55,26 @@
       </el-form-item>
       <div class="form-inline-100 align-center">
         <el-form-item>
-          <el-button type="primary" @click="queryCarInfo">查询</el-button>
+          <el-button type="primary" @click="queryInventory">查询</el-button>
           <el-button type="danger" @click="resetForm">重置</el-button>
         </el-form-item>
       </div>
     </el-form>
+    <el-divider></el-divider>
+    <el-button-group>
+      <el-button type="primary">导出</el-button>
+      <el-popover placement="top" v-model="importVisible">
+        <div>
+          <el-button type="primary" @click="importVisible = false"
+            >下载模板</el-button
+          >
+          <el-button type="success" @click="importVisible = false"
+            >批量导入</el-button
+          >
+        </div>
+        <el-button type="primary" slot="reference">批量导入</el-button>
+      </el-popover>
+    </el-button-group>
     <el-table :data="tableData">
       <el-table-column
         v-for="(item, i) in headers"
@@ -93,7 +108,7 @@
 
 <script>
 import api from "@/api";
-
+import { pickerOptions } from "@/lib/element";
 import Supplier from "@/components/Supplier";
 import AccessoriesName from "@/components/AccessoriesName";
 import AccessoriesType from "@/components/AccessoriesType";
@@ -117,60 +132,36 @@ export default {
           text: "序号",
           value: "index"
         },
-        { text: "车牌号", value: "numberPlate" },
-        { text: "车主姓名", value: "ownerName" },
-        { text: "车主手机", value: "phone" },
-        { text: "VIN", value: "VIN" },
-        { text: "行驶里程", value: "mileage" },
-        { text: "车系", value: "car" }
+        { text: "供货商", value: "supplier" },
+        { text: "配件种类", value: "type" },
+        { text: "配件代码", value: "code" },
+        { text: "配件名称", value: "name" },
+        { text: "库存量", value: "count" },
+        { text: "成本价", value: "costPrice" },
+        { text: "成本金额", value: "totalCostPrice" },
+        { text: "销售价", value: "sellingPrice" },
+        { text: "最新进价", value: "lastPurchasePrice" },
+        { text: "销售指导价", value: "guidePrice" },
+        { text: "单位", value: "unit" },
+        { text: "最小包装数", value: "minCount" },
+        { text: "最新入库时间", value: "storageTime" },
+        { text: "最新出库时间", value: "deliveryTime" }
       ],
       tableData: [],
       offset: 0,
       total: 0,
+      importVisible: false,
       editVisible: false,
       editIndex: 0,
-      pickerOptions: {
-        shortcuts: [
-          {
-            text: "最近一周",
-            start: new Date(new Date().getTime() - 3600 * 1000 * 24 * 7)
-          },
-          {
-            text: "最近一个月",
-            start: new Date(new Date().getTime() - 3600 * 1000 * 24 * 30)
-          },
-          {
-            text: "最近三个月",
-            start: new Date(new Date().getTime() - 3600 * 1000 * 24 * 90)
-          },
-          {
-            text: "最近六个月",
-            start: new Date(new Date().getTime() - 3600 * 1000 * 24 * 180)
-          },
-          {
-            text: "最近一年",
-            start: new Date(new Date().getTime() - 3600 * 1000 * 24 * 365)
-          },
-          {
-            text: "一年以上",
-            start: new Date(1970, 1, 1),
-            end: new Date(new Date().getTime() - 3600 * 1000 * 24 * 365)
-          }
-        ].map(item => ({
-          text: item.text,
-          onClick(picker) {
-            picker.$emit("pick", [
-              item.start,
-              item["end"] ? item["end"] : new Date()
-            ]);
-          }
-        }))
-      }
+      pickerOptions
     };
+  },
+  mounted() {
+    this.queryInventory();
   },
   methods: {
     async handleRemoveItem(id, $index) {
-      const res = await api.customerReception.delCarInfo({ id });
+      const res = await api.inventoryManagement.delInventory({ id });
       if (res.code === 0) {
         this.tableData.splice($index, 1);
         this.$message.success(res.msg);
@@ -180,8 +171,8 @@ export default {
       this.editIndex = index;
       this.editVisible = true;
     },
-    async queryCarInfo() {
-      const res = await api.customerReception.queryCarInfo({
+    async queryInventory() {
+      const res = await api.inventoryManagement.queryInventory({
         limit: this.limit,
         offset: this.offset,
         ...this.form
@@ -195,6 +186,11 @@ export default {
           ...res.data.map((item, i) => ({
             ...item,
             index: offset + i + 1,
+            storageTime: this.$_localTime(item.storageTime),
+            deliveryTime:
+              item.deliveryTime === null
+                ? "暂无"
+                : this.$_localTime(item.deliveryTime),
             $index: i
           }))
         );
@@ -202,7 +198,7 @@ export default {
     },
     handleChangeOffset(offset) {
       this.offset = this.limit * (offset - 1);
-      this.queryCarInfo();
+      this.queryInventory();
     },
     resetForm() {
       this.$refs.form.resetFields();

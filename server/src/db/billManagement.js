@@ -95,11 +95,6 @@ exports.queryBill = async function (params) {
   // 查找结果订单金额
   let filterTotalPrice = 0;
   let filterTotalPriceCN = "";
-  if (
-    Array.isArray(params.createdAtInterval) &&
-    params.createdAtInterval.length === 2
-  ) {
-  }
   const query = {};
   const keys = Object.keys(params);
   const onlyID = keys.length === 1 && keys[0] === "id";

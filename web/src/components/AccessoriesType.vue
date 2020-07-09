@@ -14,12 +14,14 @@ export default {
   name: "AccessoriesType",
   props: ["type"],
   methods: {
-    async queryCarInfo(type, cb) {
-      const res = await api.customerReception.queryCarInfo({ type });
+    async queryCarInfo(q, cb) {
+      const res = await api.inventoryManagement.queryInventoryAttrs({
+        attributes: "type",
+        q: q.trim()
+      });
       cb(
-        (res?.data ?? []).map(item => ({
-          value: item.numberPlate,
-          item
+        (res?.data ?? []).map(value => ({
+          value
         }))
       );
     },

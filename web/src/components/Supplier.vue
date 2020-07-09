@@ -14,17 +14,19 @@ export default {
   name: "Supplier",
   props: ["supplier"],
   methods: {
-    async querySupplierInfo(supplier, cb) {
-      const res = await api.customerReception.queryCarInfo({ supplier });
+    async querySupplierInfo(q, cb) {
+      const res = await api.inventoryManagement.queryInventoryAttrs({
+        attributes: "supplier",
+        q: q.trim()
+      });
       cb(
-        (res?.data ?? []).map(item => ({
-          value: item.supplier,
-          item
+        (res?.data ?? []).map(value => ({
+          value
         }))
       );
     },
     handleInput(val) {
-      this.$emit("update:numberPlate", val);
+      this.$emit("update:supplier", val);
     }
   }
 };
