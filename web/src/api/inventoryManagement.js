@@ -25,5 +25,17 @@ const queryInventoryAttrs = data =>
     method: "post",
     data
   });
+// 保存更新库存
+const saveInventory = data =>
+  service({
+    url: "/api/save-inventory",
+    method: "post",
+    data
+  });
 
-export default { queryInventory, queryInventoryAttrs, delInventory };
+export default {
+  queryInventory,
+  queryInventoryAttrs,
+  delInventory,
+  saveInventory
+};

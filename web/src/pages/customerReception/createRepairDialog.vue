@@ -1,14 +1,47 @@
 <template>
-  <el-dialog title="收货地址" :visible="addRepairVisible">
+  <el-dialog title="维修项目" :visible="addRepairVisible">
     <el-form ref="form" :model="form" :rules="rules" :label-width="labelWidth">
-      <el-form-item label="配件代码" prop="code">
-        <el-input v-model="form.code" />
+      <el-form-item label="配件代码" prop="id">
+        <el-select
+          v-model="form.id"
+          filterable
+          remote
+          reserve-keyword
+          placeholder="搜索配件代码"
+          :remote-method="getCode"
+          :loading="codeLoading"
+          @change="handleChangeRes('code', $event)"
+        >
+          <el-option
+            v-for="item in options"
+            :key="item.id"
+            :label="item.code"
+            :value="item.id"
+          >
+          </el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item label="配件名称" prop="name">
-        <el-input v-model="form.name" />
+      <el-form-item label="配件名称" prop="id">
+        <el-select
+          v-model="form.id"
+          filterable
+          remote
+          reserve-keyword
+          placeholder="搜索配件名称"
+          :remote-method="getName"
+          :loading="nameLoading"
+        >
+          <el-option
+            v-for="item in options"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
+          >
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="单价">
-        <span v-text="form.unitPrice" /> 元
+        <span v-text="form.sellingPrice" /> 元
       </el-form-item>
       <el-form-item label="数量" prop="count">
         <el-input-number
@@ -16,8 +49,10 @@
           :precision="0"
           :step="1"
           :min="1"
+          :max="form.maxCount"
           @change="handleChangeNumber('count')"
         />
+        &emsp; 剩余个数：{{ form.maxCount }}
       </el-form-item>
       <el-form-item label="折扣（%）" prop="discount">
         <el-input-number
@@ -34,7 +69,7 @@
           v-model="form.price"
           :step="1"
           :min="0"
-          :max="form.unitPrice * form.count"
+          :max="form.sellingPrice * form.count"
           @change="handleChangeNumber('price')"
         />
       </el-form-item>
@@ -52,18 +87,24 @@
 </template>
 
 <script>
+import api from "@/api";
 export default {
   name: "createRepairDialog",
   props: ["addRepairVisible", "labelWidth", "desserts"],
   data() {
     return {
       canSubmit: false,
+      options: [],
+      nameLoading: false,
+      codeLoading: false,
       form: {
-        code: "",
+        id: "",
         name: "",
-        unitPrice: 0,
+        code: "",
+        sellingPrice: 0,
         count: 1,
         discount: 100,
+        maxCount: 0,
         price: 0
       },
       rules: {
@@ -85,9 +126,50 @@ export default {
       },
       deep: true,
       immediate: true
+    },
+    "form.id"() {
+      this.handleChangeNumber("count");
     }
   },
   methods: {
+    handleChangeRes(type, id) {
+      const { form, options } = this;
+      const op = options.find(op => op.id === id);
+      this.$set(form, "sellingPrice", op.sellingPrice);
+      this.$set(form, "maxCount", op.count);
+      this.$set(form, "name", op.name);
+      this.$set(form, "code", op.code);
+    },
+    async getCode(query) {
+      if (query !== "") {
+        this.codeLoading = true;
+        const res = await api.inventoryManagement.queryInventoryAttrs({
+          attributes: "code",
+          query
+        });
+        if (res.code === 0) {
+          this.options = res.data;
+        }
+        this.codeLoading = false;
+      } else {
+        this.options = [];
+      }
+    },
+    async getName(query) {
+      if (query !== "") {
+        this.nameLoading = true;
+        const res = await api.inventoryManagement.queryInventoryAttrs({
+          attributes: "name",
+          query
+        });
+        if (res.code === 0) {
+          this.options = res.data;
+        }
+        this.nameLoading = false;
+      } else {
+        this.options = [];
+      }
+    },
     handleClose() {
       this.$emit("update:addRepairVisible", false);
       this.reset();
@@ -106,7 +188,7 @@ export default {
     },
     handleChangeNumber(type) {
       const { form } = this;
-      const { count, unitPrice, discount, price } = form;
+      const { count, sellingPrice, discount, price } = form;
       switch (type) {
         case "count":
         case "discount":
@@ -114,7 +196,7 @@ export default {
           this.$set(
             form,
             "price",
-            this.$_math.format(count * unitPrice * (discount / 100), {
+            this.$_math.format(count * sellingPrice * (discount / 100), {
               notation: "fixed",
               precision: 2
             })
@@ -124,7 +206,7 @@ export default {
           this.$set(
             form,
             "discount",
-            this.$_math.format((price / (count * unitPrice)) * 100, {
+            this.$_math.format((price / (count * sellingPrice)) * 100, {
               notation: "fixed",
               precision: 2
             })
@@ -134,9 +216,8 @@ export default {
     },
     reset() {
       let obj = {
-        code: "",
-        name: "",
-        unitPrice: 0,
+        id: "",
+        sellingPrice: 0,
         count: 1,
         discount: 100,
         price: 0

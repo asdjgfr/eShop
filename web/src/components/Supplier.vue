@@ -4,7 +4,7 @@
     placeholder="请输入供货商"
     :fetch-suggestions="querySupplierInfo"
     @input="handleInput"
-  ></el-autocomplete>
+  />
 </template>
 
 <script>

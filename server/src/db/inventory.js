@@ -1,5 +1,5 @@
 const { inventory } = require("./dataBase");
-const cloneDeep = require("lodash/cloneDeep");
+
 exports.saveInventory = async function (params) {
   let {
     supplier,
@@ -39,6 +39,7 @@ exports.saveInventory = async function (params) {
   if (deliveryTime) {
     defaults.deliveryTime = deliveryTime;
   }
+
   if (guidePrice !== undefined) {
     defaults.guidePrice = guidePrice;
   }
@@ -159,18 +160,28 @@ exports.delInventory = async function (id) {
   return { code: 0, msg: "删除库存成功！" };
 };
 
-exports.queryInventoryAttrs = async function (attr, q) {
-  // 根据ID删除库存
-  let filter = await inventory.findAll({
-    attributes: [attr],
-  });
-  const data = new Set();
-  filter.forEach((d) => {
-    if (d[attr].match(q)) {
-      data.add(d[attr]);
-    }
-  });
-
+exports.queryInventoryAttrs = async function (attr, q, query) {
+  let data = null;
+  if (query !== undefined) {
+    const where = {};
+    yellowLog(attr, query);
+    where[attr] = {
+      $like: `%${query}%`,
+    };
+    data = await inventory.findAll({
+      where,
+    });
+  } else {
+    let filter = await inventory.findAll({
+      attributes: [attr],
+    });
+    data = new Set();
+    filter.forEach((d) => {
+      if (d[attr].match(q)) {
+        data["add"](d[attr]);
+      }
+    });
+  }
   yellowLog(data);
   return { code: 0, msg: "查询成功！", data: [...data] };
 };

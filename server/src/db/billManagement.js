@@ -1,4 +1,4 @@
-const { bills } = require("./dataBase");
+const { bills, inventory } = require("./dataBase");
 const {
   createCustomerSource,
   createRepairTypes,
@@ -52,6 +52,16 @@ exports.saveBill = async function (params) {
   });
   let receivable = 0;
   let receipts = 0;
+
+  if (finished === "true") {
+    maintenanceItems.forEach((item) => {
+      const inv = inventory.findByPk(item.id);
+      yellowLog(inv, item.id);
+      receivable += inv.sellingPrice;
+      receipts += inv.sellingPrice * (item["discount"] / 100);
+    });
+  }
+
   const defaults = {
     order,
     source,
@@ -70,6 +80,7 @@ exports.saveBill = async function (params) {
     deviceID,
     finished,
   };
+
   const [data, created] = await bills.findOrCreate({
     where: { id },
     defaults,

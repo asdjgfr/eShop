@@ -103,6 +103,11 @@
       :page-size="limit"
       @current-change="handleChangeOffset"
     />
+    <edit-inventory
+      :visible.sync="editVisible"
+      :formData="tableData[editIndex]"
+      :updateTableData="updateTableData"
+    />
   </el-card>
 </template>
 
@@ -112,10 +117,11 @@ import { pickerOptions } from "@/lib/element";
 import Supplier from "@/components/Supplier";
 import AccessoriesName from "@/components/AccessoriesName";
 import AccessoriesType from "@/components/AccessoriesType";
+import EditInventory from "@/components/EditInventory";
 export default {
   name: "InventoryManagement",
   inject: ["labelWidth", "limit"],
-  components: { Supplier, AccessoriesName, AccessoriesType },
+  components: { Supplier, AccessoriesName, AccessoriesType, EditInventory },
   data() {
     return {
       form: {
@@ -202,6 +208,11 @@ export default {
     },
     resetForm() {
       this.$refs.form.resetFields();
+    },
+    updateTableData(oldForm, newForm) {
+      Object.keys(newForm).forEach(key => {
+        this.$set(oldForm, key, newForm[key]);
+      });
     }
   }
 };

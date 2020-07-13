@@ -4,7 +4,7 @@
     placeholder="请输入配件名称"
     :fetch-suggestions="queryInfo"
     @input="handleInput"
-  ></el-autocomplete>
+  />
 </template>
 
 <script>

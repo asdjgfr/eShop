@@ -1,8 +1,8 @@
 <template>
   <el-autocomplete
-    :value="type"
-    placeholder="请输入配件种类"
-    :fetch-suggestions="queryCarInfo"
+    :value="code"
+    placeholder="请输入配件代码"
+    :fetch-suggestions="queryInfo"
     @input="handleInput"
   />
 </template>
@@ -11,12 +11,12 @@
 import api from "@/api";
 
 export default {
-  name: "AccessoriesType",
-  props: ["type"],
+  name: "Unit",
+  props: ["code"],
   methods: {
-    async queryCarInfo(q, cb) {
+    async queryInfo(q, cb) {
       const res = await api.inventoryManagement.queryInventoryAttrs({
-        attributes: "type",
+        attributes: "code",
         q: q.trim()
       });
       cb(
@@ -26,7 +26,7 @@ export default {
       );
     },
     handleInput(val) {
-      this.$emit("update:type", val);
+      this.$emit("update:code", val);
     }
   }
 };

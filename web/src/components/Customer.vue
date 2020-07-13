@@ -3,7 +3,13 @@
     <div slot="header">
       <span>客户管理</span>
     </div>
-    <el-form ref="form" :model="form" :label-width="labelWidth" :inline="true">
+    <el-form
+      ref="form"
+      :model="form"
+      :label-width="labelWidth"
+      :inline="true"
+      :rules="rules"
+    >
       <el-form-item label="车牌号" prop="numberPlate">
         <number-plate :numberPlate.sync="form.numberPlate" />
       </el-form-item>
@@ -101,7 +107,16 @@ export default {
       offset: 0,
       total: 0,
       editVisible: false,
-      editIndex: 0
+      editIndex: 0,
+      rules: {
+        numberPlate: [
+          { required: true, message: "请输入车牌号", trigger: "blur" }
+        ],
+
+        ownerName: [{ required: true, message: "车主姓名", trigger: "blur" }],
+        phone: [{ required: true, message: "请输入车主手机", trigger: "blur" }],
+        VIN: [{ required: true, message: "请输入VIN", trigger: "blur" }]
+      }
     };
   },
   created() {

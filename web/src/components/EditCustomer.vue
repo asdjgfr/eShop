@@ -64,9 +64,9 @@ export default {
       if (res.code === 0) {
         this.loading = false;
         this.updateTableData(formData, form);
-        this.handleClose();
         this.$message.success(res.msg);
       }
+      this.handleClose();
     }
   }
 };

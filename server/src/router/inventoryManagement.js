@@ -24,10 +24,11 @@ const delInventory = function (router) {
 };
 const queryInventoryAttrs = function (router) {
   router.post("/api/del-inventory-attrs", async (ctx) => {
-    const { q, attributes } = ctx.request.body;
+    const { q, attributes, query } = ctx.request.body;
     ctx.body = await require("../db/inventory").queryInventoryAttrs(
       attributes,
-      q
+      q,
+      query
     );
   });
   return router;

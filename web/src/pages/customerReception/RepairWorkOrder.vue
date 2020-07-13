@@ -172,9 +172,6 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作">
           <template slot-scope="scope">
-            <el-button type="text">
-              编辑
-            </el-button>
             <el-button type="text" @click="handleRemoveItem(scope.row.index)">
               移除
             </el-button>
@@ -276,7 +273,7 @@ export default {
         { text: "配件代码", value: "code" },
         { text: "配件名称", value: "name" },
         { text: "数量", value: "count" },
-        { text: "单价", value: "unitPrice" },
+        { text: "单价", value: "sellingPrice" },
         { text: "折扣（%）", value: "discount" },
         { text: "金额", value: "price" }
       ],
@@ -336,7 +333,7 @@ export default {
         ...item,
         index: i + 1,
         price: this.$_math.format(
-          item.count * item.unitPrice * (item.discount / 100),
+          item.count * item.sellingPrice * (item.discount / 100),
           {
             notation: "fixed",
             precision: 2
