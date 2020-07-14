@@ -4,7 +4,7 @@ import ElementUI from "./plugins/element-ui";
 import store from "./plugins/vuex";
 import router from "./router/router";
 import * as math from "mathjs";
-import "./registerServiceWorker";
+import "../public/registerServiceWorker";
 import animated from "animate.css";
 
 const moment = require("moment");

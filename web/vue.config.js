@@ -1,20 +1,21 @@
+const fs = require("fs");
+const { title } = require("./src/conf/config.json");
 module.exports = {
   devServer: {
-    proxy: "http://localhost:8900"
+    proxy: "http://localhost:8900",
+    http2: true,
+    https: {
+      key: fs.readFileSync("../localhostCert/localhost-key.pem"),
+      cert: fs.readFileSync("../localhostCert/localhost.pem"),
+      ca: fs.readFileSync("C:/Users/keepsoft/AppData/Local/mkcert/rootCA.pem")
+    }
   },
   pwa: {
-    name: "car-management-system",
+    name: title,
     themeColor: "#4DBA87",
     msTileColor: "#000000",
     appleMobileWebAppCapable: "yes",
     appleMobileWebAppStatusBarStyle: "white",
-
-    // configure the workbox plugin
-    workboxPluginMode: "InjectManifest",
-    workboxOptions: {
-      // swSrc is required in InjectManifest mode.
-      swSrc: "dev/sw.js"
-      // ...other Workbox options...
-    }
+    workboxPluginMode: "InjectManifest"
   }
 };
