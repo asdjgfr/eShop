@@ -53,13 +53,10 @@ exports.saveBill = async function (params) {
   let receivable = 0;
   let receipts = 0;
 
-  if (finished === "true") {
-    maintenanceItems.forEach((item) => {
-      const inv = inventory.findByPk(item.id);
-      yellowLog(inv, item.id);
-      receivable += inv.sellingPrice;
-      receipts += inv.sellingPrice * (item["discount"] / 100);
-    });
+  for (const item of maintenanceItems) {
+    const inv = await inventory.findByPk(item.id);
+    receivable += Number(inv.sellingPrice) * item["count"];
+    receipts += inv.sellingPrice * item["count"] * (item["discount"] / 100);
   }
 
   const defaults = {

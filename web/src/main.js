@@ -5,11 +5,9 @@ import store from "./plugins/vuex";
 import router from "./router/router";
 import * as math from "mathjs";
 import "../public/registerServiceWorker";
-import animated from "animate.css";
 
 const moment = require("moment");
 
-Vue.use(animated);
 Vue.use(ElementUI.ElementUI, { size: "small" });
 Vue.config.productionTip = false;
 Vue.prototype.$_moment = moment;
