@@ -4,6 +4,7 @@ exports.routes = function (router) {
     require("./customerSource"),
     require("./billManagement"),
     require("./inventoryManagement"),
+    require("./finance"),
   ];
 
   paths.forEach((p) => {

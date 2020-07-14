@@ -373,6 +373,34 @@ const inventory = sequelize["define"]("inventory", {
 });
 exports.inventory = inventory;
 
+// 财务信息
+const finance = sequelize["define"]("finance", {
+  month: {
+    // 月份
+    type: Sequelize.DATE,
+    allowNull: false,
+  },
+  remarks: {
+    // 备注
+    type: Sequelize.TEXT,
+    defaultValue: "",
+  },
+  session: {
+    // session
+    type: Sequelize.STRING,
+    allowNull: false,
+    select: false,
+  },
+  deviceID: {
+    // 设备指纹
+    type: Sequelize.STRING,
+    allowNull: false,
+    select: false,
+  },
+});
+
+exports.finance = finance;
+
 exports.initDB = async function () {
   let res = {};
   try {
