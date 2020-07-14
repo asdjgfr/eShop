@@ -5,8 +5,14 @@
 <script>
 import Fingerprint2 from "fingerprintjs2";
 import api from "@/api/index";
+import { pickerOptions } from "@/lib/element";
 export default {
   name: "App",
+  provide() {
+    return {
+      pickerOptions
+    };
+  },
   data() {
     return {
       currentRouterPath: ""

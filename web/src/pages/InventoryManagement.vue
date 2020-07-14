@@ -113,14 +113,13 @@
 
 <script>
 import api from "@/api";
-import { pickerOptions } from "@/lib/element";
 import Supplier from "@/components/Supplier";
 import AccessoriesName from "@/components/AccessoriesName";
 import AccessoriesType from "@/components/AccessoriesType";
 import EditInventory from "@/components/EditInventory";
 export default {
   name: "InventoryManagement",
-  inject: ["labelWidth", "limit"],
+  inject: ["labelWidth", "limit", "pickerOptions"],
   components: { Supplier, AccessoriesName, AccessoriesType, EditInventory },
   data() {
     return {
@@ -158,8 +157,7 @@ export default {
       total: 0,
       importVisible: false,
       editVisible: false,
-      editIndex: 0,
-      pickerOptions
+      editIndex: 0
     };
   },
   mounted() {

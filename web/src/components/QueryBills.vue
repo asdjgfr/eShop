@@ -96,12 +96,11 @@
 
 <script>
 import api from "@/api";
-import { pickerOptions } from "@/lib/element";
 import NumberPlate from "@/components/NumberPlate";
 
 export default {
   name: "QueryBills",
-  inject: ["reload", "limit"],
+  inject: ["reload", "limit", "pickerOptions"],
   components: { NumberPlate },
   props: ["numberPlate", "VIN", "phone", "autoQuery"],
   data() {
@@ -143,7 +142,6 @@ export default {
           value: false
         }
       ],
-      pickerOptions,
       form: {
         finished: "",
         createdAtInterval: [],
