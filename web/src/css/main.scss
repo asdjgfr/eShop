@@ -103,3 +103,17 @@ body {
   background-size: contain;
   cursor: pointer;
 }
+
+.financial-items {
+  display: flex;
+  li {
+    text-align: center;
+    flex: 1;
+  }
+}
+.financial-charts {
+  padding-top: 30px;
+}
+.financial-month-chart {
+  height: 400px;
+}

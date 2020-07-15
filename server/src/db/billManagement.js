@@ -55,10 +55,9 @@ exports.saveBill = async function (params) {
 
   for (const item of maintenanceItems) {
     const inv = await inventory.findByPk(item.id);
-    receivable += Number(inv.sellingPrice) * item["count"];
+    receivable += inv.sellingPrice * item["count"];
     receipts += inv.sellingPrice * item["count"] * (item["discount"] / 100);
   }
-
   const defaults = {
     order,
     source,
@@ -120,6 +119,8 @@ exports.queryBill = async function (params) {
       }
     } else if (key === "id") {
       query[key] = params[key];
+    } else if (key === "finished") {
+      query[key] = params[key] === "true";
     } else {
       query[key] = {
         $like: `%${params[key]}%`,

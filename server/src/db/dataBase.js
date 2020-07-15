@@ -385,6 +385,11 @@ const finance = sequelize["define"]("finance", {
     type: Sequelize.TEXT,
     defaultValue: "",
   },
+  monthlyOrderAmount: {
+    // 月订购金额
+    type: Sequelize.DOUBLE,
+    defaultValue: 0,
+  },
   session: {
     // session
     type: Sequelize.STRING,

@@ -2,15 +2,17 @@ import Vue from "vue";
 import App from "./App.vue";
 import ElementUI from "./plugins/element-ui";
 import store from "./plugins/vuex";
+import echarts from "./plugins/echarts";
+import moment from "./plugins/moment";
+import math from "./plugins/math";
 import router from "./router/router";
-import * as math from "mathjs";
-import "../public/registerServiceWorker";
 
-const moment = require("moment");
+import "../public/registerServiceWorker";
 
 Vue.use(ElementUI.ElementUI, { size: "small" });
 Vue.config.productionTip = false;
 Vue.prototype.$_moment = moment;
+Vue.prototype.$_echarts = echarts;
 Vue.prototype.$_ = require("lodash");
 Vue.prototype.$_math = math;
 

@@ -1,12 +1,21 @@
 const { bills, finance, inventory } = require("./dataBase");
 
-exports.findOrCreateFinance = async function (month, newRemarks = "") {
+const findOrCreateFinance = async function (
+  month,
+  newRemarks = "",
+  session,
+  deviceID
+) {
   let count = 0,
     income = 0,
     materialCost = 0,
     grossProfit = 0,
+    monthlyOrderAmount = 0,
+    inventoryAmount = 0,
     remarks = newRemarks;
-  const queryMonth = new Date(month);
+  yellowLog(month.split("-"));
+  const queryMonth = new Date(...month.split("-"));
+  yellowLog(queryMonth);
   const filterBills = await bills.findAll({
     where: {
       finished: true,
@@ -16,22 +25,29 @@ exports.findOrCreateFinance = async function (month, newRemarks = "") {
       },
     },
   });
-  yellowLog(filterBills);
   for (const item of filterBills) {
     for (const inv of item.maintenanceItems) {
       const findInv = await inventory.findByPk(inv.id);
-      console.log(findInv);
+      income += findInv.sellingPrice * inv["count"] * (inv["discount"] / 100);
+      materialCost += findInv.costPrice * inv["count"];
     }
   }
-  filterBills.forEach((item) => {});
-  // const [data, created] = await finance.findOrCreate({
-  //   where: {
-  //     month,
-  //   },
-  // });
-  // if (!created && newRemarks) {
-  //   data.remarks = newRemarks;
-  // }
+  const allInventory = await inventory.findAll();
+  for (const inv of allInventory) {
+    inventoryAmount += inv.costPrice * inv.count;
+  }
+  count = filterBills.length;
+  grossProfit = income - materialCost;
+  const [data, created] = await finance.findOrCreate({
+    where: {
+      month: queryMonth,
+    },
+    defaults: { month, session, deviceID },
+  });
+  if (!created && newRemarks) {
+    data.remarks = newRemarks;
+  }
+  monthlyOrderAmount = data.monthlyOrderAmount;
   return {
     code: 0,
     data: {
@@ -39,8 +55,36 @@ exports.findOrCreateFinance = async function (month, newRemarks = "") {
       income,
       materialCost,
       grossProfit,
+      inventoryAmount,
+      monthlyOrderAmount,
       remarks,
     },
-    // msg: created ? "未找到数据" : "查找成功",
+    msg: "查找成功",
+  };
+};
+exports.findOrCreateFinance = findOrCreateFinance;
+
+exports.annualStatisticsFinance = async function (year, session, deviceID) {
+  const data = Array.from({ length: 12 }, () => ({}));
+  const monthIncome = Array.from({ length: 12 }, () => 0);
+  const monthProfit = Array.from({ length: 12 }, () => 0);
+  for (let i = 0; i < 12; i++) {
+    data[i] = await findOrCreateFinance(
+      `${year}-${i}-1`,
+      "",
+      session,
+      deviceID
+    );
+  }
+  for (let i = 0, len = data.length; i < len; i++) {
+    monthIncome[i] = data[i].data.income;
+    monthProfit[i] = data[i].data.grossProfit;
+  }
+  return {
+    code: 0,
+    data: {
+      monthIncome,
+      monthProfit,
+    },
   };
 };
