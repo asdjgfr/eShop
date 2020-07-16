@@ -6,6 +6,7 @@ import CustomerReception from "../pages/CustomerReception";
 import FinancialManagement from "../pages/FinancialManagement";
 import InventoryManagement from "../pages/InventoryManagement";
 import MaintenanceManagement from "../pages/MaintenanceManagement";
+import UserSettings from "../pages/UserSettings";
 import PrintBill from "@/pages/PrintBill";
 
 export const routes = [
@@ -45,6 +46,12 @@ export const routes = [
         component: FinancialManagement,
         meta: { title: "财务管理" },
         icon: "el-icon-money"
+      },
+      {
+        path: "/user/settings",
+        component: UserSettings,
+        meta: { title: "用户设置" },
+        showInNavigation: false
       }
     ]
   },

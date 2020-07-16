@@ -100,7 +100,7 @@ export default {
           trigger: "axis"
         },
         legend: {
-          data: ["每月产值", "每月利润"]
+          data: ["月产值", "月利润"]
         },
         xAxis: {
           type: "category",
@@ -112,12 +112,12 @@ export default {
         },
         series: [
           {
-            name: "每月产值",
+            name: "月产值",
             type: "line",
             data: []
           },
           {
-            name: "每月利润",
+            name: "月利润",
             type: "line",
             data: []
           }

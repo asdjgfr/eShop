@@ -13,9 +13,7 @@ const findOrCreateFinance = async function (
     monthlyOrderAmount = 0,
     inventoryAmount = 0,
     remarks = newRemarks;
-  yellowLog(month.split("-"));
   const queryMonth = new Date(...month.split("-"));
-  yellowLog(queryMonth);
   const filterBills = await bills.findAll({
     where: {
       finished: true,
@@ -42,7 +40,7 @@ const findOrCreateFinance = async function (
     where: {
       month: queryMonth,
     },
-    defaults: { month, session, deviceID },
+    defaults: { month: queryMonth, session, deviceID },
   });
   if (!created && newRemarks) {
     data.remarks = newRemarks;

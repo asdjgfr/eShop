@@ -63,7 +63,7 @@ import InventoryCode from "@/components/InventoryCode";
 export default {
   name: "EditCustomer",
   inject: ["labelWidth"],
-  props: ["visible", "formData", "updateTableData"],
+  props: ["visible", "formData", "updateTableData", "action"],
   components: {
     Supplier,
     AccessoriesName,
@@ -115,7 +115,7 @@ export default {
   },
   watch: {
     visible(val) {
-      if (val) {
+      if (val && this.action === "edit") {
         const { formData, form } = this;
         Object.keys(form).forEach(key => {
           this.$set(form, key, formData[key]);
@@ -133,11 +133,15 @@ export default {
           this.loading = true;
           const { formData, form } = this;
           const data = this.$_.cloneDeep(form);
-          delete data.guidePrice;
-          const res = await api.inventoryManagement.saveInventory(data);
+          const res = await api.inventoryManagement.saveInventory({
+            ...data,
+            action: this.action
+          });
           if (res.code === 0) {
             this.loading = false;
-            this.updateTableData(formData, data);
+            if (this.action === "edit") {
+              this.updateTableData(formData, data);
+            }
             this.$message.success(res.msg);
           }
           this.handleClose();

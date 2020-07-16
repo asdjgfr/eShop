@@ -62,6 +62,7 @@
     </el-form>
     <el-divider></el-divider>
     <el-button-group>
+      <el-button type="primary" @click="handleAddInventory">新增</el-button>
       <el-button type="primary">导出</el-button>
       <el-popover placement="top" v-model="importVisible">
         <div>
@@ -104,6 +105,7 @@
       @current-change="handleChangeOffset"
     />
     <edit-inventory
+      :action="inventoryAction"
       :visible.sync="editVisible"
       :formData="tableData[editIndex]"
       :updateTableData="updateTableData"
@@ -120,7 +122,12 @@ import EditInventory from "@/components/EditInventory";
 export default {
   name: "InventoryManagement",
   inject: ["labelWidth", "limit", "pickerOptions"],
-  components: { Supplier, AccessoriesName, AccessoriesType, EditInventory },
+  components: {
+    Supplier,
+    AccessoriesName,
+    AccessoriesType,
+    EditInventory
+  },
   data() {
     return {
       form: {
@@ -153,6 +160,7 @@ export default {
         { text: "最新出库时间", value: "deliveryTime" }
       ],
       tableData: [],
+      inventoryAction: "add",
       offset: 0,
       total: 0,
       importVisible: false,
@@ -172,6 +180,7 @@ export default {
       }
     },
     handleEditItem(index) {
+      this.inventoryAction = "edit";
       this.editIndex = index;
       this.editVisible = true;
     },
@@ -211,6 +220,10 @@ export default {
       Object.keys(newForm).forEach(key => {
         this.$set(oldForm, key, newForm[key]);
       });
+    },
+    handleAddInventory() {
+      this.inventoryAction = "add";
+      this.editVisible = true;
     }
   }
 };

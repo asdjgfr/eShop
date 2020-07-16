@@ -4,7 +4,13 @@ const chalk = require("chalk");
 const Router = require("koa-router");
 const bodyParser = require("koa-bodyparser");
 const path = require("path");
-
+const moment = require("moment");
+global.moment = moment;
+global.getTime = function (data) {
+  return moment(moment(data).diff("1970-01-01 00:00:00")).format(
+    "YYYY-MM-DD HH:mm:SS.8"
+  );
+};
 global.chalk = chalk;
 global.yellowLog = (...params) => {
   for (let i = 0, len = params.length; i < len; i++) {

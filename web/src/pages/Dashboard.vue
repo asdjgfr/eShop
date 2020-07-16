@@ -65,7 +65,8 @@ export default {
       drawer: true,
       dashboardRoutes: routes
         .find(pRoute => pRoute.path === "/dashboard")
-        .children.map(cRoute => ({
+        .children.filter(child => child.showInNavigation !== false)
+        .map(cRoute => ({
           title: cRoute.meta.title,
           icon: cRoute.icon,
           path: `/dashboard/${cRoute.path}`

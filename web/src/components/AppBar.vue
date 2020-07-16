@@ -13,6 +13,7 @@
           />
         </div>
         <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item command="user-settings">用户设置</el-dropdown-item>
           <el-dropdown-item command="logout">退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -37,6 +38,9 @@ export default {
       switch (command) {
         case "logout":
           this.handleLogout();
+          break;
+        case "user-settings":
+          this.$router.push("/user/settings");
           break;
       }
     },
