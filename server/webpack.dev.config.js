@@ -7,8 +7,8 @@ module.exports = new SpeedMeasurePlugin().wrap({
   mode: "development",
   entry: ["@babel/polyfill", path.resolve(__dirname, "./src/main.js")],
   output: {
-    filename: "carManagement.js",
-    path: path.resolve(__dirname, "dist"),
+    filename: "dev.js",
+    path: path.resolve(__dirname, "dev"),
   },
   externals: [nodeExternals()],
   target: "node",

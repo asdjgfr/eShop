@@ -1,0 +1,12 @@
+{
+  "verbose": true,
+  "ignore": [".git", "node_modules/**/node_modules", "dev", "dist"],
+  "watch": ["src"],
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "execMap": {
+    "dev": "yarn dev"
+  },
+  "delay": 2500
+}
