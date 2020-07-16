@@ -14,8 +14,8 @@
     "element-ui": "^2.13.2",
     "fingerprintjs2": "^2.1.0",
     "jspdf": "^1.5.3",
-    "lodash": "^4.17.15",
-    "mathjs": "^7.0.2",
+    "lodash": "^4.17.19",
+    "mathjs": "^7.1.0",
     "moment": "^2.27.0",
     "print-js": "^1.0.63",
     "qs": "^6.9.4",
@@ -26,7 +26,7 @@
     "vuex": "^3.5.1"
   },
   "devDependencies": {
-    "@fortawesome/fontawesome-free": "^5.13.1",
+    "@fortawesome/fontawesome-free": "^5.14.0",
     "@vue/cli-plugin-babel": "~4.4.6",
     "@vue/cli-plugin-eslint": "~4.4.6",
     "@vue/cli-plugin-pwa": "~4.4.6",
@@ -34,8 +34,8 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^7.4.0",
     "eslint-plugin-vue": "^6.2.2",
-    "sass": "^1.26.9",
-    "sass-loader": "^9.0.1",
+    "sass": "^1.26.10",
+    "sass-loader": "^9.0.2",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {
