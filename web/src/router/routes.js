@@ -1,13 +1,13 @@
-import Login from "../pages/Login";
-import NotFound from "../components/NotFound";
-import Dashboard from "../pages/Dashboard";
-import CustomerManagement from "../pages/CustomerManagement";
-import CustomerReception from "../pages/CustomerReception";
-import FinancialManagement from "../pages/FinancialManagement";
-import InventoryManagement from "../pages/InventoryManagement";
-import MaintenanceManagement from "../pages/MaintenanceManagement";
-import UserSettings from "../pages/UserSettings";
-import PrintBill from "@/pages/PrintBill";
+const Login = () => import("@/pages/Login");
+const NotFound = () => import("@/components/NotFound");
+const Dashboard = () => import("@/pages/Dashboard");
+const CustomerManagement = () => import("@/pages/CustomerManagement");
+const CustomerReception = () => import("@/pages/CustomerReception");
+const FinancialManagement = () => import("@/pages/FinancialManagement");
+const InventoryManagement = () => import("@/pages/InventoryManagement");
+const MaintenanceManagement = () => import("@/pages/MaintenanceManagement");
+const UserSettings = () => import("@/pages/UserSettings");
+const PrintBill = () => import("@/pages/PrintBill");
 
 export const routes = [
   { path: "/login", component: Login, meta: { title: "登录" } },
