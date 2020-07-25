@@ -22,19 +22,12 @@
       <el-form-item label="销售价" prop="sellingPrice">
         <el-input-number v-model="form.sellingPrice" :precision="2" :min="0" />
       </el-form-item>
-      <el-form-item label="最新进价" prop="lastPurchasePrice">
-        <el-input-number
-          v-model="form.lastPurchasePrice"
-          :precision="2"
-          :min="0"
-        />
-      </el-form-item>
       <el-form-item label="销售指导价" prop="guidePrice">
         <el-input-number
           v-model="form.guidePrice"
           :precision="2"
           :min="0"
-          :disabled="true"
+          :disabled="action === 'edit'"
         />
       </el-form-item>
       <el-form-item label="单位" prop="unit">
@@ -83,10 +76,9 @@ export default {
         costPrice: "",
         totalCostPrice: "",
         sellingPrice: "",
-        lastPurchasePrice: "",
         guidePrice: "",
-        unit: "",
-        minCount: ""
+        unit: "无单位",
+        minCount: 1
       },
       loading: false,
       rules: {
@@ -102,9 +94,6 @@ export default {
         ],
         sellingPrice: [
           { required: true, message: "请输入销售价", trigger: "blur" }
-        ],
-        lastPurchasePrice: [
-          { required: true, message: "请输入最新进价", trigger: "blur" }
         ],
         unit: [{ required: true, message: "请输入单位", trigger: "blur" }],
         minCount: [

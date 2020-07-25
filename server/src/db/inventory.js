@@ -1,4 +1,4 @@
-const { inventory, finance } = require("./dataBase");
+const { inventory } = require("./dataBase");
 
 exports.saveInventory = async function (params) {
   let {
