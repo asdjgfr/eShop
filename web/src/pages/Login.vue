@@ -18,6 +18,11 @@
           <el-input v-model="ruleForm.password"></el-input>
         </el-form-item>
         <el-form-item>
+          <el-checkbox v-model="autoLogin" @change="handleChangeAutoLogin"
+            >自动登录</el-checkbox
+          >
+        </el-form-item>
+        <el-form-item>
           <el-button type="primary" @click="handleLogin('ruleForm')">
             登录
           </el-button>
@@ -29,12 +34,14 @@
 
 <script>
 import api from "@/api/index";
-
+import { mapMutations } from "vuex";
 const { title } = require("@/conf/config.json");
 export default {
   name: "Login",
   data() {
     return {
+      autoLogin: false,
+      fromPath: "",
       title,
       ruleForm: {
         username: "",
@@ -50,17 +57,26 @@ export default {
       showPassword: false
     };
   },
-  computed: {},
+  created() {
+    this.autoLogin = localStorage.getItem("autoLogin") === "true";
+    if (this.$route.query.from !== undefined) {
+      this.fromPath = this.$route.query.from;
+    }
+  },
   mounted() {
     const username = localStorage.getItem("username") ?? "";
     const password = localStorage.getItem("password") ?? "";
     this.ruleForm.username = username;
     this.ruleForm.password = password;
-    if (localStorage.getItem("session") !== null) {
+    if (localStorage.getItem("session") !== null || this.autoLogin) {
       this.handleLogin();
     }
   },
   methods: {
+    ...mapMutations("user", ["changeUsername"]),
+    handleChangeAutoLogin(bool) {
+      localStorage.setItem("autoLogin", bool);
+    },
     handleLogin() {
       this.$refs.ruleForm.validate(async valid => {
         if (valid) {
@@ -84,7 +100,12 @@ export default {
             localStorage.setItem("password", password);
             localStorage.setItem("session", res.session);
             sessionStorage.setItem("isAdmin", res.isAdmin);
-            await this.$router.push("/dashboard/customer-reception");
+            this["changeUsername"](username);
+            if (this.fromPath !== "") {
+              await this.$router.push(this.fromPath);
+            } else {
+              await this.$router.push("/dashboard/customer-reception");
+            }
           }
         } else {
           return false;

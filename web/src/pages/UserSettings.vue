@@ -1,14 +1,14 @@
 <template>
-  <el-collapse v-model="activeNames">
-    <el-collapse-item
+  <el-tabs tab-position="left" v-model="activeName">
+    <el-tab-pane
       v-for="item in collapseItems"
       :key="item"
-      :title="item"
+      :label="item"
       :name="item"
     >
-      <general-settings v-if="item === '常规设置'" />
-    </el-collapse-item>
-  </el-collapse>
+      <general-settings v-if="item === '常规设置'" :maxWidth="maxWidth" />
+    </el-tab-pane>
+  </el-tabs>
 </template>
 
 <script>
@@ -17,18 +17,14 @@ export default {
   name: "UserSettings",
   components: { GeneralSettings },
   data() {
+    const collapseItems = ["常规设置"];
     return {
-      collapseItems: ["常规设置"]
+      collapseItems,
+      activeName: collapseItems[0],
+      maxWidth: "350px"
     };
   },
-  computed: {
-    activeNames: {
-      get() {
-        return [...this.collapseItems];
-      },
-      set() {}
-    }
-  }
+  computed: {}
 };
 </script>
 

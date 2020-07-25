@@ -9,7 +9,6 @@ exports.saveInventory = async function (params) {
     count,
     costPrice,
     sellingPrice,
-    lastPurchasePrice,
     guidePrice,
     unit,
     minCount,
@@ -28,14 +27,13 @@ exports.saveInventory = async function (params) {
     costPrice,
     totalCostPrice: costPrice * count,
     sellingPrice,
-    lastPurchasePrice,
+    lastPurchasePrice: costPrice,
     unit,
     minCount,
     storageTime: new Date(),
     deviceID,
     session,
   };
-
   if (deliveryTime) {
     defaults.deliveryTime = deliveryTime;
   }
@@ -50,12 +48,20 @@ exports.saveInventory = async function (params) {
   });
 
   if (!created) {
+    defaults.lastPurchasePrice = data.lastPurchasePrice;
     Object.keys(defaults).forEach((key) => {
       data[key] = defaults[key];
     });
     await data.save();
   }
-
+  // 更新最新进价
+  const sameInventory = await inventory.findAll({
+    where: { code, name },
+  });
+  for (let i = 0, len = sameInventory.length; i < len; i++) {
+    sameInventory[i].lastPurchasePrice = defaults.costPrice;
+    await sameInventory[i].save();
+  }
   return {
     code: 0,
     msg: created ? "保存成功！" : "更新成功！",

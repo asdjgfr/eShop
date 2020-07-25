@@ -29,6 +29,7 @@ const checkLogin = function (router) {
     ctx.body = {
       code: checkLogin ? 0 : 401,
       msg: checkLogin ? "" : "登录失效，请重新登录！",
+      username: checkLogin?.username ?? "",
     };
   });
   return router;
@@ -41,4 +42,16 @@ const logout = function (router) {
   });
   return router;
 };
-exports.mutations = [login, checkLogin, logout];
+
+const changePassword = function (router) {
+  router.post("/api/change-password", async (ctx) => {
+    const { username, password, newPassword } = ctx.request.body;
+    ctx.body = await require("../db/user").changePassword(
+      username,
+      password,
+      newPassword
+    );
+  });
+  return router;
+};
+exports.mutations = [login, checkLogin, logout, changePassword];

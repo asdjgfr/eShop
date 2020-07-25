@@ -20,5 +20,11 @@ const logout = data =>
     method: "post",
     data
   });
+const changePassword = data =>
+  service({
+    url: "/api/change-password",
+    method: "post",
+    data
+  });
 
-export default { login, checkLogin, logout };
+export default { login, checkLogin, logout, changePassword };

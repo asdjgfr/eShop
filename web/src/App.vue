@@ -6,6 +6,7 @@
 import Fingerprint2 from "fingerprintjs2";
 import api from "@/api/index";
 import { pickerOptions } from "@/lib/element";
+import { mapMutations } from "vuex";
 export default {
   name: "App",
   provide() {
@@ -37,7 +38,11 @@ export default {
     this.checkLogin();
   },
   methods: {
+    ...mapMutations("user", ["changeUsername"]),
     async checkLogin(text = "检查登录状态。。。") {
+      if (this.$route.path === "/login") {
+        return false;
+      }
       window.globalLoading({
         text
       });
@@ -57,11 +62,15 @@ export default {
         session: localStorage.getItem("session"),
         deviceID: localStorage.getItem("deviceID")
       });
+      this["changeUsername"](res.username);
       if (res.code !== 0) {
         localStorage.removeItem("session");
       }
       if (res.code !== 0 && this.$route.path !== "/login") {
-        await this.$router.push("/login");
+        await this.$router.push({
+          path: "/login",
+          query: { from: this.$route.path }
+        });
       }
     }
   }

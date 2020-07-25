@@ -58,9 +58,12 @@ export default {
           message: "注销成功！"
         });
         localStorage.removeItem("session");
-        await this.$router.push("/login");
+        localStorage.setItem("autoLogin", "false");
+        await this.$router.push({
+          path: "/login",
+          query: { from: this.$route.path }
+        });
       }
-      console.log(res);
     }
   },
   computed: {}

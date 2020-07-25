@@ -93,3 +93,23 @@ exports.userLogout = async function (session) {
     msg: "注销成功！",
   };
 };
+
+exports.changePassword = async function (username, password, newPassword) {
+  const user = await User.findOne({
+    where: { username },
+  });
+
+  if (user.password === cryptoPassword(password)) {
+    user.password = cryptoPassword(newPassword);
+    await user.save();
+    return {
+      code: 0,
+      msg: "密码修改成功！",
+    };
+  }
+
+  return {
+    code: 1,
+    msg: "密码错误！",
+  };
+};

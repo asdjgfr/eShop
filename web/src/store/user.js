@@ -1,10 +1,14 @@
 const state = {
-  login: false,
   username: "",
   isAdmin: false
 };
-const mutations = {};
+const mutations = {
+  changeUsername(state, username) {
+    state.username = username;
+  }
+};
 export default {
+  namespaced: true,
   state,
   mutations
 };
