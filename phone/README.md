@@ -1,3 +1,3 @@
 ## 手机端
 
-暂未制作
+使用[uni-app](https://uniapp.dcloud.io/)

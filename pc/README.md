@@ -1,3 +1,3 @@
 ## PC端
 
-暂未制作
+使用[nativefier](https://github.com/jiahaog/nativefier)发布
