@@ -90,7 +90,7 @@
 import api from "@/api";
 export default {
   name: "createRepairDialog",
-  props: ["addRepairVisible", "labelWidth", "desserts"],
+  props: ["addRepairVisible", "labelWidth", "desserts", "notIn"],
   data() {
     return {
       canSubmit: false,
@@ -145,7 +145,8 @@ export default {
         this.codeLoading = true;
         const res = await api.inventoryManagement.queryInventoryAttrs({
           attributes: "code",
-          query
+          query,
+          notIn: this.notIn
         });
         if (res.code === 0) {
           this.options = res.data;
@@ -160,7 +161,8 @@ export default {
         this.nameLoading = true;
         const res = await api.inventoryManagement.queryInventoryAttrs({
           attributes: "name",
-          query
+          query,
+          notIn: this.notIn
         });
         if (res.code === 0) {
           this.options = res.data;
@@ -225,6 +227,7 @@ export default {
       for (let key in obj) {
         this.$set(this.form, key, obj[key]);
       }
+      this.options.splice(0, this.options.length);
     }
   }
 };

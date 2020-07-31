@@ -21,10 +21,11 @@ const delInventory = data =>
 // 查询库存属性
 const queryInventoryAttrs = data =>
   service({
-    url: "/api/del-inventory-attrs",
+    url: "/api/query-inventory-attrs",
     method: "post",
     data
   });
+
 // 保存更新库存
 const saveInventory = data =>
   service({

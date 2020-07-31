@@ -14,6 +14,12 @@
         </div>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="user-settings">用户设置</el-dropdown-item>
+          <el-dropdown-item command="update" disabled
+            >在线更新（即将到来）</el-dropdown-item
+          >
+          <el-dropdown-item command="download-client" disabled
+            >下载客户端（即将到来）</el-dropdown-item
+          >
           <el-dropdown-item command="logout">退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>

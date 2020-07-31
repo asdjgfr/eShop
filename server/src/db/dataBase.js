@@ -249,6 +249,11 @@ const bills = sequelize["define"]("bills", {
     type: Sequelize.JSON,
     allowNull: false,
   },
+  maintenanceItemIDs: {
+    // 维修项目的ID
+    type: Sequelize.JSON,
+    allowNull: false,
+  },
   receivable: {
     // 应收金额
     type: Sequelize.DOUBLE,
@@ -310,6 +315,11 @@ const inventory = sequelize["define"]("inventory", {
   },
   count: {
     // 库存量
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
+  purchaseCount: {
+    // 采购量
     type: Sequelize.INTEGER,
     allowNull: false,
   },

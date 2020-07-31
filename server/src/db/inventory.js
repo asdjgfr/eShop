@@ -24,6 +24,7 @@ exports.saveInventory = async function (params) {
     code,
     name,
     count,
+    purchaseCount: count,
     costPrice,
     totalCostPrice: costPrice * count,
     sellingPrice,
@@ -48,6 +49,8 @@ exports.saveInventory = async function (params) {
   });
 
   if (!created) {
+    // 不是创建则删除进货量
+    delete defaults.purchaseCount;
     defaults.lastPurchasePrice = data.lastPurchasePrice;
     Object.keys(defaults).forEach((key) => {
       data[key] = defaults[key];
@@ -166,18 +169,37 @@ exports.delInventory = async function (id) {
   return { code: 0, msg: "删除库存成功！" };
 };
 
-exports.queryInventoryAttrs = async function (attr, q, query) {
+exports.queryInventoryAttrs = async function (attr, q, query, notIn) {
   let data = null;
   if (query !== undefined) {
+    // 查询项目
     const where = {};
-    yellowLog(attr, query);
     where[attr] = {
       $like: `%${query}%`,
+      $notIn: notIn,
     };
     data = await inventory.findAll({
       where,
     });
+    data = data.reduce((acc, cur) => {
+      let index = acc.findIndex(
+        (item) => item.code === cur.code && item.name === cur.name
+      );
+      if (index > -1) {
+        yellowLog("有query", acc[index]);
+        acc[index] = Object.assign(acc[index], {
+          count: acc[index].count + cur.count,
+          supplier: acc[index].supplier + `，${cur.supplier}`,
+          costPrice: acc[index].costPrice + `，${cur.costPrice}`,
+          id: "",
+        });
+      } else {
+        acc.push(Object.assign(cur, { id: "" }));
+      }
+      return acc;
+    }, []);
   } else {
+    // 查询类型
     let filter = await inventory.findAll({
       attributes: [attr],
     });

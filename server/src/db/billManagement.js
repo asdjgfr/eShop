@@ -1,4 +1,4 @@
-const { bills, inventory } = require("./dataBase");
+const { bills, inventory, sequelize } = require("./dataBase");
 const {
   createCustomerSource,
   createRepairTypes,
@@ -53,11 +53,6 @@ exports.saveBill = async function (params) {
   let receivable = 0;
   let receipts = 0;
 
-  for (const item of maintenanceItems) {
-    const inv = await inventory.findByPk(item.id);
-    receivable += inv.sellingPrice * item["count"];
-    receipts += inv.sellingPrice * item["count"] * (item["discount"] / 100);
-  }
   const defaults = {
     order,
     source,
@@ -70,6 +65,7 @@ exports.saveBill = async function (params) {
     phone,
     mileage,
     maintenanceItems,
+    maintenanceItemIDs: [],
     receivable,
     receipts,
     session,
@@ -81,12 +77,57 @@ exports.saveBill = async function (params) {
     where: { id },
     defaults,
   });
+
+  let maintenanceItemIDs = [];
   if (!created) {
     Object.keys(defaults).forEach((key) => {
       data[key] = defaults[key];
     });
     await data.save();
+    maintenanceItemIDs = data.maintenanceItemIDs;
   }
+  for (const item of maintenanceItems) {
+    const sameCode = await inventory.findAll({
+      where: {
+        code: item.code,
+      },
+      order: sequelize.col("createdAt"),
+    });
+    let tmpCount = item.count;
+    for (let i = 0, len = sameCode.length; i < len; i++) {
+      const preCount =
+        maintenanceItemIDs.find((pre) => pre.id === sameCode[i].id)?.count ?? 0;
+      const totalCount = sameCode[i].count + preCount;
+      if (totalCount >= tmpCount) {
+        maintenanceItemIDs.push({
+          id: sameCode[i].id,
+          count: tmpCount,
+        });
+        receivable += sameCode[i].sellingPrice * tmpCount;
+        receipts +=
+          sameCode[i].sellingPrice * tmpCount * (item["discount"] / 100);
+        sameCode[i].count = totalCount - tmpCount;
+        sameCode[i].save();
+        break;
+      } else {
+        maintenanceItemIDs.push({
+          id: sameCode[i].id,
+          count: totalCount,
+        });
+        receivable += sameCode[i].sellingPrice * totalCount;
+        receipts +=
+          sameCode[i].sellingPrice * totalCount * (item["discount"] / 100);
+        sameCode[i].count = 0;
+        sameCode[i].save();
+      }
+    }
+    data.maintenanceItemIDs = maintenanceItemIDs;
+    data.receivable = receivable;
+    data.receipts = receipts;
+    await data.save();
+    yellowLog(receivable, receipts);
+  }
+
   return {
     code: 0,
     msg: created ? "保存成功！" : "更新成功！",

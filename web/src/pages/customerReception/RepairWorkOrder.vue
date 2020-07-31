@@ -231,6 +231,7 @@
       :addRepairVisible.sync="addRepairVisible"
       :labelWidth="labelWidth"
       :desserts="desserts"
+      :notIn="computeDesserts.map(item => item.code)"
     />
     <el-drawer
       title="本地维修历史"
