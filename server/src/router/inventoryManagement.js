@@ -5,6 +5,15 @@ const saveInventory = function (router) {
   return router;
 };
 
+const saveInventoryBulk = function (router) {
+  router.post("/api/save-inventory-bulk", async (ctx) => {
+    ctx.body = await require("../db/inventory").saveInventoryBulk(
+      ctx.request.body
+    );
+  });
+  return router;
+};
+
 const queryInventory = function (router) {
   router.post("/api/query-inventory", async (ctx) => {
     ctx.body = await require("../db/inventory").queryInventory(
@@ -35,9 +44,22 @@ const queryInventoryAttrs = function (router) {
   return router;
 };
 
+const downloadInventoryTemplate = function (router) {
+  router.get("/api/download-inventory-template", async (ctx) => {
+    ctx.set({
+      "Content-Type":
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", //告诉浏览器这是一个二进制文件
+    });
+    ctx.body = await require("../db/inventory").downloadITemplate();
+  });
+  return router;
+};
+
 exports.mutations = [
   queryInventory,
   saveInventory,
   delInventory,
   queryInventoryAttrs,
+  downloadInventoryTemplate,
+  saveInventoryBulk,
 ];

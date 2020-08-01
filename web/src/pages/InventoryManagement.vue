@@ -66,10 +66,17 @@
       <el-button type="primary">导出</el-button>
       <el-popover placement="top" v-model="importVisible">
         <div>
-          <el-button type="primary" @click="importVisible = false"
+          <el-button type="primary" @click="handleDownloadTmp"
             >下载模板</el-button
           >
-          <el-button type="success" @click="importVisible = false"
+          <input
+            type="file"
+            ref="select-file"
+            style="display:none"
+            accept=".xls,.xlsx"
+            @change="handleChoiceFile"
+          />
+          <el-button type="success" @click="handleSelectFile"
             >批量导入</el-button
           >
         </div>
@@ -119,6 +126,9 @@ import Supplier from "@/components/Supplier";
 import AccessoriesName from "@/components/AccessoriesName";
 import AccessoriesType from "@/components/AccessoriesType";
 import EditInventory from "@/components/EditInventory";
+import { saveAs } from "file-saver";
+import XLSX from "xlsx";
+
 export default {
   name: "InventoryManagement",
   inject: ["labelWidth", "limit", "pickerOptions"],
@@ -172,6 +182,43 @@ export default {
     this.queryInventory();
   },
   methods: {
+    handleSelectFile() {
+      this.$refs["select-file"].click();
+    },
+    handleChoiceFile() {
+      const options = {
+        lock: true,
+        text: "加载excel中。。。",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)"
+      };
+      let loading = this.$loading(options);
+      const reader = new FileReader();
+
+      reader.onload = async e => {
+        options.text = "文件加载成功，解析excel中。。。";
+        loading = this.$loading(options);
+        try {
+          const wb = XLSX.read(e.target.result, {
+            type: "binary"
+          });
+          const data = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
+          options.text = "文件解析成功，正在导入。。。";
+          loading = this.$loading(options);
+          await api.inventoryManagement.saveInventoryBulk({ data });
+          loading.close();
+        } catch (e) {
+          loading.close();
+          this.$message.error(`文件解析失败！错误信息：${JSON.stringify(e)}`);
+        }
+      };
+      reader.readAsBinaryString(this.$refs["select-file"].files[0]);
+    },
+    async handleDownloadTmp() {
+      const res = await api.inventoryManagement.downloadInventoryTemplate();
+      saveAs(res, "配件导入模板.xlsx");
+      this.importVisible = false;
+    },
     async handleRemoveItem(id, $index) {
       const res = await api.inventoryManagement.delInventory({ id });
       if (res.code === 0) {

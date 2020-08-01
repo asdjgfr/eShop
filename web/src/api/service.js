@@ -2,6 +2,7 @@ import axios from "axios";
 import qs from "qs";
 import router from "@/router/router";
 import { Message } from "element-ui";
+import { getType } from "@/lib/pubfn";
 const CancelToken = axios.CancelToken;
 const service = axios.create({
   timeout: 5000 // 请求超时时间
@@ -48,7 +49,10 @@ service.interceptors.response.use(
     }
     if (response.data.code === 401 && router.app.$route.path === "/login") {
       console.warn("登录失效！");
-    } else if (response.data.code !== 0) {
+    } else if (
+      getType(response.data) === "object" &&
+      response.data.code !== 0
+    ) {
       Message({
         message: response.data.msg,
         type: "error"

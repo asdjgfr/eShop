@@ -1,4 +1,7 @@
 const { inventory } = require("./dataBase");
+const fs = require("fs");
+const path = require("path");
+const { multiply } = require("../plugins/math");
 
 exports.saveInventory = async function (params) {
   let {
@@ -71,7 +74,40 @@ exports.saveInventory = async function (params) {
     data: data.id,
   };
 };
-
+exports.saveInventoryBulk = async function (params) {
+  const { data, session, deviceID } = params;
+  const keys = {
+    name: { label: "配件名称", default: "" },
+    code: { label: "配件代码", default: "" },
+    supplier: { label: "供货商", default: "" },
+    type: { label: "配件种类", default: "" },
+    count: { label: "库存量", default: 0 },
+    purchaseCount: { label: "库存量", default: 0 },
+    costPrice: { label: "成本价", default: 0 },
+    guidePrice: { label: "销售指导价", default: 0 },
+    sellingPrice: { label: "销售价", default: 0 },
+    lastPurchasePrice: { label: "成本价", default: 0 },
+    unit: { label: "单位", default: "无单位" },
+    minCount: { label: "最小包装数", default: 1 },
+  };
+  const arr = [];
+  Object.keys(data).forEach((key) => {
+    yellowLog(key, data[key]);
+    arr[Number[key]] = data[key];
+  });
+  yellowLog(Object.keys(data));
+  // yellowLog(
+  //   arr.map((item) => {
+  //     const res = { deviceID, session, storageTime: new Date() };
+  //     Object.keys(keys).forEach((key) => {
+  //       res[key] = item[keys[key].label] ?? keys[key].default;
+  //     });
+  //     res.totalCostPrice = multiply(res.costPrice, res.count);
+  //     return res;
+  //   })
+  // );
+  // await inventory.bulkCreate([]);
+};
 exports.queryInventory = async function (params) {
   const tmp = {
     id: "",
@@ -210,4 +246,10 @@ exports.queryInventoryAttrs = async function (attr, q, query, notIn) {
     });
   }
   return { code: 0, msg: "查询成功！", data: [...data] };
+};
+
+exports.downloadITemplate = async function () {
+  return fs.readFileSync(
+    path.resolve(__static, "templates", "配件导入模板.xlsx")
+  );
 };

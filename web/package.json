@@ -12,6 +12,7 @@
     "core-js": "^3.6.5",
     "echarts": "^4.8.0",
     "element-ui": "^2.13.2",
+    "file-saver": "^2.0.2",
     "fingerprintjs2": "^2.1.0",
     "jspdf": "^1.5.3",
     "lodash": "^4.17.19",
@@ -23,7 +24,8 @@
     "uuid": "^8.2.0",
     "vue": "^2.6.11",
     "vue-router": "^3.3.4",
-    "vuex": "^3.5.1"
+    "vuex": "^3.5.1",
+    "xlsx": "^0.16.5"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.14.0",

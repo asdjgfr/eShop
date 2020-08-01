@@ -34,9 +34,26 @@ const saveInventory = data =>
     data
   });
 
+// 批量保存库存
+const saveInventoryBulk = data =>
+  service({
+    url: "/api/save-inventory-bulk",
+    method: "post",
+    data
+  });
+// 下载批量导入模板
+const downloadInventoryTemplate = () =>
+  service({
+    url: "/api/download-inventory-template",
+    method: "get",
+    responseType: "blob"
+  });
+
 export default {
   queryInventory,
   queryInventoryAttrs,
   delInventory,
-  saveInventory
+  saveInventory,
+  downloadInventoryTemplate,
+  saveInventoryBulk
 };

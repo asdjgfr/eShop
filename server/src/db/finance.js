@@ -1,5 +1,5 @@
 const { bills, finance, inventory } = require("./dataBase");
-const { add, multiply, divide } = require("../plugins/math");
+const { add, multiply, divide, subtract } = require("../plugins/math");
 const findOrCreateFinance = async function (
   month,
   newRemarks = "",
