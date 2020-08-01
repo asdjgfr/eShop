@@ -6,6 +6,25 @@ const {
   createCarInfo,
 } = require("./customerSource");
 const { arraySum, numToChinese } = require("../pubFn/libs");
+const { add, multiply, divide, subtract } = require("../plugins/math");
+
+// 撤回配件个数
+const backInventoryCount = async (bill) => {
+  const { maintenanceItemIDs } = bill;
+  const preItems = await inventory.findAll({
+    where: {
+      id: maintenanceItemIDs.map((item) => item.id),
+    },
+    order: sequelize.col("createdAt"),
+  });
+  for (let i = 0, len = preItems.length; i < len; i++) {
+    preItems[i]["count"] = add(
+      Number(preItems[i].count),
+      maintenanceItemIDs.find((item) => item.id === preItems[i].id).count
+    );
+    await preItems[i].save();
+  }
+};
 
 exports.saveBill = async function (params) {
   let {
@@ -78,14 +97,15 @@ exports.saveBill = async function (params) {
     defaults,
   });
 
-  let maintenanceItemIDs = [];
   if (!created) {
+    delete defaults.maintenanceItemIDs;
     Object.keys(defaults).forEach((key) => {
       data[key] = defaults[key];
     });
     await data.save();
-    maintenanceItemIDs = data.maintenanceItemIDs;
+    await backInventoryCount(data);
   }
+  const maintenanceItemIDs = [];
   for (const item of maintenanceItems) {
     const sameCode = await inventory.findAll({
       where: {
@@ -95,38 +115,52 @@ exports.saveBill = async function (params) {
     });
     let tmpCount = item.count;
     for (let i = 0, len = sameCode.length; i < len; i++) {
-      const preCount =
-        maintenanceItemIDs.find((pre) => pre.id === sameCode[i].id)?.count ?? 0;
-      const totalCount = sameCode[i].count + preCount;
-      if (totalCount >= tmpCount) {
+      if (sameCode[i].count >= tmpCount) {
         maintenanceItemIDs.push({
           id: sameCode[i].id,
           count: tmpCount,
         });
-        receivable += sameCode[i].sellingPrice * tmpCount;
-        receipts +=
-          sameCode[i].sellingPrice * tmpCount * (item["discount"] / 100);
-        sameCode[i].count = totalCount - tmpCount;
-        sameCode[i].save();
+        receivable = add(
+          receivable,
+          multiply(sameCode[i].sellingPrice, tmpCount)
+        );
+        receipts = add(
+          receipts,
+          multiply(
+            sameCode[i].sellingPrice,
+            tmpCount,
+            divide(item["discount"], 100)
+          )
+        );
+        sameCode[i]["count"] = subtract(sameCode[i].count, tmpCount);
+        await sameCode[i].save();
         break;
       } else {
         maintenanceItemIDs.push({
           id: sameCode[i].id,
-          count: totalCount,
+          count: sameCode[i].count,
         });
-        receivable += sameCode[i].sellingPrice * totalCount;
-        receipts +=
-          sameCode[i].sellingPrice * totalCount * (item["discount"] / 100);
-        sameCode[i].count = 0;
-        sameCode[i].save();
+        receivable = add(
+          receivable,
+          multiply(sameCode[i].sellingPrice, sameCode[i].count)
+        );
+        receipts = add(
+          receipts,
+          multiply(
+            sameCode[i].sellingPrice,
+            sameCode[i].count,
+            divide(item["discount"], 100)
+          )
+        );
+        sameCode[i]["count"] = 0;
+        await sameCode[i].save();
       }
     }
-    data.maintenanceItemIDs = maintenanceItemIDs;
-    data.receivable = receivable;
-    data.receipts = receipts;
-    await data.save();
-    yellowLog(receivable, receipts);
   }
+  data.maintenanceItemIDs = maintenanceItemIDs;
+  data.receivable = receivable;
+  data.receipts = receipts;
+  await data.save();
 
   return {
     code: 0,
@@ -222,6 +256,9 @@ exports.delBill = async function (id) {
   let data = {};
   try {
     data = await bills.findOne({ where: { id } });
+    if (!data.finished) {
+      await backInventoryCount(data);
+    }
   } catch (e) {
     return { code: 1, msg: `删除工单失败！${JSON.stringify(e)}` };
   }

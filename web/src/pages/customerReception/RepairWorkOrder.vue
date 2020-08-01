@@ -232,6 +232,7 @@
       :labelWidth="labelWidth"
       :desserts="desserts"
       :notIn="computeDesserts.map(item => item.code)"
+      :handleSaveBill="handleSaveBill"
     />
     <el-drawer
       title="本地维修历史"
@@ -458,21 +459,30 @@ export default {
       }
     },
     handleAddRepair() {
-      this.addRepairVisible = true;
+      this.$refs.form.validate(async valid => {
+        if (valid) {
+          this.addRepairVisible = true;
+        }
+      });
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
     handleRemoveItem(index) {
-      if (isNaN(Number(index))) {
-        this.multipleSelection
-          .sort((s1, s2) => s2.index - s1.index)
-          .forEach(item => {
-            this.desserts.splice(item.index - 1, 1);
-          });
-      } else {
-        this.desserts.splice(index - 1, 1);
-      }
+      this.$refs.form.validate(async valid => {
+        if (valid) {
+          if (isNaN(Number(index))) {
+            this.multipleSelection
+              .sort((s1, s2) => s2.index - s1.index)
+              .forEach(item => {
+                this.desserts.splice(item.index - 1, 1);
+              });
+          } else {
+            this.desserts.splice(index - 1, 1);
+          }
+          this.handleSaveBill();
+        }
+      });
     },
     handleSaveBill(finished = false) {
       finished = finished === true;

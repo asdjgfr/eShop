@@ -1,5 +1,5 @@
 const { bills, finance, inventory } = require("./dataBase");
-
+const { add, multiply, divide } = require("../plugins/math");
 const findOrCreateFinance = async function (
   month,
   newRemarks = "",
@@ -26,16 +26,25 @@ const findOrCreateFinance = async function (
   for (const item of filterBills) {
     for (const inv of item.maintenanceItems) {
       const findInv = await inventory.findByPk(inv.id);
-      income += findInv.sellingPrice * inv["count"] * (inv["discount"] / 100);
-      materialCost += findInv.costPrice * inv["count"];
+      income = add(
+        income,
+        multiply(
+          multiply(findInv.sellingPrice, inv["count"]),
+          divide(inv["discount"], 100)
+        )
+      );
+      materialCost = add(
+        materialCost,
+        multiply(findInv.costPrice, inv["count"])
+      );
     }
   }
   const allInventory = await inventory.findAll();
   for (const inv of allInventory) {
-    inventoryAmount += inv.costPrice * inv.count;
+    inventoryAmount = add(inventoryAmount, multiply(inv.costPrice, inv.count));
   }
   count = filterBills.length;
-  grossProfit = income - materialCost;
+  grossProfit = subtract(income, materialCost);
   const [data, created] = await finance.findOrCreate({
     where: {
       month: queryMonth,

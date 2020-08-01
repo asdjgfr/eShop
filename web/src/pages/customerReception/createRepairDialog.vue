@@ -90,7 +90,13 @@
 import api from "@/api";
 export default {
   name: "createRepairDialog",
-  props: ["addRepairVisible", "labelWidth", "desserts", "notIn"],
+  props: [
+    "addRepairVisible",
+    "labelWidth",
+    "desserts",
+    "notIn",
+    "handleSaveBill"
+  ],
   data() {
     return {
       canSubmit: false,
@@ -187,6 +193,7 @@ export default {
         code: this.form.code.trim()
       });
       this.reset();
+      this.handleSaveBill();
     },
     handleChangeNumber(type) {
       const { form } = this;

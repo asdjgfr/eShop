@@ -15,6 +15,7 @@
     "koa-bodyparser": "^4.3.0",
     "koa-router": "^9.1.0",
     "lodash": "^4.17.19",
+    "mathjs": "^7.1.0",
     "moment": "^2.27.0",
     "mysql2": "^2.1.0",
     "sequelize": "^6.3.3",

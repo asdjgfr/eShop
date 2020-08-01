@@ -186,7 +186,6 @@ exports.queryInventoryAttrs = async function (attr, q, query, notIn) {
         (item) => item.code === cur.code && item.name === cur.name
       );
       if (index > -1) {
-        yellowLog("有query", acc[index]);
         acc[index] = Object.assign(acc[index], {
           count: acc[index].count + cur.count,
           supplier: acc[index].supplier + `，${cur.supplier}`,
@@ -210,6 +209,5 @@ exports.queryInventoryAttrs = async function (attr, q, query, notIn) {
       }
     });
   }
-  yellowLog(data);
   return { code: 0, msg: "查询成功！", data: [...data] };
 };
