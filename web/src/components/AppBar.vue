@@ -17,9 +17,12 @@
           <el-dropdown-item command="update" disabled
             >在线更新（即将到来）</el-dropdown-item
           >
-          <el-dropdown-item command="download-client" disabled
-            >下载客户端（即将到来）</el-dropdown-item
-          >
+          <el-tooltip effect="dark" placement="left">
+            <div slot="content">提取码: 97z8<br />复制提取码后点击跳转</div>
+            <el-dropdown-item command="download-client"
+              >下载客户端</el-dropdown-item
+            >
+          </el-tooltip>
           <el-dropdown-item command="logout">退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -47,6 +50,9 @@ export default {
           break;
         case "user-settings":
           this.$router.push("/user/settings");
+          break;
+        case "download-client":
+          window.open("https://pan.baidu.com/s/1h2NNwCivgkqCS5TCozViuA");
           break;
       }
     },
