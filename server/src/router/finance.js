@@ -1,9 +1,8 @@
 const findOrCreateFinance = function (router) {
   router.post("/api/find-or-create-finance", async (ctx) => {
-    const { month, newRemarks, session, deviceID } = ctx.request.body;
+    const { month, session, deviceID } = ctx.request.body;
     ctx.body = await require("../db/finance").findOrCreateFinance(
       month,
-      newRemarks,
       session,
       deviceID
     );
