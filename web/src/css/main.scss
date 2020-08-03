@@ -51,6 +51,9 @@ body {
     opacity: 0;
   }
 }
+ul {
+  list-style: none;
+}
 .animate__fadeOut {
   -webkit-animation-name: fadeOut;
   animation-name: fadeOut;

@@ -22,6 +22,16 @@ service.interceptors.request.use(
           deviceID: localStorage.getItem("deviceID") ?? ""
         });
     config.headers["Content-Type"] = "application/x-www-form-urlencoded";
+
+    if (config["globalLoading"] !== false) {
+      const { globalLoading } = config;
+      window.globalLoading({
+        lock: globalLoading?.lock ?? true,
+        fullscreen: globalLoading?.fullscreen ?? true,
+        text: globalLoading?.text ?? "请稍后。。。",
+        spinner: globalLoading?.spinner ?? "el-icon-loading"
+      });
+    }
     return config;
   },
   error => {

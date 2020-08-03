@@ -55,7 +55,9 @@
       </el-form-item>
       <div class="form-inline-100 align-center">
         <el-form-item>
-          <el-button type="primary" @click="queryInventory">查询</el-button>
+          <el-button type="primary" @click="queryInventory('start')"
+            >查询</el-button
+          >
           <el-button type="danger" @click="resetForm">重置</el-button>
         </el-form-item>
       </div>
@@ -205,10 +207,16 @@ export default {
           const data = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
           options.text = "文件解析成功，正在导入。。。";
           loading = this.$loading(options);
-          await api.inventoryManagement.saveInventoryBulk({ data });
+          console.log(data);
+          await api.inventoryManagement.saveInventoryBulk({
+            data: JSON.stringify(data)
+          });
+          this.$refs["select-file"].value = "";
           loading.close();
+          await this.queryInventory();
         } catch (e) {
           loading.close();
+          this.$refs["select-file"].value = "";
           this.$message.error(`文件解析失败！错误信息：${JSON.stringify(e)}`);
         }
       };
@@ -224,6 +232,7 @@ export default {
       if (res.code === 0) {
         this.tableData.splice($index, 1);
         this.$message.success(res.msg);
+        await this.queryInventory();
       }
     },
     handleEditItem(index) {
@@ -231,14 +240,17 @@ export default {
       this.editIndex = index;
       this.editVisible = true;
     },
-    async queryInventory() {
+    async queryInventory(type = "") {
+      let { offset } = this;
+      if (type === "start") {
+        offset = 0;
+      }
       const res = await api.inventoryManagement.queryInventory({
         limit: this.limit,
-        offset: this.offset,
+        offset,
         ...this.form
       });
       if (res.code === 0) {
-        const { offset } = this;
         this.total = res.length;
         this.tableData.splice(
           0,

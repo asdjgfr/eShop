@@ -22,5 +22,17 @@ const annualStatisticsFinance = function (router) {
   });
   return router;
 };
+const saveFinanceRemarks = function (router) {
+  router.post("/api/save-finance-remarks", async (ctx) => {
+    ctx.body = await require("../db/finance").saveFinanceRemarks(
+      ctx.request.body
+    );
+  });
+  return router;
+};
 
-exports.mutations = [findOrCreateFinance, annualStatisticsFinance];
+exports.mutations = [
+  findOrCreateFinance,
+  annualStatisticsFinance,
+  saveFinanceRemarks,
+];

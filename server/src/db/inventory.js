@@ -75,12 +75,13 @@ exports.saveInventory = async function (params) {
   };
 };
 exports.saveInventoryBulk = async function (params) {
-  const { data, session, deviceID } = params;
+  const { session, deviceID } = params;
+  const data = JSON.parse(params.data);
   const keys = {
-    name: { label: "配件名称", default: "" },
-    code: { label: "配件代码", default: "" },
-    supplier: { label: "供货商", default: "" },
-    type: { label: "配件种类", default: "" },
+    name: { label: "配件名称", default: () => `配件${new Date().getTime()}` },
+    code: { label: "配件代码", default: () => `配件${new Date().getTime()}` },
+    supplier: { label: "供货商", default: "未知" },
+    type: { label: "配件种类", default: "未知" },
     count: { label: "库存量", default: 0 },
     purchaseCount: { label: "库存量", default: 0 },
     costPrice: { label: "成本价", default: 0 },
@@ -90,23 +91,24 @@ exports.saveInventoryBulk = async function (params) {
     unit: { label: "单位", default: "无单位" },
     minCount: { label: "最小包装数", default: 1 },
   };
-  const arr = [];
-  Object.keys(data).forEach((key) => {
-    yellowLog(key, data[key]);
-    arr[Number[key]] = data[key];
-  });
-  yellowLog(Object.keys(data));
-  // yellowLog(
-  //   arr.map((item) => {
-  //     const res = { deviceID, session, storageTime: new Date() };
-  //     Object.keys(keys).forEach((key) => {
-  //       res[key] = item[keys[key].label] ?? keys[key].default;
-  //     });
-  //     res.totalCostPrice = multiply(res.costPrice, res.count);
-  //     return res;
-  //   })
-  // );
-  // await inventory.bulkCreate([]);
+  const bulk = await inventory.bulkCreate(
+    data.map((item) => {
+      const res = { deviceID, session, storageTime: new Date() };
+      Object.keys(keys).forEach((key) => {
+        res[key] =
+          item[keys[key].label] ??
+          (typeof keys[key].default === "function"
+            ? keys[key].default()
+            : keys[key].default);
+      });
+      res.totalCostPrice = multiply(res.costPrice, res.count);
+      return res;
+    })
+  );
+  return {
+    code: 0,
+    msg: `成功导入${bulk.length}条！`,
+  };
 };
 exports.queryInventory = async function (params) {
   const tmp = {

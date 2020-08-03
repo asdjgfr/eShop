@@ -9,9 +9,8 @@
         v-model="form.month"
         type="month"
         placeholder="选择月"
+        @change="handleQuery"
       />
-      &emsp;
-      <el-button type="primary" @click="handleQuery">查询</el-button>
       <el-divider>月度经营数据</el-divider>
       <br />
       <ul class="financial-items">
@@ -66,7 +65,22 @@
         v-model="form.remarks"
       >
       </el-input>
-      <br />
+      <div class="align-center">
+        <el-button-group>
+          <el-button
+            type="primary"
+            icon="el-icon-upload"
+            @click="handleSaveRemarks"
+            >保存</el-button
+          >
+          <el-button
+            type="danger"
+            @click="form.remarks = ''"
+            icon="el-icon-delete"
+            >清空</el-button
+          >
+        </el-button-group>
+      </div>
       <div class="financial-charts">
         <div ref="yearChart" class="financial-month-chart"></div>
       </div>
@@ -139,6 +153,21 @@ export default {
     window.removeEventListener("resize", this.resizeCharts);
   },
   methods: {
+    async handleSaveRemarks() {
+      const date = this.$_moment(this.form.month)
+        .format("YYYY-MM-DD")
+        .split("-");
+      const res = await api.finance.saveFinanceRemarks({
+        month: `${date[0]}-${date[1] - 1}-1`,
+        remarks: this.form.remarks
+      });
+      if (res.code === 0) {
+        this.$message({
+          type: "success",
+          message: res.msg
+        });
+      }
+    },
     async handleQuery() {
       const date = this.$_moment(this.form.month)
         .format("YYYY-MM-DD")
@@ -154,6 +183,7 @@ export default {
         this.grossProfit = data.grossProfit;
         this.monthlyOrderAmount = data.monthlyOrderAmount;
         this.inventoryAmount = data.inventoryAmount;
+        this.$set(this.form, "remarks", data.remarks);
       }
     },
     async loadCharts() {

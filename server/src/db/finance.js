@@ -1,18 +1,12 @@
 const { bills, finance, inventory } = require("./dataBase");
 const { add, multiply, divide, subtract } = require("../plugins/math");
-const findOrCreateFinance = async function (
-  month,
-  newRemarks = "",
-  session,
-  deviceID
-) {
+const findOrCreateFinance = async function (month, session, deviceID) {
   let count = 0,
     income = 0,
     materialCost = 0,
     grossProfit = 0,
     monthlyOrderAmount = 0,
-    inventoryAmount = 0,
-    remarks = newRemarks;
+    inventoryAmount = 0;
   const queryMonth = new Date(...month.split("-"));
   const filterBills = await bills.findAll({
     where: {
@@ -26,17 +20,19 @@ const findOrCreateFinance = async function (
   for (const item of filterBills) {
     for (const inv of item.maintenanceItems) {
       const findInv = await inventory.findByPk(inv.id);
-      income = add(
-        income,
-        multiply(
-          multiply(findInv.sellingPrice, inv["count"]),
-          divide(inv["discount"], 100)
-        )
-      );
-      materialCost = add(
-        materialCost,
-        multiply(findInv.costPrice, inv["count"])
-      );
+      if (findInv !== null) {
+        income = add(
+          income,
+          multiply(
+            multiply(findInv.sellingPrice, inv["count"]),
+            divide(inv["discount"], 100)
+          )
+        );
+        materialCost = add(
+          materialCost,
+          multiply(findInv.costPrice, inv["count"])
+        );
+      }
     }
   }
   const allInventory = await inventory.findAll();
@@ -51,9 +47,6 @@ const findOrCreateFinance = async function (
     },
     defaults: { month: queryMonth, session, deviceID },
   });
-  if (!created && newRemarks) {
-    data.remarks = newRemarks;
-  }
   monthlyOrderAmount = data.monthlyOrderAmount;
   return {
     code: 0,
@@ -64,7 +57,7 @@ const findOrCreateFinance = async function (
       grossProfit,
       inventoryAmount,
       monthlyOrderAmount,
-      remarks,
+      remarks: data.remarks,
     },
     msg: "查找成功",
   };
@@ -93,5 +86,26 @@ exports.annualStatisticsFinance = async function (year, session, deviceID) {
       monthIncome,
       monthProfit,
     },
+  };
+};
+
+exports.saveFinanceRemarks = async function (params) {
+  const { month, remarks } = params;
+  const f = await finance.findOne({
+    where: {
+      month: new Date(...month.split("-")),
+    },
+  });
+  if (f === null) {
+    return {
+      code: 1,
+      msg: "未找到对应月份，保存备注失败！",
+    };
+  }
+  f.remarks = remarks;
+  await f.save();
+  return {
+    code: 0,
+    msg: `${month}备注保存成功！`,
   };
 };

@@ -15,5 +15,16 @@ const annualStatisticsFinance = data =>
     method: "post",
     data
   });
+// 保存月份备注
+const saveFinanceRemarks = data =>
+  service({
+    url: "/api/save-finance-remarks",
+    method: "post",
+    data
+  });
 
-export default { findOrCreateFinance, annualStatisticsFinance };
+export default {
+  findOrCreateFinance,
+  annualStatisticsFinance,
+  saveFinanceRemarks
+};
