@@ -3,9 +3,12 @@
   "version": "0.0.1",
   "description": "4s店管理系统",
   "scripts": {
-    "windows": "nativefier -n client -i logo/logo.ico https://car.2077tech.com"
+    "windows": "nativefier -n yinma -i logo/logo.ico https://car.2077tech.com ./dist/cache && node build"
   },
-  "dependencies": {},
+  "dependencies": {
+    "fs-extra": "^9.0.1"
+  },
   "devDependencies": {
+    "electron-winstaller": "^4.0.1"
   }
 }
