@@ -16,6 +16,6 @@ module.exports = {
     msTileColor: "#000000",
     appleMobileWebAppCapable: "yes",
     appleMobileWebAppStatusBarStyle: "white",
-    workboxPluginMode: "InjectManifest"
+    workboxPluginMode: "GenerateSW"
   }
 };
