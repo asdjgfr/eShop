@@ -2,6 +2,8 @@
 node_modules
 /dist
 /dev
+online-config.js
+dist.*
 
 # local env files
 .env.local
