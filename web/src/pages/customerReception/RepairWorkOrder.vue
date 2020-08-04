@@ -117,7 +117,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <vin :VIN.sync="form.VIN" />
+
       <el-form-item label="车主姓名" prop="ownerName">
         <el-input
           v-model="form.ownerName"
@@ -140,6 +140,9 @@
           placeholder="请输入进场里程"
         />
       </el-form-item>
+      <div class="form-inline-100">
+        <vin :VIN.sync="form.VIN" />
+      </div>
       <el-divider content-position="left">维修项目</el-divider>
       <el-button type="primary" @click.stop="handleAddRepair">
         新增

@@ -10,7 +10,7 @@
           placeholder="搜索配件代码"
           :remote-method="getCode"
           :loading="codeLoading"
-          @change="handleChangeRes('code', $event)"
+          @change="handleChangeRes"
         >
           <el-option
             v-for="item in options"
@@ -30,6 +30,7 @@
           placeholder="搜索配件名称"
           :remote-method="getName"
           :loading="nameLoading"
+          @change="handleChangeRes"
         >
           <el-option
             v-for="item in options"
@@ -138,7 +139,7 @@ export default {
     }
   },
   methods: {
-    handleChangeRes(type, id) {
+    handleChangeRes(id) {
       const { form, options } = this;
       const op = options.find(op => op.id === id);
       this.$set(form, "sellingPrice", op.sellingPrice);
