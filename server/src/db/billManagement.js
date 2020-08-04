@@ -232,7 +232,6 @@ exports.queryBill = async function (params) {
   if (data === null || (data.rows !== undefined && data.rows.length === 0)) {
     return { code: 205, msg: "没有对应工单！" };
   }
-  yellowLog(data);
   return {
     code: 0,
     msg: "查找成功！",
