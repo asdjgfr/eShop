@@ -24,14 +24,7 @@
           show-word-limit
         />
       </el-form-item>
-      <el-form-item label="VIN" prop="VIN">
-        <el-input
-          v-model="form.VIN"
-          placeholder="请输入VIN"
-          maxlength="17"
-          show-word-limit
-        />
-      </el-form-item>
+      <vin :VIN.sync="form.VIN" />
       <div class="form-inline-100 align-center">
         <el-form-item>
           <el-button type="primary" @click="queryCarInfo">查询</el-button>
@@ -78,11 +71,12 @@
 <script>
 import NumberPlate from "@/components/NumberPlate";
 import EditCustomer from "@/components/EditCustomer";
+import Vin from "@/components/VIN";
 import api from "@/api";
 export default {
   name: "cCustomerManagement",
   inject: ["labelWidth", "limit"],
-  components: { NumberPlate, EditCustomer },
+  components: { NumberPlate, EditCustomer, Vin },
   data() {
     return {
       form: {

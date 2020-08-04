@@ -118,7 +118,7 @@ export default {
         },
         {
           label: "配件单价",
-          prop: "unitPrice"
+          prop: "sellingPrice"
         },
         {
           label: "配件数量",

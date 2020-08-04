@@ -29,9 +29,7 @@
       <el-form-item label="车牌号" prop="numberPlate">
         <number-plate :numberPlate.sync="form.numberPlate" />
       </el-form-item>
-      <el-form-item label="VIN" prop="VIN">
-        <el-input v-model="form.VIN" placeholder="请输入VIN" />
-      </el-form-item>
+      <vin :VIN.sync="form.VIN" />
       <el-form-item label="手机号" prop="phone">
         <el-input
           v-model="form.phone"
@@ -58,8 +56,11 @@
         :label="item.text"
       >
       </el-table-column>
-      <el-table-column fixed="right" label="操作" width="200">
+      <el-table-column fixed="right" label="操作" width="260">
         <template slot-scope="scope">
+          <el-button type="info" @click="handlePrint(scope.row.id)">
+            打印
+          </el-button>
           <el-button type="primary" @click="handleEdit(scope.row.id)">
             编辑
           </el-button>
@@ -97,11 +98,12 @@
 <script>
 import api from "@/api";
 import NumberPlate from "@/components/NumberPlate";
+import Vin from "@/components/VIN";
 
 export default {
   name: "QueryBills",
   inject: ["reload", "limit", "pickerOptions"],
-  components: { NumberPlate },
+  components: { NumberPlate, Vin },
   props: ["numberPlate", "VIN", "phone", "autoQuery"],
   data() {
     return {
@@ -169,6 +171,13 @@ export default {
     });
   },
   methods: {
+    async handlePrint(id) {
+      let routeData = this.$router.resolve({
+        path: "/print-bill",
+        query: { id }
+      });
+      window.open(routeData.href, "_blank");
+    },
     resetForm() {
       this.$refs.form.resetFields();
     },

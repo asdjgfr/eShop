@@ -25,7 +25,7 @@ exports.config = {
   },
   company: {
     name: "银马汽车养护中心",
-    address: "公司地址",
-    phones: ["门店电话"],
+    address: "让胡路远望大街154号",
+    phones: ["13089014321"],
   },
 };

@@ -8,7 +8,7 @@ exports.numToChinese = function (n) {
   const fraction = ["角", "分", "厘", "毫"];
   const digit = ["零", "壹", "贰", "叁", "肆", "伍", "陆", "柒", "捌", "玖"];
   const unit = [
-    ["份", "万", "亿"],
+    ["元", "万", "亿"],
     ["", "拾", "佰", "仟"],
   ];
   const head = n < 0 ? "欠" : "";
@@ -32,8 +32,8 @@ exports.numToChinese = function (n) {
   return (
     head +
     s
-      .replace(/(零.)*零份/, "份")
+      .replace(/(零.)*零元/, "元")
       .replace(/(零.)+/g, "零")
-      .replace(/^整$/, "零份整")
+      .replace(/^整$/, "零元整")
   );
 };

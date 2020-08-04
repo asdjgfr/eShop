@@ -117,14 +117,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="VIN" prop="VIN">
-        <el-input
-          v-model="form.VIN"
-          placeholder="请输入VIN"
-          maxlength="17"
-          show-word-limit
-        ></el-input>
-      </el-form-item>
+      <vin :VIN.sync="form.VIN" />
       <el-form-item label="车主姓名" prop="ownerName">
         <el-input
           v-model="form.ownerName"
@@ -258,10 +251,11 @@ import api from "@/api/index";
 import createRepairDialog from "@/pages/customerReception/createRepairDialog";
 import QueryBills from "@/components/QueryBills";
 import NumberPlate from "@/components/NumberPlate";
+import Vin from "@/components/VIN";
 export default {
   name: "RepairWorkOrder",
   inject: ["reload", "labelWidth"],
-  components: { createRepairDialog, QueryBills, NumberPlate },
+  components: { createRepairDialog, QueryBills, NumberPlate, Vin },
   data() {
     return {
       id: "",

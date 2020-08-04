@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="编辑库存信息" :visible="visible">
+  <el-dialog title="编辑库存信息" :visible="visible" @close="handleClose">
     <el-form ref="form" :model="form" :label-width="labelWidth" :rules="rules">
       <el-form-item label="配件代码" prop="code">
         <inventory-code :code.sync="form.code" />
@@ -56,7 +56,7 @@ import InventoryCode from "@/components/InventoryCode";
 export default {
   name: "EditCustomer",
   inject: ["labelWidth"],
-  props: ["visible", "formData", "updateTableData", "action"],
+  props: ["visible", "formData", "updateTableData", "action", "queryInventory"],
   components: {
     Supplier,
     AccessoriesName,
@@ -82,22 +82,28 @@ export default {
       },
       loading: false,
       rules: {
-        code: [{ required: true, message: "请输入配件代码", trigger: "blur" }],
-        supplier: [
-          { required: true, message: "请输入供货商", trigger: "blur" }
+        code: [
+          { required: true, message: "请输入配件代码", trigger: "change" }
         ],
-        type: [{ required: true, message: "请输入配件种类", trigger: "blur" }],
-        name: [{ required: true, message: "请输入配件名称", trigger: "blur" }],
-        count: [{ required: true, message: "请输入库存量", trigger: "blur" }],
+        supplier: [
+          { required: true, message: "请输入供货商", trigger: "change" }
+        ],
+        type: [
+          { required: true, message: "请输入配件种类", trigger: "change" }
+        ],
+        name: [
+          { required: true, message: "请输入配件名称", trigger: "change" }
+        ],
+        count: [{ required: true, message: "请输入库存量", trigger: "change" }],
         costPrice: [
-          { required: true, message: "请输入成本价", trigger: "blur" }
+          { required: true, message: "请输入成本价", trigger: "change" }
         ],
         sellingPrice: [
-          { required: true, message: "请输入销售价", trigger: "blur" }
+          { required: true, message: "请输入销售价", trigger: "change" }
         ],
-        unit: [{ required: true, message: "请输入单位", trigger: "blur" }],
+        unit: [{ required: true, message: "请输入单位", trigger: "change" }],
         minCount: [
-          { required: true, message: "请输入最小包装数", trigger: "blur" }
+          { required: true, message: "请输入最小包装数", trigger: "change" }
         ]
       }
     };
@@ -132,6 +138,7 @@ export default {
               this.updateTableData(formData, data);
             }
             this.$message.success(res.msg);
+            await this.queryInventory();
           }
           this.handleClose();
         } else {

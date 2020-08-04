@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="维修项目" :visible="addRepairVisible">
+  <el-dialog title="维修项目" :visible="addRepairVisible" @close="handleClose">
     <el-form ref="form" :model="form" :rules="rules" :label-width="labelWidth">
       <el-form-item label="配件代码" prop="id">
         <el-select

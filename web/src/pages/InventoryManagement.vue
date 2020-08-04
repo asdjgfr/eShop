@@ -118,6 +118,7 @@
       :visible.sync="editVisible"
       :formData="tableData[editIndex]"
       :updateTableData="updateTableData"
+      :queryInventory="queryInventory"
     />
   </el-card>
 </template>

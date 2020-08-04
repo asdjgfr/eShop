@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="编辑客户信息" :visible="visible">
+  <el-dialog title="编辑客户信息" :visible="visible" @close="handleClose">
     <el-form ref="form" :model="form" :label-width="labelWidth">
       <el-form-item label="车牌号" prop="numberPlate">
         <el-input v-model="form.numberPlate" />
@@ -10,9 +10,7 @@
       <el-form-item label="车主手机" prop="phone">
         <el-input v-model="form.phone" />
       </el-form-item>
-      <el-form-item label="VIN" prop="VIN">
-        <el-input v-model="form.VIN" />
-      </el-form-item>
+      <vin :VIN.sync="form.VIN" />
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="handleClose" :loading="loading">取 消</el-button>
@@ -25,11 +23,13 @@
 
 <script>
 import api from "@/api";
+import Vin from "@/components/VIN";
 
 export default {
   name: "EditCustomer",
   inject: ["labelWidth"],
   props: ["visible", "formData", "updateTableData"],
+  components: { Vin },
   data() {
     return {
       form: {
