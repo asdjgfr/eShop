@@ -229,7 +229,7 @@ exports.queryBill = async function (params) {
   }
   filterTotalPriceCN = numToChinese(filterTotalPrice);
   totalPriceCN = numToChinese(totalPrice);
-  const { company } = require("../config/config").config;
+  const { company } = __config.config;
   if (data === null || (data.rows !== undefined && data.rows.length === 0)) {
     return { code: 205, msg: "没有对应工单！" };
   }

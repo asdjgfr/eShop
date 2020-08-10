@@ -37,7 +37,7 @@ const operatorsAliases = {
   $col: Op.col,
 };
 
-const { db } = require("../config/config").config;
+const { db } = __config.config;
 //初始化数据库连接
 const sequelize = new Sequelize(db.dbName, db.username, db.password, {
   ...db.dbConfig,
