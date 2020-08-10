@@ -2,7 +2,6 @@ const { inventory } = require("./dataBase");
 const fs = require("fs");
 const path = require("path");
 const { multiply } = require("../plugins/math");
-
 exports.saveInventory = async function (params) {
   let {
     supplier,
@@ -166,6 +165,7 @@ exports.queryInventory = async function (params) {
   let data = null;
   const options = {
     where,
+    order: [["createdAt", "DESC"]],
   };
   if (params.limit !== undefined) {
     options.limit = Number(params.limit);

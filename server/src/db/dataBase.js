@@ -37,7 +37,7 @@ const operatorsAliases = {
   $col: Op.col,
 };
 
-const { db } = require("../config").config;
+const { db } = require("../config/config").config;
 //初始化数据库连接
 const sequelize = new Sequelize(db.dbName, db.username, db.password, {
   ...db.dbConfig,
@@ -394,11 +394,6 @@ const finance = sequelize["define"]("finance", {
     // 备注
     type: Sequelize.TEXT,
     defaultValue: "",
-  },
-  monthlyOrderAmount: {
-    // 月订购金额
-    type: Sequelize.DOUBLE,
-    defaultValue: 0,
   },
   session: {
     // session

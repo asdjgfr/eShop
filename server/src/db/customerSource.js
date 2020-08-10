@@ -97,7 +97,7 @@ const createCarInfo = async function (defaults) {
 exports.createCarInfo = createCarInfo;
 
 exports.queryCarInfoLike = async function (params) {
-  const options = { where: {} };
+  const options = { where: {}, order: [["createdAt", "DESC"]] };
   const keys = Object.keys(params);
   for (let i = 0, len = keys.length; i < len; i++) {
     const key = keys[i];

@@ -205,6 +205,7 @@ exports.queryBill = async function (params) {
   let data = null;
   const options = {
     where: { ...query, deleted: false },
+    order: [["createdAt", "DESC"]],
   };
   if (params.limit !== undefined) {
     options.limit = Number(params.limit);
@@ -228,7 +229,7 @@ exports.queryBill = async function (params) {
   }
   filterTotalPriceCN = numToChinese(filterTotalPrice);
   totalPriceCN = numToChinese(totalPrice);
-  const { company } = require("../config").config;
+  const { company } = require("../config/config").config;
   if (data === null || (data.rows !== undefined && data.rows.length === 0)) {
     return { code: 205, msg: "没有对应工单！" };
   }

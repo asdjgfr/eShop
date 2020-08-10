@@ -32,6 +32,10 @@ module.exports = new SpeedMeasurePlugin().wrap({
           from: path.resolve(__dirname, "src", "static"),
           to: path.resolve(__dirname, "dist", "static"),
         },
+        {
+          from: path.resolve(__dirname, "src", "config"),
+          to: path.resolve(__dirname, "dist", "config"),
+        },
       ],
     }),
   ],

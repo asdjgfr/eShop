@@ -47,7 +47,19 @@ const findOrCreateFinance = async function (month, session, deviceID) {
     },
     defaults: { month: queryMonth, session, deviceID },
   });
-  monthlyOrderAmount = data.monthlyOrderAmount;
+
+  const filterInventory = await inventory.findAll({
+    where: {
+      createdAt: {
+        $gte: queryMonth,
+        $lt: new Date(...moment(queryMonth).format("YYYY MM DD").split(" ")),
+      },
+    },
+  });
+  monthlyOrderAmount = filterInventory.reduce(
+    (acc, cur) => add(acc, multiply(cur["costPrice"], cur["purchaseCount"])),
+    0
+  );
   return {
     code: 0,
     data: {
