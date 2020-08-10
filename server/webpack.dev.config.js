@@ -10,7 +10,12 @@ module.exports = new SpeedMeasurePlugin().wrap({
     filename: "dev.js",
     path: path.resolve(__dirname, "dev"),
   },
-  externals: [nodeExternals()],
+  externals: [
+    nodeExternals(),
+    {
+      "@config": "commonjs ./config/config",
+    },
+  ],
   target: "node",
   module: {
     rules: [

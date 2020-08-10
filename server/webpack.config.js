@@ -9,7 +9,12 @@ module.exports = new SpeedMeasurePlugin().wrap({
     filename: "carManagement.js",
     path: path.resolve(__dirname, "dist"),
   },
-  externals: [nodeExternals()],
+  externals: [
+    nodeExternals(),
+    {
+      "@config": "commonjs ./config/config",
+    },
+  ],
   target: "node",
   module: {
     rules: [

@@ -24,7 +24,6 @@ global.yellowLog = (...params) => {
 };
 
 global.__static = path.resolve(__dirname, "./static/");
-global.__config = require("./config/config");
 
 const app = new Koa();
 const router = new Router();

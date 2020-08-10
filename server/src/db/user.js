@@ -21,7 +21,8 @@ exports.checkAdminAndCreate = async function () {
   // 查看是否有admin用户，没有则新建
   const filterUsers = await tableFilter(User, ["isAdmin", true]);
   if (!filterUsers.length) {
-    await createUser("admin", "123456", true);
+    const { adminAccount } = require("@config").config;
+    await createUser(adminAccount.username, adminAccount.password, true);
     return { code: 0, msg: "管理员新建成功！" };
   }
   return { code: 1, msg: "管理员已存在！" };
