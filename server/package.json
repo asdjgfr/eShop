@@ -1,6 +1,6 @@
 {
   "name": "car-management-system",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "4s店管理系统",
   "scripts": {
     "dev": "npx webpack --config webpack.dev.config.js & node ./dev/dev.js",
