@@ -13,7 +13,7 @@
     "echarts": "^4.8.0",
     "element-ui": "^2.13.2",
     "file-saver": "^2.0.2",
-    "fingerprintjs2": "^2.1.0",
+    "fingerprintjs2": "^2.1.2",
     "jspdf": "^1.5.3",
     "lodash": "^4.17.19",
     "mathjs": "^7.1.0",
@@ -21,9 +21,9 @@
     "print-js": "^1.0.63",
     "qs": "^6.9.4",
     "register-service-worker": "^1.7.1",
-    "uuid": "^8.2.0",
+    "uuid": "^8.3.0",
     "vue": "^2.6.11",
-    "vue-router": "^3.3.4",
+    "vue-router": "^3.4.2",
     "vuex": "^3.5.1",
     "xlsx": "^0.16.5"
   },
@@ -34,10 +34,10 @@
     "@vue/cli-plugin-pwa": "~4.4.6",
     "@vue/cli-service": "~4.4.6",
     "babel-eslint": "^10.1.0",
-    "eslint": "^7.4.0",
+    "eslint": "^7.6.0",
     "eslint-plugin-vue": "^6.2.2",
     "sass": "^1.26.10",
-    "sass-loader": "^9.0.2",
+    "sass-loader": "^9.0.3",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {
