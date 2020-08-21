@@ -2,44 +2,22 @@
   <el-dialog title="维修项目" :visible="addRepairVisible" @close="handleClose">
     <el-form ref="form" :model="form" :rules="rules" :label-width="labelWidth">
       <el-form-item label="配件代码" prop="id">
-        <el-select
-          v-model="form.id"
-          filterable
-          remote
-          reserve-keyword
+        <el-autocomplete
+          v-model="form.code"
+          :fetch-suggestions="getCode"
           placeholder="搜索配件代码"
-          :remote-method="getCode"
           :loading="codeLoading"
-          @change="handleChangeRes"
-        >
-          <el-option
-            v-for="item in options"
-            :key="item.id"
-            :label="item.code"
-            :value="item.id"
-          >
-          </el-option>
-        </el-select>
+          @select="handleSelect"
+        ></el-autocomplete>
       </el-form-item>
       <el-form-item label="配件名称" prop="id">
-        <el-select
-          v-model="form.id"
-          filterable
-          remote
-          reserve-keyword
+        <el-autocomplete
+          v-model="form.name"
+          :fetch-suggestions="getName"
           placeholder="搜索配件名称"
-          :remote-method="getName"
           :loading="nameLoading"
-          @change="handleChangeRes"
-        >
-          <el-option
-            v-for="item in options"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id"
-          >
-          </el-option>
-        </el-select>
+          @select="handleSelect"
+        ></el-autocomplete>
       </el-form-item>
       <el-form-item label="单价">
         <span v-text="form.sellingPrice" /> 元
@@ -139,6 +117,9 @@ export default {
     }
   },
   methods: {
+    handleSelect(item) {
+      this.handleChangeRes(item.id);
+    },
     handleChangeRes(id) {
       const { form, options } = this;
       const op = options.find(op => op.id === id);
@@ -147,37 +128,32 @@ export default {
       this.$set(form, "name", op.name);
       this.$set(form, "code", op.code);
     },
-    async getCode(query) {
+    async queryData(query, type) {
+      let result = [];
       if (query !== "") {
-        this.codeLoading = true;
+        this[`${type}Loading`] = true;
         const res = await api.inventoryManagement.queryInventoryAttrs({
-          attributes: "code",
+          attributes: type,
           query,
           notIn: this.notIn
         });
         if (res.code === 0) {
           this.options = res.data;
+          result = res.data.map(data => ({ ...data, value: data[type] }));
         }
-        this.codeLoading = false;
+        this[`${type}Loading`] = false;
       } else {
         this.options = [];
       }
+      return result;
     },
-    async getName(query) {
-      if (query !== "") {
-        this.nameLoading = true;
-        const res = await api.inventoryManagement.queryInventoryAttrs({
-          attributes: "name",
-          query,
-          notIn: this.notIn
-        });
-        if (res.code === 0) {
-          this.options = res.data;
-        }
-        this.nameLoading = false;
-      } else {
-        this.options = [];
-      }
+    async getCode(query, cb) {
+      const res = await this.queryData(query, "code");
+      cb(res);
+    },
+    async getName(query, cb) {
+      const res = await this.queryData(query, "name");
+      cb(res);
     },
     handleClose() {
       this.$emit("update:addRepairVisible", false);

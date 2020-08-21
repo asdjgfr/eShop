@@ -91,31 +91,12 @@
         />
       </el-form-item>
       <el-form-item label="车系" prop="car">
-        <el-select
+        <el-autocomplete
           v-model="form.car"
-          filterable
-          allow-create
-          default-first-option
+          :fetch-suggestions="querySearch"
           placeholder="请选择车系"
-          @visible-change="handleGetSelector('car', $event)"
           :loading="carsLoading"
-        >
-          <el-option
-            v-for="item in cars"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-            <span style="float: left">{{ item.value }}</span>
-            <el-button
-              style="float: right;margin-right: 20px"
-              type="danger"
-              icon="el-icon-delete"
-              round
-              @click.stop="delSelector('car', item.value)"
-            />
-          </el-option>
-        </el-select>
+        ></el-autocomplete>
       </el-form-item>
 
       <el-form-item label="车主姓名" prop="ownerName">
@@ -346,10 +327,15 @@ export default {
       this.initBill();
     }
   },
-  created() {
+  async created() {
     this.initBill();
+    await this.handleGetSelector("car", true);
   },
   methods: {
+    querySearch(queryString, cb) {
+      // 调用 callback 返回建议列表的数据
+      cb(this.cars.filter(car => car.value.indexOf(queryString) > -1));
+    },
     async handlePrint() {
       const saveBill = await this.handleSaveBill();
       if (saveBill === false) {
@@ -477,12 +463,13 @@ export default {
           } else {
             this.desserts.splice(index - 1, 1);
           }
-          this.handleSaveBill();
+          await this.handleSaveBill();
         }
       });
     },
-    handleSaveBill(finished = false) {
+    async handleSaveBill(finished = false) {
       finished = finished === true;
+      await this.handleGetSelector("car", true);
       if (finished) {
         const c = confirm("确认结账？");
         if (!c) {
