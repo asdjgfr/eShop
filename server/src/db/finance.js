@@ -11,12 +11,13 @@ const findOrCreateFinance = async function (month, session, deviceID) {
   const filterBills = await bills.findAll({
     where: {
       finished: true,
-      updatedAt: {
+      createdAt: {
         $gte: new Date(queryMonth.getFullYear(), queryMonth.getMonth(), 1),
         $lt: new Date(queryMonth.getFullYear(), queryMonth.getMonth() + 1, 1),
       },
     },
   });
+  yellowLog(queryMonth, filterBills);
   for (const item of filterBills) {
     for (const inv of item.maintenanceItems) {
       const findInv = await inventory.findByPk(inv.id);
