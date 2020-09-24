@@ -8,7 +8,7 @@ exports.config = {
   },
   // 数据库配置
   db: {
-    dbName: "carManagementSystem",
+    dbName: "yinma",
     username: "root",
     password: "Aa123456",
     dbConfig: {

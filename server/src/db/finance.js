@@ -81,12 +81,7 @@ exports.annualStatisticsFinance = async function (year, session, deviceID) {
   const monthIncome = Array.from({ length: 12 }, () => 0);
   const monthProfit = Array.from({ length: 12 }, () => 0);
   for (let i = 0; i < 12; i++) {
-    data[i] = await findOrCreateFinance(
-      `${year}-${i}-1`,
-      "",
-      session,
-      deviceID
-    );
+    data[i] = await findOrCreateFinance(`${year}-${i}-1`, session, deviceID);
   }
   for (let i = 0, len = data.length; i < len; i++) {
     monthIncome[i] = data[i].data.income;
