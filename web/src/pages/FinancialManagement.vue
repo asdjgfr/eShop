@@ -139,13 +139,11 @@ export default {
       }
     };
   },
-  created() {
-    this.handleQuery();
-  },
   mounted() {
-    this.$nextTick(() => {
+    this.$nextTick(async () => {
+      await this.handleQuery();
       this.yearChart = this.$_echarts.init(this.$refs.yearChart);
-      this.loadCharts();
+      await this.loadCharts();
     });
     window.addEventListener("resize", this.resizeCharts);
   },
@@ -169,6 +167,7 @@ export default {
       }
     },
     async handleQuery() {
+      console.log(this.form.month, this.form);
       const date = this.$_moment(this.form.month)
         .format("YYYY-MM-DD")
         .split("-");

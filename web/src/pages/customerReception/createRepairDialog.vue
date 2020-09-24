@@ -127,6 +127,7 @@ export default {
       this.$set(form, "maxCount", op.count);
       this.$set(form, "name", op.name);
       this.$set(form, "code", op.code);
+      this.$set(form, "id", id);
     },
     async queryData(query, type) {
       let result = [];
