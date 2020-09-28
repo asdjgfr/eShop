@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import { Router } from "react-router";
 import history from "@/router/history";
 
@@ -8,6 +8,7 @@ import Error from "@/pages/Error";
 
 const Login = lazy(() => import("@/pages/Login"));
 const Admin = lazy(() => import("@/pages/Admin"));
+const Feedback = lazy(() => import("@/pages/Feedback"));
 
 const HistoryContext = React.createContext({ history });
 export default function App() {
@@ -22,6 +23,9 @@ export default function App() {
             <Route path="/admin">
               <Admin />
             </Route>
+            <Route path="/feedback">
+              <Feedback />
+            </Route>
             <Route path="/403">
               <Error errorCode={403} />
             </Route>
@@ -30,6 +34,9 @@ export default function App() {
             </Route>
             <Route path="/500">
               <Error errorCode={500} />
+            </Route>
+            <Route path="*">
+              <Redirect to="/404" />
             </Route>
           </Switch>
         </Suspense>

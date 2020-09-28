@@ -27,8 +27,12 @@ class Error extends React.Component<iProps, iState> {
     }
     return msg;
   }
-  backToHome() {
-    this.props.store?.history.push("/");
+  backToHome(path: string) {
+    if (path === "back") {
+      this.props.store?.history.go(-1);
+    } else {
+      this.props.store?.history.push(path);
+    }
   }
   render() {
     return (
@@ -36,11 +40,44 @@ class Error extends React.Component<iProps, iState> {
         status={this.props.errorCode}
         title={this.props.errorCode}
         subTitle={this.errorMsg}
-        extra={
-          <Button type="primary" onClick={this.backToHome.bind(this)}>
-            回到首页
-          </Button>
-        }
+        extra={[
+          [
+            this.props.errorCode === 403 ? (
+              <Button
+                key="403"
+                type="primary"
+                onClick={this.backToHome.bind(this, "/login")}
+              >
+                登录
+              </Button>
+            ) : null,
+            this.props.errorCode === 404 ? (
+              <Button
+                key="404"
+                type="primary"
+                onClick={this.backToHome.bind(this, "back")}
+              >
+                返回上一级
+              </Button>
+            ) : null,
+            this.props.errorCode === 500 ? (
+              <Button
+                key="500"
+                type="primary"
+                onClick={this.backToHome.bind(this, "/feedback")}
+              >
+                联系管理员
+              </Button>
+            ) : null,
+            <Button
+              key="index"
+              type="primary"
+              onClick={this.backToHome.bind(this, "/")}
+            >
+              回到首页
+            </Button>,
+          ],
+        ]}
       />
     );
   }
