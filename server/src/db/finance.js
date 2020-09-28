@@ -17,7 +17,6 @@ const findOrCreateFinance = async function (month, session, deviceID) {
       },
     },
   });
-  yellowLog(queryMonth, filterBills);
   for (const item of filterBills) {
     for (const inv of item.maintenanceItems) {
       const findInv = await inventory.findByPk(inv.id);
