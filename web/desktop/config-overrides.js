@@ -18,4 +18,8 @@ module.exports = {
       "@": path.resolve(__dirname, "src"),
     })
   ),
+  paths: function (paths, env) {
+    paths.appBuild = path.join(path.dirname(paths.appBuild), "build/desktop");
+    return paths;
+  },
 };
