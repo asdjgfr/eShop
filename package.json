@@ -7,7 +7,9 @@
     "install": "node scripts.js install",
     "i": "yarn install",
     "build": "node scripts.js build",
-    "dev:d": "node scripts.js dev:d"
+    "dev": "yarn dev:d",
+    "dev:d": "node scripts.js dev:d",
+    "dev:server": "node scripts.js dev:server"
   },
   "devDependencies": {
     "prettier": "2.1.2"

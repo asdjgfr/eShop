@@ -19,11 +19,19 @@ const actions = {
     spawnCB(build, "web桌面打包");
   },
   "dev:d"() {
+    this["dev:server"]();
     const build = spawn("yarn", ["start"], {
       cwd: path.resolve(__dirname, "web/desktop"),
       shell: true,
     });
     spawnCB(build, "web桌面开发");
+  },
+  "dev:server"() {
+    const server = spawn("go", ["run", "main.go"], {
+      cwd: path.resolve(__dirname, "server"),
+      shell: true,
+    });
+    spawnCB(server, "后台服务");
   },
 };
 

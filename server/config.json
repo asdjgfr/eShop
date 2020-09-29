@@ -1,0 +1,8 @@
+{
+  "db": {
+    "dbName": "carv2",
+    "user": "root",
+    "password": "Aa123456"
+  },
+  "port": 5001
+}
