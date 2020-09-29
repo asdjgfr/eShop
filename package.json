@@ -1,0 +1,15 @@
+{
+  "name": "car-maintenance-management",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {},
+  "scripts": {
+    "install": "node scripts.js install",
+    "i": "yarn install",
+    "build": "node scripts.js build",
+    "dev:d": "node scripts.js dev:d"
+  },
+  "devDependencies": {
+    "prettier": "2.1.2"
+  }
+}

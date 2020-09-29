@@ -5,6 +5,7 @@ const {
   addWebpackAlias,
   disableEsLint,
 } = require("customize-cra");
+
 module.exports = {
   webpack: override(
     addLessLoader({
@@ -19,7 +20,10 @@ module.exports = {
     })
   ),
   paths: function (paths, env) {
-    paths.appBuild = path.join(path.dirname(paths.appBuild), "build/desktop");
+    paths.appBuild = path.join(
+      path.dirname(paths.appBuild),
+      "../../build/desktop"
+    );
     return paths;
   },
 };
