@@ -17,7 +17,6 @@ func main() {
 	JsonParse.LoadJSONFile("./config.json", &config)
 	//初始化数据库
 	db.InitDB(config.Db)
-	db.CreateUser()
 	//初始化gin
 	r := gin.Default()
 	router.InitRoutes(r)

@@ -12,4 +12,11 @@ type (
 		Db   DbConfig
 		Port int
 	}
+	RepMsg struct {
+		//请求返回的信息
+		//http状态码
+		Code int
+		//返回的信息
+		Msg string
+	}
 )

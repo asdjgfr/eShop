@@ -48,7 +48,17 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a27ab6c6-a950-4442-ba9f-00845ee34f39" name="Default Changelist" comment="" />
+    <list default="true" id="a27ab6c6-a950-4442-ba9f-00845ee34f39" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../scripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/../scripts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/index.go" beforeDir="false" afterPath="$PROJECT_DIR$/lib/index.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/router/logIn.go" beforeDir="false" afterPath="$PROJECT_DIR$/router/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/types/index.go" beforeDir="false" afterPath="$PROJECT_DIR$/types/index.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../yarn.lock" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -79,7 +89,6 @@
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="DefaultGoTemplateProperty" value="Go File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
@@ -90,7 +99,7 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="settings.editor.selected.configurable" value="ide.date.format" />
+    <property name="settings.editor.selected.configurable" value="watcher.settings" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -124,9 +133,17 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="693" y="339" key="#Notifications/0.0.1920.1040@0.0.1920.1040" timestamp="1601360197307" />
-    <state x="309" y="196" width="998" height="708" key="SettingsEditor" timestamp="1601369071640">
+    <state x="462" y="323" key="EditFileWatcherDialog" timestamp="1601447948327">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="309" y="196" width="998" height="708" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1601369071640" />
+    <state x="462" y="323" key="EditFileWatcherDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1601447948327" />
+    <state x="309" y="196" width="998" height="708" key="SettingsEditor" timestamp="1601447950303">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="309" y="196" width="998" height="708" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1601447950303" />
+    <state x="663" y="94" width="594" height="852" key="find.popup" timestamp="1601452513585">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="663" y="94" width="594" height="852" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1601452513585" />
   </component>
 </project>

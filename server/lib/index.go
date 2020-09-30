@@ -10,6 +10,7 @@ type V struct {
 }
 
 func LoadJSON() *V {
+	//加载本地json文件
 	return &V{}
 }
 
@@ -20,7 +21,6 @@ func (v1 *V) LoadJSONFile(fileName string, v interface{}) {
 		fmt.Println("文件读取失败", err)
 		return
 	}
-	fmt.Println("文件读取成功")
 	err = json.Unmarshal(jsonFile, &v)
 
 	if err != nil {
@@ -29,3 +29,11 @@ func (v1 *V) LoadJSONFile(fileName string, v interface{}) {
 	}
 }
 
+func LongTime() string {
+	//格式化时间用的layout
+	return "2006-01-02 15:04:05"
+}
+func ShortTime() string {
+	//格式化时间用的layout
+	return "2006-01-02"
+}

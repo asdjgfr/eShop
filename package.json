@@ -7,11 +7,22 @@
     "install": "node scripts.js install",
     "i": "yarn install",
     "build": "node scripts.js build",
+    "build:server": "node scripts.js build:server",
+    "build:desktop": "node scripts.js build:desktop",
     "dev": "yarn dev:d",
     "dev:d": "node scripts.js dev:d",
-    "dev:server": "node scripts.js dev:server"
+    "dev:server": "nodemon -e go --watch ./server --inspect ./scripts.js dev:server"
   },
   "devDependencies": {
+    "nodemon": "^2.0.4",
     "prettier": "2.1.2"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "*.log",
+      "build/*",
+      "node_modules/*"
+    ],
+    "delay": 2500
   }
 }
