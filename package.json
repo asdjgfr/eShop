@@ -11,7 +11,8 @@
     "build:desktop": "node scripts.js build:desktop",
     "dev": "yarn dev:d",
     "dev:d": "node scripts.js dev:d",
-    "dev:server": "nodemon -e go --watch ./server --inspect ./scripts.js dev:server"
+    "dev:server": "nodemon -e go --watch ./server --inspect ./scripts.js dev:server",
+    "dev:s": "yarn dev:server"
   },
   "devDependencies": {
     "nodemon": "^2.0.4",
