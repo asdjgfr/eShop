@@ -6,6 +6,7 @@ import (
 	"time"
 )
 
+//用户表
 type User struct {
 	gorm.Model
 	//用户名

@@ -9,6 +9,7 @@ import (
 type V struct {
 }
 
+//公用扩展库
 func LoadJSON() *V {
 	//加载本地json文件
 	return &V{}

@@ -1,5 +1,6 @@
 package types
 
+//公用类型
 type (
 	DbConfig struct {
 		//数据库配置文件结构

@@ -7,6 +7,7 @@ import (
 	"myModule/types"
 )
 
+//数据库文件
 var DB *gorm.DB
 
 func InitDB(config types.DbConfig) {

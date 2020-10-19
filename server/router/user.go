@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+//用户路由
 func InitLoginRouter(r *gin.Engine) {
 	//登录接口
 	signUp(r)
