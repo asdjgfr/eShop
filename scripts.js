@@ -15,7 +15,7 @@ const actions = {
     spawnCB(install, "web桌面依赖");
   },
 
-  "dev:d"() {
+  "dev:desktop"() {
     const build = spawn("yarn", ["start"], {
       cwd: path.resolve(__dirname, "web/desktop"),
       shell: true,
