@@ -20,5 +20,5 @@ func main() {
 	//初始化gin
 	r := gin.Default()
 	router.InitRoutes(r)
-	r.Run(":" + strconv.Itoa(config.Port))
+	_ = r.Run(":" + strconv.Itoa(config.Port))
 }

@@ -14,6 +14,8 @@ type User struct {
 	Password string
 	Email    string
 	Phone    string
+	//角色
+	Role     int
 	Birthday time.Time
 }
 
