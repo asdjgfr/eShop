@@ -3,8 +3,8 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 	"myModule/db"
+	"myModule/lib"
 	"strconv"
-	"time"
 )
 
 //用户路由
@@ -16,16 +16,16 @@ func InitLoginRouter(r *gin.Engine) {
 func signUp(r *gin.Engine) {
 	//用户注册接口
 	r.POST("/api/sign-up", func(c *gin.Context) {
-		birthday, _ := strconv.Atoi(c.Request.PostFormValue("birthday"))
 		role, _ := strconv.Atoi(c.Request.PostFormValue("role"))
-
+		salt, pas := lib.EncryptionString(c.Request.PostFormValue("password"))
 		res := db.SignUp(db.User{
 			UserName: c.Request.PostFormValue("username"),
-			Password: c.Request.PostFormValue("password"),
+			Password: pas,
 			Phone:    c.Request.PostFormValue("phone"),
 			Email:    c.Request.PostFormValue("email"),
 			Role:     role,
-			Birthday: time.Unix(int64(birthday/1000), 0),
+			Birthday: lib.StringToTime(c.Request.PostFormValue("birthday") + " 00:00:00.000"),
+			Salt:     salt,
 		})
 		c.JSON(200, gin.H{
 			"code": res.Code,
