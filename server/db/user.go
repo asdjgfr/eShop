@@ -12,7 +12,7 @@ import (
 type User struct {
 	gorm.Model
 	//用户名
-	UserName string
+	Username string
 	Password string
 	Email    string
 	Phone    string
@@ -27,9 +27,9 @@ func SignUp(newUser User) types.RepMsg {
 	//注册
 	var req types.RepMsg
 
-	if newUser.UserName == "" {
+	if newUser.Username == "" {
 		req = types.RepMsg{Code: 403, Msg: "用户名不能为空！"}
-	} else if DB.Where("user_name = ?", newUser.UserName).First(&newUser).Error == nil {
+	} else if DB.Where("username = ?", newUser.Username).First(&newUser).Error == nil {
 		req = types.RepMsg{Code: 403, Msg: "用户名已存在！"}
 	} else if newUser.Password == "" {
 		req = types.RepMsg{Code: 403, Msg: "密码不能为空！"}
@@ -68,7 +68,8 @@ func SignUp(newUser User) types.RepMsg {
 func SignIn(user User) types.RepMsg {
 	var req types.RepMsg
 	req = types.RepMsg{Code: 200, Msg: "登录成功！"}
-	findUser := DB.Where("user_name = ?", user.UserName).First(&user)
+	findUser := DB.Where("username = ?", user.Username).First(&user)
+
 	if findUser.Error != nil {
 		req = types.RepMsg{Code: 403, Msg: "用户名不存在！"}
 	}
