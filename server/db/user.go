@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"gorm.io/gorm"
 	"myModule/lib"
+	"myModule/redis"
 	"myModule/types"
 	"time"
 )
@@ -68,12 +69,19 @@ func SignUp(newUser User) types.RepMsg {
 
 func SignIn(user User) types.RepMsg {
 	var req types.RepMsg
-	req = types.RepMsg{Code: 200, Msg: "登录成功！"}
+	//前台传来的密码
+	req = types.RepMsg{Code: 403, Msg: "登录失败！"}
+	SignInPassword := user.Password
 	findUser := DB.Where("username = ?", user.Username).First(&user)
-
+	//查询后user变成了数据库中的数据
 	if findUser.Error != nil {
-		req = types.RepMsg{Code: 403, Msg: "用户名不存在！"}
+		req = types.RepMsg{Code: 403, Msg: "用户不存在！"}
 	}
-	fmt.Println(findUser)
+	_, pas := lib.EncryptionString(SignInPassword, user.Salt)
+	if pas == user.Password {
+		req = types.RepMsg{Code: 200, Msg: "登录成功！"}
+	}
+	test, _ := redis.Rdb.Get(redis.RdbCtx, "testasd").Result()
+	fmt.Println(test)
 	return req
 }

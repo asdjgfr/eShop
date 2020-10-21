@@ -44,10 +44,19 @@ func ShortTime() string {
 	return "2006-01-02"
 }
 
-func EncryptionString(s string) (string, string) {
-	//随机生成盐
-	randNum, _ := rand.Int(rand.Reader, new(big.Int).SetInt64(int64(100)))
-	salt := randNum.String()
+/**
+* s 需要加密的字符创
+* outSalt 给定的盐值
+ */
+func EncryptionString(s string, outSalt ...string) (string, string) {
+	salt := ""
+	if len(outSalt) == 0 {
+		//随机生成盐
+		randNum, _ := rand.Int(rand.Reader, new(big.Int).SetInt64(int64(100)))
+		salt = randNum.String()
+	} else {
+		salt = outSalt[0]
+	}
 	//加密字符串
 	return salt, base64.StdEncoding.EncodeToString(argon2.IDKey([]byte(s), []byte(salt), 1, 64*1024, 4, 32))
 }

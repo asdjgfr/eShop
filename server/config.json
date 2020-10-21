@@ -4,5 +4,10 @@
     "user": "root",
     "password": "Aa123456"
   },
+  "redis": {
+    "addr": "localhost:6379",
+    "password": "",
+    "db": 0
+  },
   "port": 5001
 }

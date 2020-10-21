@@ -8,10 +8,17 @@ type (
 		User     string
 		Password string
 	}
+	RedisConfig struct {
+		//redis配置文件结构
+		Addr     string
+		Password string
+		DB       int
+	}
 	Config struct {
 		//配置文件结构
-		Db   DbConfig
-		Port int
+		Db    DbConfig
+		Port  int
+		Redis RedisConfig
 	}
 	RepMsg struct {
 		//请求返回的信息

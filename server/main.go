@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"myModule/db"
 	"myModule/lib"
+	"myModule/redis"
 	"myModule/router"
 	"myModule/types"
 	"strconv"
@@ -15,6 +16,8 @@ func main() {
 	config := types.Config{}
 	//下面使用的是相对路径，config.json文件和main.go文件处于同一目录下
 	JsonParse.LoadJSONFile("./config.json", &config)
+	//初始化redis
+	redis.InitRedis(config.Redis)
 	//初始化数据库
 	db.InitDB(config.Db)
 	//初始化gin
