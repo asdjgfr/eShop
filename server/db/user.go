@@ -29,6 +29,8 @@ func SignUp(newUser User) types.RepMsg {
 
 	if newUser.Username == "" {
 		req = types.RepMsg{Code: 403, Msg: "用户名不能为空！"}
+	} else if !lib.CommonlyTest.Username(newUser.Username) {
+		req = types.RepMsg{Code: 403, Msg: "用户名不符合规则！"}
 	} else if DB.Where("username = ?", newUser.Username).First(&newUser).Error == nil {
 		req = types.RepMsg{Code: 403, Msg: "用户名已存在！"}
 	} else if newUser.Password == "" {
@@ -56,7 +58,6 @@ func SignUp(newUser User) types.RepMsg {
 		res := DB.Create(&newUser)
 		if res.Error != nil {
 			req = types.RepMsg{Code: 500, Msg: "数据库写入错误！" + res.Error.Error()}
-
 		} else {
 			req = types.RepMsg{Code: 200, Msg: "注册成功！"}
 

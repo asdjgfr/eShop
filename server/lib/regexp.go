@@ -22,6 +22,10 @@ func (obj commonlyTest) Password(s string) bool {
 	//验证密码
 	return pubReg(s, "password")
 }
+func (obj commonlyTest) Username(s string) bool {
+	//验证密码
+	return pubReg(s, "username")
+}
 
 func pubReg(s string, regType string) bool {
 	regs := make(map[string]string)
@@ -32,6 +36,9 @@ func pubReg(s string, regType string) bool {
 	regs["email"] = "^(([^<>()[\\]\\\\.,;:\\s@\"]+(\\.[^<>()[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$"
 	if regType == "password" {
 		return passwordValid(s)
+	}
+	if regType == "username" {
+		return usernameValid(s)
 	}
 	m, err := regexp.MatchString(regs[regType], s)
 	if err != nil {
@@ -51,4 +58,13 @@ func passwordValid(password string) bool {
 	hasSymbol, _ := regexp.MatchString("[^A-Za-z0-9]", password)
 
 	return pasLen && hasUpperCase && hasLowerCase && hasNumbers && !hasSymbol
+}
+
+func usernameValid(userName string) bool {
+	//用户名
+	//最少3位，最多16位，不可以包含除英文和数字以外的
+	pasLen := len(userName) > 2 && len(userName) < 17
+
+	hasSymbol, _ := regexp.MatchString("[^A-Za-z0-9]", userName)
+	return pasLen && !hasSymbol
 }
