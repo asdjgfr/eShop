@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"github.com/satori/go.uuid"
 	"golang.org/x/crypto/argon2"
 	"io/ioutil"
 	"math/big"
@@ -65,4 +66,9 @@ func StringToTime(s string) time.Time {
 	local, _ := time.LoadLocation("Local")
 	theTime, _ := time.ParseInLocation("2006-01-02 15:04:05", s, local)
 	return theTime
+}
+
+func GenerateUUID() string {
+	u := uuid.NewV4()
+	return u.String()
 }

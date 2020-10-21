@@ -27,4 +27,6 @@ type (
 		//返回的信息
 		Msg string
 	}
+	Token struct {
+	}
 )

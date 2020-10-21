@@ -40,7 +40,7 @@ func signIn(r *gin.Engine) {
 		res := db.SignIn(db.User{
 			Username: c.Request.PostFormValue("username"),
 			Password: c.Request.PostFormValue("password"),
-		})
+		}, c.Request.PostFormValue("device"))
 		c.JSON(200, gin.H{
 			"code": res.Code,
 			"msg":  res.Msg,

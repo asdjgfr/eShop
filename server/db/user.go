@@ -1,10 +1,8 @@
 package db
 
 import (
-	"fmt"
 	"gorm.io/gorm"
 	"myModule/lib"
-	"myModule/redis"
 	"myModule/types"
 	"time"
 )
@@ -67,7 +65,7 @@ func SignUp(newUser User) types.RepMsg {
 	return req
 }
 
-func SignIn(user User) types.RepMsg {
+func SignIn(user User, device string) types.RepMsg {
 	var req types.RepMsg
 	//前台传来的密码
 	req = types.RepMsg{Code: 403, Msg: "登录失败！"}
@@ -81,7 +79,10 @@ func SignIn(user User) types.RepMsg {
 	if pas == user.Password {
 		req = types.RepMsg{Code: 200, Msg: "登录成功！"}
 	}
-	test, _ := redis.Rdb.Get(redis.RdbCtx, "testasd").Result()
-	fmt.Println(test)
+
+	//token:=lib.GenerateUUID()
+	//redis.Rdb.SAdd(redis.RdbCtx, "asdasd", "111", "222")
+	//test, _ := redis.Rdb.Get(redis.RdbCtx, "asdasd").Result()
+	//fmt.Println(555, test)
 	return req
 }
