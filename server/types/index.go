@@ -45,6 +45,10 @@ type (
 		RepMsg
 		Username string
 	}
+	CheckLogin struct {
+		RepMsg
+		IsLogin bool
+	}
 	UserToken struct {
 		//用户名
 		Username string

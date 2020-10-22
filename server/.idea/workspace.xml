@@ -49,14 +49,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a27ab6c6-a950-4442-ba9f-00845ee34f39" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/config/index.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/aes.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pool/userPool.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/index.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/index.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/user.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/router/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/router/user.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/types/index.go" beforeDir="false" afterPath="$PROJECT_DIR$/types/index.go" afterDir="false" />
     </list>

@@ -2,10 +2,12 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	"myModule/config"
 	"myModule/db"
 	"myModule/lib"
 	"myModule/types"
 	"strconv"
+	"strings"
 )
 
 //用户路由
@@ -62,4 +64,33 @@ func GetUserInfo(r *gin.Engine) {
 			"msg":  req.Msg,
 		})
 	})
+}
+
+func CheckLogin(authorization string) types.CheckLogin {
+	globalConfig := config.GlobalConfig
+	tokenAndUsername, success := lib.DecryptAES(authorization, globalConfig.Crypto.AES)
+	tokenAndUsernameSplit := strings.Split(tokenAndUsername, "#")
+	res := types.CheckLogin{
+		RepMsg: types.RepMsg{
+			Code: 200,
+			Msg:  "已登录",
+		},
+		IsLogin: true,
+	}
+	if !success {
+		//解码失败返回false
+		res.Msg = "登录失效，请重新登录！"
+		res.Code = 401
+		res.IsLogin = success
+		return res
+	}
+	if len(tokenAndUsernameSplit) != 2 {
+		//参数错误
+		res.Msg = "参数错误，请重新登录！"
+		res.Code = 401
+		res.IsLogin = false
+		return res
+	}
+	token := tokenAndUsernameSplit[0]
+	username := tokenAndUsernameSplit[1]
 }
