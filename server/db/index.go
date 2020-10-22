@@ -17,5 +17,5 @@ func InitDB(config types.DbConfig) {
 	if err != nil {
 		fmt.Println("数据库连接失败: ", err)
 	}
-	_ = DB.AutoMigrate(&User{})
+	_ = DB.AutoMigrate(&types.User{})
 }

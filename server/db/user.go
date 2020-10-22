@@ -1,28 +1,14 @@
 package db
 
 import (
-	"gorm.io/gorm"
+	"fmt"
 	"myModule/lib"
+	"myModule/pool"
 	"myModule/types"
 	"time"
 )
 
-//用户表
-type User struct {
-	gorm.Model
-	//用户名
-	Username string
-	Password string
-	Email    string
-	Phone    string
-	//角色
-	Role     int
-	Birthday time.Time
-	//储存密码时的盐
-	Salt string
-}
-
-func SignUp(newUser User) types.RepMsg {
+func SignUp(newUser types.User) types.RepMsg {
 	//注册
 	var req types.RepMsg
 
@@ -65,24 +51,33 @@ func SignUp(newUser User) types.RepMsg {
 	return req
 }
 
-func SignIn(user User, device string) types.RepMsg {
-	var req types.RepMsg
+func SignIn(user types.User, device string) types.AuthReq {
+	var req types.AuthReq
 	//前台传来的密码
-	req = types.RepMsg{Code: 403, Msg: "登录失败！"}
+	req = types.AuthReq{RepMsg: types.RepMsg{Code: 403, Msg: "登录失败！"}, Authorization: ""}
 	SignInPassword := user.Password
 	findUser := DB.Where("username = ?", user.Username).First(&user)
 	//查询后user变成了数据库中的数据
 	if findUser.Error != nil {
-		req = types.RepMsg{Code: 403, Msg: "用户不存在！"}
+		req = types.AuthReq{RepMsg: types.RepMsg{Code: 403, Msg: "用户不存在！"}, Authorization: ""}
 	}
 	_, pas := lib.EncryptionString(SignInPassword, user.Salt)
 	if pas == user.Password {
-		req = types.RepMsg{Code: 200, Msg: "登录成功！"}
+		Authorization := pool.SetUserToken(user, device)
+		req = types.AuthReq{RepMsg: types.RepMsg{Code: 200, Msg: "登录成功！"}, Authorization: Authorization}
 	}
-
-	//token:=lib.GenerateUUID()
-	//redis.Rdb.SAdd(redis.RdbCtx, "asdasd", "111", "222")
-	//test, _ := redis.Rdb.Get(redis.RdbCtx, "asdasd").Result()
-	//fmt.Println(555, test)
 	return req
+}
+
+func GetUserInfo(Authorization string) types.Userinfo {
+	userToken, success := pool.GetUserByToken(Authorization)
+	fmt.Println(666, userToken, success)
+	userinfo := types.Userinfo{}
+	if success {
+		userinfo.Code = 200
+	} else {
+		userinfo.Code = 403
+		userinfo.Msg = "登录失效，请重新登录！"
+	}
+	return userinfo
 }
