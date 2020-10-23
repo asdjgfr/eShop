@@ -13,7 +13,9 @@ func main() {
 	config.InitGlobalConfig()
 	globalConfig := config.GlobalConfig
 	//初始化redis
-	redis.InitRedis(globalConfig.Redis)
+	done := make(chan bool)
+	redis.InitRedis(globalConfig.Redis, done)
+	<-done
 	//初始化数据库
 	db.InitDB(globalConfig.Db)
 	//初始化gin
