@@ -20,6 +20,8 @@ func main() {
 	db.InitDB(globalConfig.Db)
 	//初始化gin
 	r := gin.Default()
+	//初始化路由地址
+	router.InitRouterAddress()
 	router.InitRoutes(r)
 	_ = r.Run(":" + strconv.Itoa(globalConfig.Port))
 }

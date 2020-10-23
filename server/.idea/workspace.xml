@@ -49,9 +49,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a27ab6c6-a950-4442-ba9f-00845ee34f39" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/router/address.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/router/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/router/user.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/index.go" beforeDir="false" afterPath="$PROJECT_DIR$/types/index.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -141,9 +142,9 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="309" y="196" width="998" height="708" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1601447950303" />
-    <state x="663" y="94" width="594" height="852" key="find.popup" timestamp="1603355147043">
+    <state x="663" y="94" width="594" height="852" key="find.popup" timestamp="1603432615905">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="663" y="94" width="594" height="852" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1603355147043" />
+    <state x="663" y="94" width="594" height="852" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1603432615905" />
   </component>
 </project>
