@@ -88,15 +88,9 @@ func SignIn(user types.User, ua *user_agent.UserAgent) types.AuthReq {
 	return req
 }
 
-func GetUserInfo(Authorization string) types.Userinfo {
-	userToken, success := pool.GetUserByToken(Authorization)
-	fmt.Println(666, userToken, success)
-	userinfo := types.Userinfo{}
-	if success {
-		userinfo.Code = 200
-	} else {
-		userinfo.Code = 403
-		userinfo.Msg = "登录失效，请重新登录！"
-	}
-	return userinfo
+func GetUserInfo(username string) (types.User, error) {
+	var findUser = types.User{}
+	dbFind := DB.Where("username = ?", username).First(&findUser)
+	err := dbFind.Error
+	return findUser, err
 }

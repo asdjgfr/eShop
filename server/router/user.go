@@ -7,6 +7,7 @@ import (
 	"myModule/lib"
 	"myModule/types"
 	"strconv"
+	"time"
 )
 
 //用户路由
@@ -58,9 +59,31 @@ func GetUserInfo(r *gin.RouterGroup) {
 	//获取用户的信息
 	r.POST(Address["getUserInfo"], func(c *gin.Context) {
 		username, _ := c.Get("username")
-		c.JSON(200, gin.H{
-			"code": 200,
-			"msg":  username,
-		})
+		userInfo, err := db.GetUserInfo(username.(string))
+
+		if err == nil {
+			c.JSON(200, gin.H{
+				"code": 200,
+				"msg":  "查询成功！",
+				"userinfo": struct {
+					Username string
+					Email    string
+					Phone    string
+					Role     int
+					Birthday time.Time
+				}{
+					Username: userInfo.Username,
+					Email:    userInfo.Email,
+					Phone:    userInfo.Phone[:3] + "****" + userInfo.Phone[6:],
+					Role:     userInfo.Role,
+					Birthday: userInfo.Birthday,
+				},
+			})
+		} else {
+			c.JSON(200, gin.H{
+				"code": 406,
+				"msg":  "获取用户信息失败！",
+			})
+		}
 	})
 }
