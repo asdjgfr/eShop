@@ -2,6 +2,7 @@ package db
 
 import (
 	"fmt"
+	"github.com/mssola/user_agent"
 	"myModule/lib"
 	"myModule/pool"
 	"myModule/types"
@@ -51,20 +52,38 @@ func SignUp(newUser types.User) types.RepMsg {
 	return req
 }
 
-func SignIn(user types.User, device string) types.AuthReq {
+func SignIn(user types.User, ua *user_agent.UserAgent) types.AuthReq {
+	device := "unknown"
+	if ua.Mobile() {
+		fmt.Printf("%v\n", ua.Mozilla())  // => "5.0"
+		fmt.Printf("%v\n", ua.Platform()) // => "X11"
+		fmt.Printf("os%v\n", ua.OS())     // => "Linux x86_64"
+	} else if ua.Platform() != "" && ua.OS() != "" {
+		device = "pc"
+	}
+
 	var req types.AuthReq
 	//前台传来的密码
-	req = types.AuthReq{RepMsg: types.RepMsg{Code: 403, Msg: "登录失败！"}, Authorization: ""}
+	req = types.AuthReq{RepMsg: types.RepMsg{Code: 403, Msg: "登录失败！"}, Authorization: "", Success: false}
 	SignInPassword := user.Password
 	findUser := DB.Where("username = ?", user.Username).First(&user)
 	//查询后user变成了数据库中的数据
+	fmt.Println("错误", findUser.Error)
 	if findUser.Error != nil {
-		req = types.AuthReq{RepMsg: types.RepMsg{Code: 403, Msg: "用户不存在！"}, Authorization: ""}
+		req.Code = 403
+		req.Msg = "用户不存在！"
+		req.Success = false
+		return req
 	}
 	_, pas := lib.EncryptionString(SignInPassword, user.Salt)
 	if pas == user.Password {
-		Authorization := pool.SetUserToken(user, device)
-		req = types.AuthReq{RepMsg: types.RepMsg{Code: 200, Msg: "登录成功！"}, Authorization: Authorization}
+		req.Code = 200
+		req.Msg = "登录成功！"
+		req.Authorization = pool.SetUserToken(user, device)
+		req.Success = true
+	} else {
+		req.Code = 403
+		req.Msg = "密码错误，请检查后重试！"
 	}
 	return req
 }

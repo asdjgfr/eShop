@@ -22,6 +22,11 @@ func main() {
 	r := gin.Default()
 	//初始化路由地址
 	router.InitRouterAddress()
+	//所有api下面的都需要走中间件
+	apiGroup := r.Group("/api")
+	//挂载中间件
+	apiGroup.Use(router.VerifyPermissions())
+	router.InitAPIRoutes(apiGroup)
 	router.InitRoutes(r)
 	_ = r.Run(":" + strconv.Itoa(globalConfig.Port))
 }

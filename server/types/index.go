@@ -40,14 +40,11 @@ type (
 	AuthReq struct {
 		RepMsg
 		Authorization string
+		Success       bool
 	}
 	Userinfo struct {
 		RepMsg
 		Username string
-	}
-	CheckLogin struct {
-		RepMsg
-		IsLogin bool
 	}
 	UserToken struct {
 		//用户名
@@ -55,6 +52,10 @@ type (
 		UpdateAt time.Time
 		Role     int
 		Device   string
+	}
+	CheckLogin struct {
+		RepMsg
+		IsLogin bool
 	}
 )
 

@@ -15,7 +15,7 @@ func SetUserToken(user types.User, device string) string {
 	//设置用户登录时的token
 	token := lib.GenerateUUID()
 	globalConfig := config.GlobalConfig
-	redisKey := token + "#" + user.Username
+	redisKey := token + "#" + user.Username + "#" + device
 	resToken := lib.EncryptAES(redisKey, globalConfig.Crypto.AES)
 
 	userToken := types.UserToken{Username: user.Username, UpdateAt: time.Now(), Role: user.Role, Device: device}
