@@ -39,7 +39,7 @@ func signUp(r *gin.RouterGroup) {
 }
 
 func signIn(r *gin.RouterGroup) {
-	//用户注册接口
+	//用户登录接口
 	r.POST(Address["signIn"], func(c *gin.Context) {
 		ua := c.Request.Header.Get("user-agent")
 		res := db.SignIn(types.User{

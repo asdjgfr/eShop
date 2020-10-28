@@ -6,6 +6,7 @@ import history from "@/router/history";
 import Loading from "@/pages/Loading";
 import Error from "@/pages/Error";
 
+const Main = lazy(() => import("@/pages/Main"));
 const Login = lazy(() => import("@/pages/Login"));
 const Admin = lazy(() => import("@/pages/Admin"));
 const Feedback = lazy(() => import("@/pages/Feedback"));
@@ -17,6 +18,9 @@ export default function App() {
       <HistoryContext.Provider value={{ history }}>
         <Suspense fallback={<Loading />}>
           <Switch>
+            <Route path="/" exact>
+              <Main/>
+            </Route>
             <Route path="/login">
               <Login />
             </Route>

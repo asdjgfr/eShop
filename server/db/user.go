@@ -68,7 +68,6 @@ func SignIn(user types.User, ua *user_agent.UserAgent) types.AuthReq {
 	SignInPassword := user.Password
 	findUser := DB.Where("username = ?", user.Username).First(&user)
 	//查询后user变成了数据库中的数据
-	fmt.Println("错误", findUser.Error)
 	if findUser.Error != nil {
 		req.Code = 403
 		req.Msg = "用户不存在！"
@@ -77,6 +76,7 @@ func SignIn(user types.User, ua *user_agent.UserAgent) types.AuthReq {
 	}
 	_, pas := lib.EncryptionString(SignInPassword, user.Salt)
 	if pas == user.Password {
+		pool.RemoveToken(user.Username, device)
 		req.Code = 200
 		req.Msg = "登录成功！"
 		req.Authorization = pool.SetUserToken(user, device)

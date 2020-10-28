@@ -25,21 +25,17 @@ func SetUserToken(user types.User, device string) string {
 	return resToken
 }
 
-func GetUserByToken(encryptedString string) (types.UserToken, bool) {
-	token, username, success := decodeTokenAndUsername(encryptedString)
-	userToken := types.UserToken{}
-	if !success {
-		return userToken, success
+func RemoveToken(username, device string) {
+	iter := redis.Rdb.Scan(redis.RdbCtx, 0, "*#"+username+"#"+device, 0).Iterator()
+	for iter.Next(redis.RdbCtx) {
+		err := redis.Rdb.Del(redis.RdbCtx, iter.Val()).Err()
+		if err != nil {
+			fmt.Println("删除已旧的token失败：", err)
+		}
 	}
-	fmt.Println(888, token, username)
-	//findToken, err := redis.Rdb.Get(redis.RdbCtx, token).Result()
-
-	//if err == goRedis.Nil {
-	//	hasToken = false
-	//}
-	////反序列化
-	//_ = json.Unmarshal([]byte(findToken), &userToken)
-	return userToken, success
+	if err := iter.Err(); err != nil {
+		fmt.Println("查找旧token失败：", err)
+	}
 }
 
 func decodeTokenAndUsername(encryptedString string) (string, string, bool) {
