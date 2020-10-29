@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { Button, Skeleton } from "antd";
 import { ReactComponent as MainBg } from "@/static/img/main.svg";
 import { getShopInfo } from "@/api/universal";

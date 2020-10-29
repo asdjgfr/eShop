@@ -5,7 +5,7 @@ interface iState {}
 class Feedback extends React.Component<iProps, iState> {
   render() {
     return (
-      <div className="login">
+      <div>
         反馈
         <Link to="/sign-in">admin</Link>
       </div>

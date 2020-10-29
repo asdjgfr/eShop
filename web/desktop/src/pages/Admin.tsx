@@ -5,7 +5,7 @@ interface iState {}
 class Admin extends React.Component<iProps, iState> {
   render() {
     return (
-      <div className="login">
+      <div>
         管理页
         <Link to="/sign-in">admin</Link>
       </div>
