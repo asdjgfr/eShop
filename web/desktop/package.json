@@ -12,6 +12,7 @@
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.1.5",
     "antd": "^4.6.6",
+    "axios": "^0.21.0",
     "dayjs": "^1.9.0",
     "mobx": "^5.15.7",
     "mobx-react": "^6.3.0",
@@ -47,7 +48,9 @@
     "customize-cra": "^1.0.0",
     "less": "^3.12.2",
     "less-loader": "^7.0.1",
+    "prettier": "2.1.2",
     "react-app-rewired": "^2.1.6"
   },
-  "homepage": "."
+  "homepage": ".",
+  "proxy": "http://127.0.0.1:5001"
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import { Result, Button } from "antd";
-import { inject, observer } from "mobx-react";
+import { inject } from "mobx-react";
 import Store from "@/store";
 
 interface iProps {
@@ -46,7 +46,7 @@ class Error extends React.Component<iProps, iState> {
               <Button
                 key="403"
                 type="primary"
-                onClick={this.backToHome.bind(this, "/login")}
+                onClick={this.backToHome.bind(this, "/sign-in")}
               >
                 登录
               </Button>

@@ -1,6 +1,8 @@
 package router
 
-var Address = map[string]string{}
+var Address = map[string]string{
+	"getShopInfo": "/info/get-shop-info",
+}
 
 func InitRouterAddress() {
 	//初始化路由地址

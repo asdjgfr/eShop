@@ -18,4 +18,19 @@ func InitDB(config types.DbConfig) {
 		fmt.Println("数据库连接失败: ", err)
 	}
 	_ = DB.AutoMigrate(&types.User{})
+	_ = DB.AutoMigrate(&types.ShopInfo{})
+	initDBData(DB)
+}
+func initDBData(db *gorm.DB) {
+	//需要初始化的数据库数据
+	initShopInfo(db)
+}
+
+func initShopInfo(db *gorm.DB) {
+	var shopInfo types.ShopInfo
+	result := db.First(&shopInfo)
+	if result.Error != nil {
+		info := types.ShopInfo{Name: "xxx", Introduction: "说明", Suffix: "智慧门店"}
+		_ = db.Create(&info)
+	}
 }

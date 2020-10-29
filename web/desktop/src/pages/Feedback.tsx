@@ -7,7 +7,7 @@ class Feedback extends React.Component<iProps, iState> {
     return (
       <div className="login">
         反馈
-        <Link to="/login">admin</Link>
+        <Link to="/sign-in">admin</Link>
       </div>
     );
   }

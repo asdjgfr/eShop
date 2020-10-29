@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 interface iProps {}
 interface iState {}
-class Login extends React.Component<iProps, iState> {
+class SignIn extends React.Component<iProps, iState> {
   render() {
     return (
       <div className="login">
@@ -13,4 +13,4 @@ class Login extends React.Component<iProps, iState> {
   }
 }
 
-export default Login;
+export default SignIn;

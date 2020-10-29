@@ -73,3 +73,15 @@ type User struct {
 	//储存密码时的盐
 	Salt string
 }
+
+//店铺信息
+type ShopInfo struct {
+	gorm.Model
+	Name string
+	//门店简介
+	Introduction string
+	//首页的后缀
+	Suffix string
+	Phones string
+	Email  string
+}

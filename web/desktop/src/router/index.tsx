@@ -7,7 +7,8 @@ import Loading from "@/pages/Loading";
 import Error from "@/pages/Error";
 
 const Main = lazy(() => import("@/pages/Main"));
-const Login = lazy(() => import("@/pages/Login"));
+const SignIn = lazy(() => import("@/pages/SignIn"));
+const SignUp = lazy(() => import("@/pages/SignUp"));
 const Admin = lazy(() => import("@/pages/Admin"));
 const Feedback = lazy(() => import("@/pages/Feedback"));
 
@@ -19,10 +20,13 @@ export default function App() {
         <Suspense fallback={<Loading />}>
           <Switch>
             <Route path="/" exact>
-              <Main/>
+              <Main />
             </Route>
-            <Route path="/login">
-              <Login />
+            <Route path="/sign-in">
+              <SignIn />
+            </Route>
+            <Route path="/sign-up">
+              <SignUp />
             </Route>
             <Route path="/admin">
               <Admin />

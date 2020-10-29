@@ -17,7 +17,8 @@ var excludeUrl = map[string]bool{
 
 //路由主文件
 func InitRoutes(r *gin.Engine) {
-	//初始化不需要验证的通用路由
+	//初始化未分组的路由
+	InitInfoRouter(r)
 }
 
 func InitAPIRoutes(r *gin.RouterGroup) {
@@ -33,9 +34,7 @@ func VerifyPermissions() gin.HandlerFunc {
 		} else {
 			Authorization := context.Request.Header.Get("Authorization")
 			loginRes, userToken := CheckLogin(Authorization)
-			fmt.Print("验证loginRes", loginRes)
-			fmt.Print("验证userToken", userToken)
-			if loginRes.IsLogin {
+			if loginRes.IsLogin && checkRole(Authorization) {
 				context.Set("username", userToken.Username)
 			} else {
 				context.JSON(200, gin.H{
@@ -93,4 +92,9 @@ func CheckLogin(authorization string) (types.CheckLogin, types.UserToken) {
 	res.Code = 200
 	res.IsLogin = true
 	return res, userToken
+}
+
+//检查角色有没有权限
+func checkRole(authorization string) bool {
+	return true
 }
