@@ -1,11 +1,10 @@
 import { Provider } from "mobx-react";
 import React from "react";
 import ReactDOM from "react-dom";
-import { ConfigProvider } from "antd";
 import "./index.less";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import zhCN from "antd/es/locale/zh_CN";
+import I18n from "@/i18n";
 import "dayjs/locale/zh-cn";
 
 import Store from "@/store";
@@ -16,9 +15,9 @@ const store = {
 
 ReactDOM.render(
   <Provider {...store}>
-    <ConfigProvider locale={zhCN}>
+    <I18n>
       <App />
-    </ConfigProvider>
+    </I18n>
   </Provider>,
   document.getElementById("root")
 );

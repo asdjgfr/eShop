@@ -1,20 +1,27 @@
 import React from "react";
 import { Form, Input, Button, Checkbox } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { inject } from "mobx-react";
+import Store from "@/store";
 
-interface iProps {}
+interface iProps {
+  store?: Store;
+}
 interface iState {}
+
+@inject("store")
 class SignIn extends React.Component<iProps, iState> {
   onFinish(values: any) {
     console.log(values);
   }
   render() {
+    console.log(this.props.store?.i18n.test);
     return (
       <div className="sign-in">
         <div className="sign-in-content">
           <header className="sign-in-title">
             <i />
-            <span>标题</span>
+            <span>123</span>
           </header>
           <p className="sign-in-sub-title">副标题</p>
           <Form
@@ -29,7 +36,7 @@ class SignIn extends React.Component<iProps, iState> {
             >
               <Input
                 prefix={<UserOutlined className="site-form-item-icon" />}
-                placeholder="Username"
+                placeholder="请输入用户名"
               />
             </Form.Item>
             <Form.Item
@@ -39,7 +46,7 @@ class SignIn extends React.Component<iProps, iState> {
               <Input
                 prefix={<LockOutlined className="site-form-item-icon" />}
                 type="password"
-                placeholder="Password"
+                placeholder="请输入密码"
               />
             </Form.Item>
             <Form.Item>
