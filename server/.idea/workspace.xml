@@ -48,26 +48,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a27ab6c6-a950-4442-ba9f-00845ee34f39" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/router/info.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../web/desktop/.idea/prettier.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../web/desktop/.idea/watcherTasks.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../web/desktop/src/api/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../web/desktop/src/api/universal.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../web/desktop/src/css/mainPage.less" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../web/desktop/src/static/img/main.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/index.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/index.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/router/address.go" beforeDir="false" afterPath="$PROJECT_DIR$/router/address.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/router/index.go" beforeDir="false" afterPath="$PROJECT_DIR$/router/index.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/index.go" beforeDir="false" afterPath="$PROJECT_DIR$/types/index.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../web/desktop/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../web/desktop/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../web/desktop/paths.json" beforeDir="false" afterPath="$PROJECT_DIR$/../web/desktop/paths.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../web/desktop/src/App.less" beforeDir="false" afterPath="$PROJECT_DIR$/../web/desktop/src/App.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../web/desktop/src/pages/Error.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../web/desktop/src/pages/Error.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../web/desktop/src/pages/Main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../web/desktop/src/pages/Main.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../web/desktop/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../web/desktop/yarn.lock" afterDir="false" />
-    </list>
+    <list default="true" id="a27ab6c6-a950-4442-ba9f-00845ee34f39" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

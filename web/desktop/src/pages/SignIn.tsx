@@ -1,21 +1,18 @@
 import React from "react";
 import { Form, Input, Button, Checkbox } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { inject } from "mobx-react";
-import Store from "@/store";
+import { withTranslation, WithTranslation } from "react-i18next";
 
-interface iProps {
-  store?: Store;
-}
+interface iProps extends WithTranslation {}
 interface iState {}
 
-@inject("store")
 class SignIn extends React.Component<iProps, iState> {
   onFinish(values: any) {
     console.log(values);
   }
   render() {
-    console.log(this.props.store?.i18n.test);
+    const { t } = this.props;
+    console.log(t, t("username"));
     return (
       <div className="sign-in">
         <div className="sign-in-content">
@@ -32,11 +29,11 @@ class SignIn extends React.Component<iProps, iState> {
           >
             <Form.Item
               name="username"
-              rules={[{ required: true, message: "请输入用户名！" }]}
+              rules={[{ required: true, message: t("username") }]}
             >
               <Input
                 prefix={<UserOutlined className="site-form-item-icon" />}
-                placeholder="请输入用户名"
+                placeholder={t("username")}
               />
             </Form.Item>
             <Form.Item
@@ -75,5 +72,4 @@ class SignIn extends React.Component<iProps, iState> {
     );
   }
 }
-
-export default SignIn;
+export default withTranslation()(SignIn);
