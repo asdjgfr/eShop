@@ -2,8 +2,12 @@ const action = process.argv[2];
 const { spawn } = require("child_process");
 const path = require("path");
 const fs = require("fs");
+const os = require("os");
 
 const buildPath = path.join(__dirname, "build");
+
+const isWin = os.platform() === "win32";
+const programName = isWin ? "main.exe" : "main";
 
 const actions = {
   install() {
@@ -26,7 +30,7 @@ const actions = {
     // 服务端打包
     const cwd = path.resolve(__dirname, "server");
     try {
-      fs.unlinkSync(`${buildPath}/main.exe`);
+      fs.unlinkSync(`${buildPath}/${programName}`);
       console.log("移除上次打包文件成功！");
     } catch (e) {}
     try {
@@ -39,9 +43,12 @@ const actions = {
       path.join(cwd, "config.json"),
       path.join(buildPath, "config.json")
     );
+    console.log("复制配置文件成功！");
+
+    console.log("重新打包！");
     const build = spawn(
       "go",
-      ["build", "-o", `${buildPath}/main.exe`, "main.go"],
+      ["build", "-o", `${buildPath}/${programName}`, "main.go"],
       {
         cwd,
         shell: true,
@@ -64,7 +71,7 @@ const actions = {
   },
   async "dev:server"() {
     await this["build:server"]();
-    const server = spawn(`main.exe`, {
+    const server = spawn(`${isWin ? "" : "./"}${programName}`, {
       cwd: buildPath,
       shell: true,
     });
