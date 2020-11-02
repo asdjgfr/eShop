@@ -2,6 +2,8 @@ import React from "react";
 import { Form, Input, Button, Checkbox } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { withTranslation, WithTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
+import { WechatOutlined } from "@ant-design/icons";
 
 interface iProps extends WithTranslation {}
 interface iState {}
@@ -12,7 +14,6 @@ class SignIn extends React.Component<iProps, iState> {
   }
   render() {
     const { t } = this.props;
-    console.log(t, t("username"));
     return (
       <div className="sign-in">
         <div className="sign-in-content">
@@ -29,42 +30,64 @@ class SignIn extends React.Component<iProps, iState> {
           >
             <Form.Item
               name="username"
-              rules={[{ required: true, message: t("username") }]}
+              rules={[
+                {
+                  required: true,
+                  message: t("plsEnter") + t("username") + t("!"),
+                },
+              ]}
             >
               <Input
                 prefix={<UserOutlined className="site-form-item-icon" />}
-                placeholder={t("username")}
+                placeholder={t("plsEnter") + t("username")}
               />
             </Form.Item>
             <Form.Item
               name="password"
-              rules={[{ required: true, message: "请输入密码！" }]}
+              rules={[
+                {
+                  required: true,
+                  message: t("plsEnter") + t("password") + t("!"),
+                },
+              ]}
             >
               <Input
                 prefix={<LockOutlined className="site-form-item-icon" />}
                 type="password"
-                placeholder="请输入密码"
+                placeholder={t("plsEnter") + t("password")}
               />
             </Form.Item>
             <Form.Item>
-              <Form.Item name="remember" valuePropName="checked" noStyle>
-                <Checkbox>记住密码</Checkbox>
-              </Form.Item>
-
-              <a className="login-form-forgot" href="">
-                忘记密码
-              </a>
+              <div className="justify-between">
+                <Form.Item name="remember" valuePropName="checked" noStyle>
+                  <Checkbox>{t("remember") + t("password")}</Checkbox>
+                </Form.Item>
+                <Link to="/user/forget-password">
+                  {t("forget") + t("password")}
+                </Link>
+              </div>
             </Form.Item>
-
             <Form.Item>
               <Button
                 type="primary"
                 htmlType="submit"
                 className="login-form-button"
+                block
               >
-                登录
+                {t("signIn")}
               </Button>
-              或 <a href="">注册</a>
+            </Form.Item>
+            <Form.Item>
+              <div className="justify-between">
+                <span>
+                  {t("otherSignInMethods")}
+                  <WechatOutlined
+                    className="margin-l-r-8 click-item"
+                    title={t("wechat")}
+                  />
+                </span>
+                <Link to="/user/signUp">{t("signUp")}</Link>
+              </div>
             </Form.Item>
           </Form>
         </div>

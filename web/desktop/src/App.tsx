@@ -2,19 +2,20 @@ import React from "react";
 import Router from "@/router";
 import "./App.less";
 import { Provider } from "mobx-react";
-import Store from "@/store";
+import store from "@/store";
 import I18n from "@/i18n";
-
-const store = {
-  store: new Store(),
-};
+import initFn from "@/lib/rc.local";
 
 interface iProps {}
 interface iState {}
+
 class App extends React.Component<iProps, iState> {
+  async componentDidMount() {
+    await initFn();
+  }
   render() {
     return (
-      <Provider {...store}>
+      <Provider {...{ store }}>
         <I18n>
           <Router />
         </I18n>

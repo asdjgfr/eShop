@@ -2,5 +2,13 @@
   "username": "用户名",
   "password": "密码",
   "!": "！",
-  "plsEnter": "请输入"
+  "plsEnter": "请输入",
+  "remember": "记住",
+  "forget": "忘记",
+  "signIn": "登录",
+  "signOut": "注销",
+  "or": "或",
+  "signUp": "注册",
+  "otherSignInMethods": "其他登录方式",
+  "wechat": "微信"
 }

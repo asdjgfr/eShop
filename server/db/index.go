@@ -30,7 +30,7 @@ func initShopInfo(db *gorm.DB) {
 	var shopInfo types.ShopInfo
 	result := db.First(&shopInfo)
 	if result.Error != nil {
-		info := types.ShopInfo{Name: "xxx", Introduction: "说明", Suffix: "智慧门店"}
+		info := types.ShopInfo{Name: "欣念", Introduction: "说明", Suffix: "智慧门店"}
 		_ = db.Create(&info)
 	}
 }
