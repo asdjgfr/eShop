@@ -8,9 +8,9 @@
     "i": "yarn install",
     "build": "node scripts.js build",
     "build:server": "node scripts.js build:server",
-    "build:desktop": "node scripts.js build:desktop",
-    "dev:desktop": "node scripts.js dev:desktop",
-    "dev:d": "yarn dev:desktop",
+    "build:web": "node scripts.js build:web",
+    "dev:web": "node scripts.js dev:web",
+    "dev:w": "yarn dev:web",
     "dev:server": "nodemon -e go --watch ./server --inspect ./scripts.js dev:server",
     "dev:s": "yarn dev:server"
   },

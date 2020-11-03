@@ -13,18 +13,18 @@ const actions = {
   install() {
     // 安装桌面的依赖
     const install = spawn("yarn", [], {
-      cwd: path.resolve(__dirname, "web/desktop"),
+      cwd: path.resolve(__dirname, "client/web"),
       shell: true,
     });
-    spawnCB(install, "web桌面依赖");
+    spawnCB(install, "web依赖");
   },
 
-  "dev:desktop"() {
+  "dev:web"() {
     const build = spawn("yarn", ["start"], {
-      cwd: path.resolve(__dirname, "web/desktop"),
+      cwd: path.resolve(__dirname, "client/web"),
       shell: true,
     });
-    spawnCB(build, "web桌面开发");
+    spawnCB(build, "web开发");
   },
   async "build:server"() {
     // 服务端打包
@@ -57,17 +57,17 @@ const actions = {
     );
     await spawnCB(build, "服务端打包");
   },
-  async "build:desktop"() {
+  async "build:web"() {
     // web桌面打包
     const build = spawn("yarn", ["build"], {
-      cwd: path.resolve(__dirname, "web/desktop"),
+      cwd: path.resolve(__dirname, "client/web"),
       shell: true,
     });
-    await spawnCB(build, "web桌面打包");
+    await spawnCB(build, "web打包");
   },
   async build() {
     await this["build:server"]();
-    await this["build:desktop"]();
+    await this["build:web"]();
   },
   async "dev:server"() {
     await this["build:server"]();
