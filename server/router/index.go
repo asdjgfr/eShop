@@ -49,10 +49,6 @@ func VerifyPermissions() gin.HandlerFunc {
 
 //检查是否登录成功
 func CheckLogin(authorization string) (types.CheckLogin, types.UserToken) {
-	var userToken types.UserToken
-	globalConfig := config.GlobalConfig
-	tokenAndUsername, success := lib.DecryptAES(authorization, globalConfig.Crypto.AES)
-	tokenAndUsernameSplit := strings.Split(tokenAndUsername, "#")
 	res := types.CheckLogin{
 		RepMsg: types.RepMsg{
 			Code: 501,
@@ -60,6 +56,19 @@ func CheckLogin(authorization string) (types.CheckLogin, types.UserToken) {
 		},
 		IsLogin: false,
 	}
+	var userToken types.UserToken
+	if authorization == "" {
+		//没有身份
+		res.Msg = "获取身份信息失败，请登录！"
+		res.Code = 401
+		res.IsLogin = false
+		return res, userToken
+
+	}
+	globalConfig := config.GlobalConfig
+	tokenAndUsername, success := lib.DecryptAES(authorization, globalConfig.Crypto.AES)
+	tokenAndUsernameSplit := strings.Split(tokenAndUsername, "#")
+
 	if !success {
 		//解码失败返回false
 		res.Msg = "身份验证失败，请重新登录！"
