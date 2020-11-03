@@ -5,7 +5,7 @@ import Store from "@/store";
 
 interface iProps {
   errorCode: 403 | 404 | 500;
-  store?: Store;
+  store?: typeof Store;
 }
 
 interface iState {}

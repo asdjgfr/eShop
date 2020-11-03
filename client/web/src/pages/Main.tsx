@@ -5,7 +5,7 @@ import Store from "@/store";
 import { inject } from "mobx-react";
 
 interface iProps {
-  store: typeof Store;
+  store?: typeof Store;
 }
 interface iState {}
 
@@ -13,16 +13,16 @@ interface iState {}
 class Main extends React.Component<iProps, iState> {
   public state = {};
   handleJump(path: string) {
-    this.props.store.history.push(path);
+    this.props.store?.history.push(path);
   }
   render() {
     return (
       <div className="main-page">
         <div className="main-page-content">
           <header className="main-page-header">
-            {this.props.store.shopInfo.title}
+            {this.props.store?.shopInfo.title}
             <br />
-            {this.props.store.shopInfo.titleSuffix}
+            {this.props.store?.shopInfo.titleSuffix}
           </header>
           <div className="main-page-btn-group">
             <Button
@@ -43,7 +43,7 @@ class Main extends React.Component<iProps, iState> {
             </Button>
           </div>
           <p className="main-page-introduction">
-            {this.props.store.shopInfo.introduction}
+            {this.props.store?.shopInfo.introduction}
           </p>
         </div>
         <div className="main-page-banner">
