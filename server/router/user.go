@@ -46,7 +46,6 @@ func signIn(r *gin.RouterGroup) {
 			Username: c.Request.PostFormValue("username"),
 			Password: c.Request.PostFormValue("password"),
 		}, user_agent.New(ua))
-
 		c.JSON(200, gin.H{
 			"code":          res.Code,
 			"msg":           res.Msg,

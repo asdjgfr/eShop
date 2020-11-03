@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "antd";
+import { Button,Skeleton } from "antd";
 import { ReactComponent as MainBg } from "@/static/img/main.svg";
 import Store from "@/store";
 import { inject } from "mobx-react";
@@ -19,11 +19,13 @@ class Main extends React.Component<iProps, iState> {
     return (
       <div className="main-page">
         <div className="main-page-content">
-          <header className="main-page-header">
-            {this.props.store?.shopInfo.title}
-            <br />
-            {this.props.store?.shopInfo.titleSuffix}
-          </header>
+          <Skeleton active loading={!this.props.store?.shopInfo.title&&!this.props.store?.shopInfo.titleSuffix}>
+            <header className="main-page-header">
+              {this.props.store?.shopInfo.title}
+              <br />
+              {this.props.store?.shopInfo.titleSuffix}
+            </header>
+          </Skeleton>
           <div className="main-page-btn-group">
             <Button
               type="primary"

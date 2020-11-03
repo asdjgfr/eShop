@@ -10,5 +10,8 @@
   "or": "或",
   "signUp": "注册",
   "otherSignInMethods": "其他登录方式",
-  "wechat": "微信"
+  "wechat": "微信",
+  "least3": "最少3位",
+  "least8": "最少8位",
+  "most16": "最多16位"
 }

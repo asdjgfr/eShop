@@ -49,16 +49,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a27ab6c6-a950-4442-ba9f-00845ee34f39" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../web/desktop/src/lib/rc.local.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../client/web/src/api/user.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/public/i18n/zh-CN.json" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/public/i18n/zh-CN.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/src/api/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/src/api/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/src/lib/validator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/src/lib/validator.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/src/pages/Main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/src/pages/Main.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/src/pages/SignIn.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/src/pages/SignIn.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/yarn.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/index.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/index.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../web/desktop/public/i18n/zh-CN.json" beforeDir="false" afterPath="$PROJECT_DIR$/../web/desktop/public/i18n/zh-CN.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../web/desktop/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../web/desktop/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../web/desktop/src/index.less" beforeDir="false" afterPath="$PROJECT_DIR$/../web/desktop/src/index.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../web/desktop/src/pages/Feedback.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../web/desktop/src/pages/Feedback.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../web/desktop/src/pages/Main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../web/desktop/src/pages/Main.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../web/desktop/src/pages/SignIn.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../web/desktop/src/pages/SignIn.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../web/desktop/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/../web/desktop/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/router/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/router/user.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -149,9 +150,9 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="309" y="196" width="998" height="708" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1603768960964" />
-    <state x="663" y="94" width="594" height="852" key="find.popup" timestamp="1604304964843">
+    <state x="663" y="94" width="594" height="852" key="find.popup" timestamp="1604371535666">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="663" y="94" width="594" height="852" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1604304964843" />
+    <state x="663" y="94" width="594" height="852" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1604371535666" />
   </component>
 </project>
