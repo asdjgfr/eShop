@@ -49,16 +49,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a27ab6c6-a950-4442-ba9f-00845ee34f39" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../client/web/src/pages/ShopList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/src/api/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/src/api/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/src/api/user.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/src/api/user.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/src/css/signin.less" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/src/css/signin.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/src/pages/SignIn.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/src/pages/SignIn.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/src/router/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/src/router/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/router/index.go" beforeDir="false" afterPath="$PROJECT_DIR$/router/index.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../client/web/src/components/GlobalLoading.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

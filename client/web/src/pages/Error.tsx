@@ -10,7 +10,7 @@ interface iProps {
 
 interface iState {}
 
-@inject("store")
+@inject("history")
 class Error extends React.Component<iProps, iState> {
   get errorMsg() {
     let msg = "对不起，";

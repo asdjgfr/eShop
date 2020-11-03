@@ -20,5 +20,5 @@ class ShopInfo implements shopInfo {
     this.introduction = info.introduction;
   }
 }
-
-export default ShopInfo;
+const shopInfo = new ShopInfo();
+export default shopInfo;

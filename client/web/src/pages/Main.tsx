@@ -1,5 +1,5 @@
 import React from "react";
-import { Button,Skeleton } from "antd";
+import { Button, Skeleton } from "antd";
 import { ReactComponent as MainBg } from "@/static/img/main.svg";
 import Store from "@/store";
 import { inject } from "mobx-react";
@@ -9,7 +9,7 @@ interface iProps {
 }
 interface iState {}
 
-@inject("store")
+@inject("shopInfo")
 class Main extends React.Component<iProps, iState> {
   public state = {};
   handleJump(path: string) {
@@ -19,7 +19,13 @@ class Main extends React.Component<iProps, iState> {
     return (
       <div className="main-page">
         <div className="main-page-content">
-          <Skeleton active loading={!this.props.store?.shopInfo.title&&!this.props.store?.shopInfo.titleSuffix}>
+          <Skeleton
+            active
+            loading={
+              !this.props.store?.shopInfo.title &&
+              !this.props.store?.shopInfo.titleSuffix
+            }
+          >
             <header className="main-page-header">
               {this.props.store?.shopInfo.title}
               <br />

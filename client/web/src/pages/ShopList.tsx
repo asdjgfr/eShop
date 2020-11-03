@@ -1,15 +1,10 @@
 import React from "react";
-import { Button, Skeleton } from "antd";
-import Store from "@/store";
-import { inject } from "mobx-react";
+import { Button } from "antd";
 import { getUserInfo } from "@/api/user";
 
-interface iProps {
-  store?: typeof Store;
-}
+interface iProps {}
 interface iState {}
 
-@inject("store")
 class ShopList extends React.Component<iProps, iState> {
   state = {};
   async getMsg() {
