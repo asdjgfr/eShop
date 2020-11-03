@@ -31,6 +31,7 @@ class SignIn extends React.Component<iProps, iState> {
     const res = await signIn(username, password);
     let success = false;
     if (res.code === 200) {
+      localStorage.setItem("Authorization", res.Authorization);
       message.success(res.msg);
       await sleep(1000);
       success = true;
@@ -39,10 +40,11 @@ class SignIn extends React.Component<iProps, iState> {
     }
     if (success) {
       this.props.store?.history.push("/shop/shop-list");
+    } else {
+      this.setState({
+        loading: false,
+      });
     }
-    this.setState({
-      loading: false,
-    });
   }
   render() {
     const { t } = this.props;
@@ -59,7 +61,7 @@ class SignIn extends React.Component<iProps, iState> {
               }
             >
               <header className="sign-in-title">
-                <i />
+                <i style={{ backgroundImage: 'url("/logo192.png")' }} />
                 <span>{this.props.store?.shopInfo.title}</span>
               </header>
               <p className="sign-in-sub-title">

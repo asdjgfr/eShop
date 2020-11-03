@@ -11,6 +11,7 @@ const SignIn = lazy(() => import("@/pages/SignIn"));
 const SignUp = lazy(() => import("@/pages/SignUp"));
 const Admin = lazy(() => import("@/pages/Admin"));
 const Feedback = lazy(() => import("@/pages/Feedback"));
+const ShopList = lazy(() => import("@/pages/ShopList"));
 
 const HistoryContext = React.createContext({ history });
 export default function App() {
@@ -33,6 +34,9 @@ export default function App() {
             </Route>
             <Route path="/feedback">
               <Feedback />
+            </Route>
+            <Route path="/shop/shop-list">
+              <ShopList />
             </Route>
             <Route path="/403">
               <Error errorCode={403} />

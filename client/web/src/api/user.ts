@@ -6,3 +6,6 @@ export const signIn = function (username: string, password: string) {
     password,
   });
 };
+export const getUserInfo = function () {
+  return post("/api/get-user-info");
+};
