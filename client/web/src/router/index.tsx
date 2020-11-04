@@ -2,6 +2,8 @@ import React, { lazy, Suspense } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { Router } from "react-router";
 import history from "@/router/history";
+import routeMap from "./routeMap";
+import RouteAuth from "@/router/RouteAuth";
 
 import Loading from "@/pages/Loading";
 import Error from "@/pages/Error";
@@ -14,13 +16,15 @@ const Feedback = lazy(() => import("@/pages/Feedback"));
 const ShopList = lazy(() => import("@/pages/ShopList"));
 
 const HistoryContext = React.createContext({ history });
+
 export default function App() {
   return (
     <Router history={history}>
       <HistoryContext.Provider value={{ history }}>
         <Suspense fallback={<Loading />}>
           <Switch>
-            <Route path="/" exact>
+            <RouteAuth routeMap={routeMap} />
+            <Route path="/" exact={true}>
               <Main />
             </Route>
             <Route path="/sign-in">
