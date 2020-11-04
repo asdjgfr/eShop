@@ -1,11 +1,11 @@
 import React from "react";
 import { Result, Button } from "antd";
 import { inject } from "mobx-react";
-import Store from "@/store";
+import store from "@/store";
 
 interface iProps {
   errorCode: 403 | 404 | 500;
-  store?: typeof Store;
+  history?: typeof store.history;
 }
 
 interface iState {}
@@ -29,9 +29,9 @@ class Error extends React.Component<iProps, iState> {
   }
   backToHome(path: string) {
     if (path === "back") {
-      this.props.store?.history.go(-1);
+      this.props.history?.go(-1);
     } else {
-      this.props.store?.history.push(path);
+      this.props.history?.push(path);
     }
   }
   render() {

@@ -11,7 +11,6 @@ interface iState {}
 @observer
 class GlobalLoading extends React.Component<iProps, iState> {
   render() {
-    console.log("渲染", this.props.globalConfig?.loadingTip);
     return (
       <div className="global-loading">
         <Spin

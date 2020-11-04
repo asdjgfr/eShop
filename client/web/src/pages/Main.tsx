@@ -1,19 +1,21 @@
 import React from "react";
 import { Button, Skeleton } from "antd";
 import { ReactComponent as MainBg } from "@/static/img/main.svg";
-import Store from "@/store";
-import { inject } from "mobx-react";
+import store from "@/store";
+import { inject, observer } from "mobx-react";
 
 interface iProps {
-  store?: typeof Store;
+  shopInfo?: typeof store.shopInfo;
+  history?: typeof store.history;
 }
 interface iState {}
 
-@inject("shopInfo")
+@inject("shopInfo", "history")
+@observer
 class Main extends React.Component<iProps, iState> {
   public state = {};
   handleJump(path: string) {
-    this.props.store?.history.push(path);
+    this.props.history?.push(path);
   }
   render() {
     return (
@@ -22,14 +24,13 @@ class Main extends React.Component<iProps, iState> {
           <Skeleton
             active
             loading={
-              !this.props.store?.shopInfo.title &&
-              !this.props.store?.shopInfo.titleSuffix
+              !this.props.shopInfo?.title && !this.props.shopInfo?.titleSuffix
             }
           >
             <header className="main-page-header">
-              {this.props.store?.shopInfo.title}
+              {this.props.shopInfo?.title}
               <br />
-              {this.props.store?.shopInfo.titleSuffix}
+              {this.props.shopInfo?.titleSuffix}
             </header>
           </Skeleton>
           <div className="main-page-btn-group">
@@ -51,7 +52,7 @@ class Main extends React.Component<iProps, iState> {
             </Button>
           </div>
           <p className="main-page-introduction">
-            {this.props.store?.shopInfo.introduction}
+            {this.props.shopInfo?.introduction}
           </p>
         </div>
         <div className="main-page-banner">
