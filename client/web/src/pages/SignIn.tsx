@@ -51,7 +51,7 @@ class SignIn extends React.Component<iProps, iState> {
     const { t } = this.props;
     return (
       <Spin spinning={this.state.loading}>
-        <div className="sign-in">
+        <div className="sign-in account-bg">
           <div className="sign-in-content">
             <Skeleton
               active
@@ -60,7 +60,7 @@ class SignIn extends React.Component<iProps, iState> {
               }
             >
               <header className="sign-in-title">
-                <i style={{ backgroundImage: 'url("/logo192.png")' }} />
+                <i />
                 <span>{this.props.shopInfo?.title}</span>
               </header>
               <p className="sign-in-sub-title">
