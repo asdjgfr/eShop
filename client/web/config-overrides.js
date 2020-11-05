@@ -20,10 +20,7 @@ module.exports = {
     })
   ),
   paths: function (paths, env) {
-    paths.appBuild = path.join(
-      path.dirname(paths.appBuild),
-      "../../build/desktop"
-    );
+    paths.appBuild = path.join(path.dirname(paths.appBuild), "../../build/web");
     return paths;
   },
 };
