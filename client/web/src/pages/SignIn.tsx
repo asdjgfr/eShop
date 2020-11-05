@@ -33,7 +33,7 @@ class SignIn extends React.Component<iProps, iState> {
     const res = await signIn(username, password);
     if (res.code === 200) {
       localStorage.setItem("Authorization", res.Authorization);
-      message.success(res.msg + "一秒后跳转。");
+      message.success(res.msg + "1秒后跳转。");
       await sleep(1000);
       this.props.history?.push("/shop/shop-list");
     } else {
@@ -42,6 +42,10 @@ class SignIn extends React.Component<iProps, iState> {
       });
       message.error(res.msg);
     }
+  }
+  componentDidMount() {
+    // 跳转到登录页的时候清除token
+    localStorage.removeItem("Authorization");
   }
   render() {
     const { t } = this.props;

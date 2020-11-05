@@ -18,3 +18,6 @@ export const getUserInfo = function () {
     globalLoading: true,
   });
 };
+export const checkSignin = function () {
+  return post("/api/check-sign-in");
+};

@@ -17,10 +17,11 @@ function usernameAndPassword(type: "username" | "password", t: Function) {
 }
 
 function autoComplete(action?: "set", bool?: boolean) {
+  console.log(action, bool);
   if (action === "set") {
     localStorage.setItem("rememberPwd", bool ? "on" : "new-password");
   } else {
-    return localStorage.getItem("rememberPwd") ?? "new-password";
+    return localStorage.getItem("rememberPwd") ?? "off";
   }
 }
 export { usernameAndPassword, autoComplete };

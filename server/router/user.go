@@ -12,13 +12,15 @@ import (
 
 //用户路由
 func InitUserRouter(r *gin.RouterGroup) {
-	//注册接口
+
 	signUp(r)
-	//登录接口
+
 	signIn(r)
 	GetUserInfo(r)
+	CheckSignIn(r)
 }
 
+//注册接口
 func signUp(r *gin.RouterGroup) {
 	//用户注册接口
 	r.POST(Address["signUp"], func(c *gin.Context) {
@@ -38,6 +40,7 @@ func signUp(r *gin.RouterGroup) {
 	})
 }
 
+//登录接口
 func signIn(r *gin.RouterGroup) {
 	//用户登录接口
 	r.POST(Address["signIn"], func(c *gin.Context) {
@@ -84,5 +87,15 @@ func GetUserInfo(r *gin.RouterGroup) {
 				"msg":  "获取用户信息失败！",
 			})
 		}
+	})
+}
+
+//监测是否登录
+func CheckSignIn(r *gin.RouterGroup) {
+	r.POST(Address["checkSignIn"], func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"code": 200,
+			"msg":  "token有效！",
+		})
 	})
 }

@@ -12,7 +12,6 @@ class GlobalConfig implements globalConfig {
   @observable public loadingTip = "";
 
   @action.bound toggleLoading(bool?: boolean) {
-    console.log(this.loading);
     if (bool !== undefined) {
       this.loading = bool;
     } else {

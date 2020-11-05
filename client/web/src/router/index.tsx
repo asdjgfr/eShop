@@ -1,19 +1,11 @@
-import React, { lazy, Suspense } from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
+import React, { Suspense } from "react";
+import { Switch } from "react-router-dom";
 import { Router } from "react-router";
 import history from "@/router/history";
 import routeMap from "./routeMap";
 import RouteAuth from "@/router/RouteAuth";
 
 import Loading from "@/pages/Loading";
-import Error from "@/pages/Error";
-
-const Main = lazy(() => import("@/pages/Main"));
-const SignIn = lazy(() => import("@/pages/SignIn"));
-const SignUp = lazy(() => import("@/pages/SignUp"));
-const Admin = lazy(() => import("@/pages/Admin"));
-const Feedback = lazy(() => import("@/pages/Feedback"));
-const ShopList = lazy(() => import("@/pages/ShopList"));
 
 const HistoryContext = React.createContext({ history });
 
@@ -24,36 +16,6 @@ export default function App() {
         <Suspense fallback={<Loading />}>
           <Switch>
             <RouteAuth routeMap={routeMap} />
-            <Route path="/" exact={true}>
-              <Main />
-            </Route>
-            <Route path="/sign-in">
-              <SignIn />
-            </Route>
-            <Route path="/sign-up">
-              <SignUp />
-            </Route>
-            <Route path="/admin">
-              <Admin />
-            </Route>
-            <Route path="/feedback">
-              <Feedback />
-            </Route>
-            <Route path="/shop/shop-list">
-              <ShopList />
-            </Route>
-            <Route path="/403">
-              <Error errorCode={403} />
-            </Route>
-            <Route path="/404">
-              <Error errorCode={404} />
-            </Route>
-            <Route path="/500">
-              <Error errorCode={500} />
-            </Route>
-            <Route path="*">
-              <Redirect to="/404" />
-            </Route>
           </Switch>
         </Suspense>
       </HistoryContext.Provider>
