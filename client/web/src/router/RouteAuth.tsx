@@ -17,6 +17,7 @@ class RouteAuth extends React.Component<iProps, iState> {
     const { routeMap, location } = this.props;
     const pathname: string = location.pathname;
     let findRoute = null;
+    console.log(location.pathname);
     for (let i = 0; i < routeMap.length; i++) {
       const route = routeMap[i];
       if (route.exact) {
@@ -44,6 +45,17 @@ class RouteAuth extends React.Component<iProps, iState> {
         return (
           <Route path={pathname}>
             <Error errorCode={findRoute.errorCode} />
+          </Route>
+        );
+      }
+      if (findRoute.children && findRoute.children.length) {
+        return (
+          <Route
+            exact={!!findRoute.exact}
+            path={pathname}
+            component={findRoute.component}
+          >
+            <Route path="about" component={findRoute.children} />
           </Route>
         );
       }
