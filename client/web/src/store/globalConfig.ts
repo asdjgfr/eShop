@@ -8,7 +8,7 @@ interface globalConfig {
 }
 
 class GlobalConfig implements globalConfig {
-  @observable public loading = false;
+  @observable public loading = true;
   @observable public loadingTip = "";
 
   @action.bound toggleLoading(bool?: boolean) {

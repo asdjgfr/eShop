@@ -12,14 +12,12 @@ interface iState {}
 class GlobalLoading extends React.Component<iProps, iState> {
   render() {
     return (
-      <div className="global-loading">
-        <Spin
-          tip={this.props.globalConfig?.loadingTip}
-          spinning={this.props.globalConfig?.loading}
-        >
-          {this.props.children}
-        </Spin>
-      </div>
+      <Spin
+        tip={this.props.globalConfig?.loadingTip}
+        spinning={this.props.globalConfig?.loading}
+      >
+        <div className="global-loading">{this.props.children}</div>
+      </Spin>
     );
   }
 }

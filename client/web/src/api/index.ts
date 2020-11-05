@@ -11,7 +11,6 @@ axios.interceptors.request.use(
     //config是axios请求的参数
     if (config.globalLoading) {
       // 设置全局的加载
-      console.log("全局加载");
       store.globalConfig.toggleLoading(true);
       // store.globalConfig.setLoadingTip(config.globalLoadingTip ?? "");
     }

@@ -1,4 +1,3 @@
-import { action, computed, observable } from "mobx";
 import history from "@/store/history";
 import shopInfo from "@/store/shopInfo";
 import globalConfig from "@/store/globalConfig";

@@ -10,9 +10,10 @@
   justify-content: center;
 }
 .global-loading {
-  > .ant-spin-nested-loading {
-    min-height: 100vh;
-  }
+  min-height: 100vh;
+}
+.ant-spin-nested-loading > div > .ant-spin {
+  max-height: initial !important;
 }
 .justify-between {
   display: flex;
