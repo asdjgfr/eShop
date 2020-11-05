@@ -16,12 +16,12 @@ function usernameAndPassword(type: "username" | "password", t: Function) {
   ];
 }
 
-function autoComplete(action?: "set", bool?: boolean) {
+function autoSignIn(action?: "set", bool?: boolean) {
   console.log(action, bool);
   if (action === "set") {
-    localStorage.setItem("rememberPwd", bool ? "on" : "new-password");
+    localStorage.setItem("autoSignIn", bool ? "true" : "false");
   } else {
-    return localStorage.getItem("rememberPwd") ?? "off";
+    return localStorage.getItem("autoSignIn") === "true";
   }
 }
-export { usernameAndPassword, autoComplete };
+export { usernameAndPassword, autoSignIn };

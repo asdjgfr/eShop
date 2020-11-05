@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { WechatOutlined } from "@ant-design/icons";
 import { inject, observer } from "mobx-react";
 import store from "@/store";
-import { usernameAndPassword, autoComplete } from "@/lib/validator";
+import { usernameAndPassword, autoSignIn } from "@/lib/validator";
 import { signIn } from "@/api/user";
 import { sleep } from "@/lib/pubfn";
 
@@ -28,8 +28,8 @@ class SignIn extends React.Component<iProps, iState> {
     this.setState({
       loading: true,
     });
-    const { username, password, remember } = values;
-    autoComplete("set", remember);
+    const { username, password, autoSignin } = values;
+    autoSignIn("set", autoSignin);
     const res = await signIn(username, password);
     if (res.code === 200) {
       localStorage.setItem("Authorization", res.Authorization);
@@ -49,7 +49,6 @@ class SignIn extends React.Component<iProps, iState> {
   }
   render() {
     const { t } = this.props;
-    const remember = autoComplete();
     return (
       <Spin spinning={this.state.loading}>
         <div className="sign-in">
@@ -71,7 +70,7 @@ class SignIn extends React.Component<iProps, iState> {
             <Form
               name="normal_login"
               className="login-form"
-              initialValues={{ remember: true }}
+              initialValues={{ autoSignin: autoSignIn() }}
               onFinish={this.onFinish.bind(this)}
             >
               <Form.Item
@@ -81,7 +80,6 @@ class SignIn extends React.Component<iProps, iState> {
                 <Input
                   prefix={<UserOutlined className="site-form-item-icon" />}
                   placeholder={t("plsEnter") + t("username")}
-                  autoComplete={remember}
                 />
               </Form.Item>
               <Form.Item
@@ -92,13 +90,12 @@ class SignIn extends React.Component<iProps, iState> {
                   prefix={<LockOutlined className="site-form-item-icon" />}
                   type="password"
                   placeholder={t("plsEnter") + t("password")}
-                  autoComplete={remember}
                 />
               </Form.Item>
               <Form.Item>
                 <div className="justify-between">
-                  <Form.Item name="remember" valuePropName="checked" noStyle>
-                    <Checkbox>{t("remember") + t("password")}</Checkbox>
+                  <Form.Item name="autoSignin" valuePropName="checked">
+                    <Checkbox>{t("auto") + t("signIn")}</Checkbox>
                   </Form.Item>
                   <Link to="/user/forget-password">
                     {t("forget") + t("password")}
