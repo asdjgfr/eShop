@@ -1,18 +1,22 @@
 import React from "react";
 import { Layout } from "antd";
+import { renderRoutes } from "react-router-config";
 
-interface iProps {}
+interface iProps {
+  route: any;
+}
 interface iState {}
 const { Header, Footer, Sider, Content } = Layout;
 
 class Layouts extends React.Component<iProps, iState> {
   render() {
+    const { route } = this.props;
     return (
       <Layout>
         <Sider>Sider</Sider>
         <Layout>
           <Header>Header</Header>
-          <Content>{this.props.children}</Content>
+          <Content>{renderRoutes(route.routes)}</Content>
           <Footer>Footer</Footer>
         </Layout>
       </Layout>

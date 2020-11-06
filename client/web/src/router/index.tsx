@@ -1,9 +1,9 @@
 import React, { Suspense } from "react";
-import { Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import { Router } from "react-router";
 import history from "@/router/history";
-import routeMap from "./routeMap";
-import RouteAuth from "@/router/RouteAuth";
+import { renderRoutes } from "react-router-config";
+import routes from "@/router/routeMap";
 
 import Loading from "@/pages/Loading";
 
@@ -15,7 +15,10 @@ export default function App() {
       <HistoryContext.Provider value={{ history }}>
         <Suspense fallback={<Loading />}>
           <Switch>
-            <RouteAuth routeMap={routeMap} />
+            {renderRoutes(routes)}
+            <Route path="*">
+              <Redirect to="/404" />
+            </Route>
           </Switch>
         </Suspense>
       </HistoryContext.Provider>
