@@ -35,7 +35,7 @@ class SignIn extends React.Component<iProps, iState> {
       localStorage.setItem("Authorization", res.Authorization);
       message.success(res.msg + "1秒后跳转。");
       await sleep(1000);
-      this.props.history?.push("/shop/shop-list");
+      this.props.history?.push("/dashboard/analysis");
     } else {
       this.setState({
         loading: false,

@@ -17,11 +17,12 @@ function usernameAndPassword(type: "username" | "password", t: Function) {
 }
 
 function autoSignIn(action?: "set", bool?: boolean) {
-  console.log(action, bool);
   if (action === "set") {
     localStorage.setItem("autoSignIn", bool ? "true" : "false");
   } else {
-    return localStorage.getItem("autoSignIn") === "true";
+    return localStorage.getItem("autoSignIn")
+      ? localStorage.getItem("autoSignIn") === "true"
+      : true;
   }
 }
 export { usernameAndPassword, autoSignIn };

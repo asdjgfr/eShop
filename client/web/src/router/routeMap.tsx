@@ -1,6 +1,7 @@
 import React from "react";
 import { lazy } from "react";
 import Error from "@/pages/Error";
+import { Redirect } from "react-router-dom";
 
 export interface RouteType {
   // 标题
@@ -27,21 +28,31 @@ const Main = lazy(() => import("@/pages/Main"));
 const SignIn = lazy(() => import("@/pages/SignIn"));
 const SignUp = lazy(() => import("@/pages/SignUp"));
 const Settings = lazy(() => import("@/pages/Settings"));
-const Feedback = lazy(() => import("@/pages/Feedback"));
 const ShopList = lazy(() => import("@/pages/ShopList"));
 const Layout = lazy(() => import("@/components/Layout"));
+const Analysis = lazy(() => import("@/pages/Analysis"));
 
-const routes: any[] = [
+export const mainRoutes: any[] = [
   { title: "首页", path: "/", name: "Main", component: Main, exact: true },
-  { title: "登录", path: "/sign-in", name: "SignIn", component: SignIn },
-  { title: "注册", path: "/sign-up", name: "SignUp", component: SignUp },
+  {
+    title: "登录",
+    path: "/sign-in",
+    name: "SignIn",
+    component: SignIn,
+    exact: true,
+  },
+  {
+    title: "注册",
+    path: "/sign-up",
+    name: "SignUp",
+    component: SignUp,
+    exact: true,
+  },
   {
     title: "面板",
     path: "/dashboard",
     name: "Dashboard",
     component: Layout,
-    exact: true,
-    redirect: "/dashboard/settings",
     routes: [
       {
         title: "设置",
@@ -49,10 +60,24 @@ const routes: any[] = [
         name: "Settings",
         component: Settings,
         auth: true,
+        exact: true,
+      },
+      {
+        title: "统计",
+        path: "/dashboard/analysis",
+        name: "Analysis",
+        component: Analysis,
+        auth: true,
+        exact: true,
+      },
+      {
+        title: "404",
+        path: "*",
+        name: "404",
+        render: () => <Redirect to="/dashboard/settings" />,
       },
     ],
   },
-  { title: "反馈", path: "/feedback", name: "Feedback", component: Feedback },
   {
     title: "列表",
     path: "/shop/shop-list",
@@ -78,6 +103,10 @@ const routes: any[] = [
     name: "500",
     render: () => <Error errorCode={500} />,
   },
+  {
+    title: "404",
+    path: "*",
+    name: "404",
+    render: () => <Redirect to="/404" />,
+  },
 ];
-
-export default routes;
