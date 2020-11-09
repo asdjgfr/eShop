@@ -1,7 +1,15 @@
 .layout-box {
   min-height: 100vh;
+  .logo {
+    height: 32px;
+    margin: 16px;
+    background-image: ~"url('/logo192.png')";
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
   .layout-sider-container {
-    height: 100%;
+    height: calc(100% - 112px);
     overflow: hidden auto;
   }
 }

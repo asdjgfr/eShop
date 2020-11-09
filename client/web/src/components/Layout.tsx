@@ -1,5 +1,5 @@
 import React from "react";
-import { Layout, Menu, Breadcrumb } from "antd";
+import { Layout, Menu } from "antd";
 import { renderRoutes } from "react-router-config";
 import { Switch } from "react-router-dom";
 interface iProps {
@@ -38,6 +38,7 @@ class Layouts extends React.Component<iProps, iState> {
             this.handleToggleSider.call(this, broken);
           }}
         >
+          <div className="logo" />
           <div className="layout-sider-container">
             <Menu theme="dark" mode="inline" defaultSelectedKeys={["4"]}>
               <Menu.Item key="1">nav 1</Menu.Item>
