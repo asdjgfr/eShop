@@ -3,8 +3,6 @@ import { action, observable } from "mobx";
 interface userMenu {
   // 标题
   title: string;
-  // key值
-  key: string;
   path: string;
   children?: userMenu[];
 }

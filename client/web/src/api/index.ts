@@ -21,6 +21,8 @@ axios.interceptors.request.use(
     return config;
   },
   function (error) {
+    store.globalConfig.toggleLoading(false);
+    message.error("网络错误！" + error);
     // 对请求错误做些什么
     return Promise.reject(error);
   }
@@ -37,10 +39,21 @@ axios.interceptors.response.use(
       message.error(data.msg + "2秒后跳转至登录！");
       await sleep(2000);
       history.push("/sign-in");
+    } else if (data.code === 500) {
+      message.error("服务器错误！请联系管理员解决。");
+      history.push("/500");
     }
     return response;
   },
   function (error) {
+    message.error("服务器错误！请联系管理员解决。");
+    history.push({
+      pathname: "/500",
+      state: {
+        error,
+      },
+    });
+    store.globalConfig.toggleLoading(false);
     // 对响应错误做点什么
     return Promise.reject(error);
   }

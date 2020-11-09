@@ -6,9 +6,12 @@ import store from "@/store";
 interface iProps {
   errorCode: 403 | 404 | 500;
   history?: typeof store.history;
+  error?: string;
 }
 
-interface iState {}
+interface iState {
+  error?: string;
+}
 
 @inject("history")
 class Error extends React.Component<iProps, iState> {
@@ -35,14 +38,17 @@ class Error extends React.Component<iProps, iState> {
     }
   }
   render() {
+    console.log(this.props.history, this.props, this.state);
+    const { errorCode, history } = this.props;
+    const errorMsg: any = history?.location.state;
     return (
       <Result
-        status={this.props.errorCode}
-        title={this.props.errorCode}
-        subTitle={this.errorMsg}
+        status={errorCode}
+        title={errorCode}
+        subTitle={this.errorMsg + (errorCode === 500 ? errorMsg.error : "")}
         extra={[
           [
-            this.props.errorCode === 403 ? (
+            errorCode === 403 ? (
               <Button
                 key="403"
                 type="primary"
@@ -51,7 +57,7 @@ class Error extends React.Component<iProps, iState> {
                 登录
               </Button>
             ) : null,
-            this.props.errorCode === 404 ? (
+            errorCode === 404 ? (
               <Button
                 key="404"
                 type="primary"
@@ -60,7 +66,7 @@ class Error extends React.Component<iProps, iState> {
                 返回上一级
               </Button>
             ) : null,
-            this.props.errorCode === 500 ? (
+            errorCode === 500 ? (
               <Button
                 key="500"
                 type="primary"

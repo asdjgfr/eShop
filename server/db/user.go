@@ -46,7 +46,6 @@ func SignUp(newUser types.User) types.RepMsg {
 			req = types.RepMsg{Code: 500, Msg: "数据库写入错误！" + res.Error.Error()}
 		} else {
 			req = types.RepMsg{Code: 200, Msg: "注册成功！"}
-
 		}
 	}
 	return req
@@ -81,6 +80,7 @@ func SignIn(user types.User, ua *user_agent.UserAgent) types.AuthReq {
 		req.Msg = "登录成功！"
 		req.Authorization = pool.SetUserToken(user, device)
 		req.Success = true
+		req.Menus = []types.DashboardMenu{}
 	} else {
 		req.Code = 403
 		req.Msg = "密码错误，请检查后重试！"

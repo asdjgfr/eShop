@@ -5,6 +5,43 @@ import (
 	"time"
 )
 
+//用户表
+type User struct {
+	gorm.Model
+	//用户名
+	Username string
+	Password string
+	Email    string
+	Phone    string
+	//角色
+	Role     int
+	Birthday time.Time
+	//储存密码时的盐
+	Salt string
+	//菜单的ID集合
+	Menus string
+}
+
+//店铺信息
+type ShopInfo struct {
+	gorm.Model
+	Name string
+	//门店简介
+	Introduction string
+	//首页的后缀
+	Suffix string
+	Phones string
+	Email  string
+}
+
+//面板的菜单
+type DashboardMenu struct {
+	gorm.Model
+	Title    string
+	Path     string
+	Children []DashboardMenu
+}
+
 //公用类型
 type (
 	DbConfig struct {
@@ -37,10 +74,12 @@ type (
 		//返回的信息
 		Msg string
 	}
+
 	AuthReq struct {
 		RepMsg
 		Authorization string
 		Success       bool
+		Menus         []DashboardMenu
 	}
 	Userinfo struct {
 		RepMsg
@@ -58,30 +97,3 @@ type (
 		IsLogin bool
 	}
 )
-
-//用户表
-type User struct {
-	gorm.Model
-	//用户名
-	Username string
-	Password string
-	Email    string
-	Phone    string
-	//角色
-	Role     int
-	Birthday time.Time
-	//储存密码时的盐
-	Salt string
-}
-
-//店铺信息
-type ShopInfo struct {
-	gorm.Model
-	Name string
-	//门店简介
-	Introduction string
-	//首页的后缀
-	Suffix string
-	Phones string
-	Email  string
-}
