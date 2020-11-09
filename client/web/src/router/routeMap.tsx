@@ -74,7 +74,7 @@ export const mainRoutes: any[] = [
         title: "404",
         path: "*",
         name: "404",
-        render: () => <Redirect to="/dashboard/settings" />,
+        render: () => <Redirect to="/dashboard/analysis" />,
       },
     ],
   },

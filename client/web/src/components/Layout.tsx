@@ -1,7 +1,10 @@
 import React from "react";
-import { Layout, Menu } from "antd";
+import { Layout } from "antd";
 import { renderRoutes } from "react-router-config";
 import { Switch } from "react-router-dom";
+
+import DashboardSider from "@/components/DashboardSider";
+
 interface iProps {
   route: any;
 }
@@ -38,19 +41,7 @@ class Layouts extends React.Component<iProps, iState> {
             this.handleToggleSider.call(this, broken);
           }}
         >
-          <div className="logo" />
-          <div className="layout-sider-container">
-            <Menu theme="dark" mode="inline" defaultSelectedKeys={["4"]}>
-              <Menu.Item key="1">nav 1</Menu.Item>
-              <Menu.Item key="2">nav 2</Menu.Item>
-              <Menu.Item key="3">nav 3</Menu.Item>
-              <Menu.Item key="4">nav 4</Menu.Item>
-              <Menu.Item key="5">nav 5</Menu.Item>
-              <Menu.Item key="6">nav 6</Menu.Item>
-              <Menu.Item key="7">nav 7</Menu.Item>
-              <Menu.Item key="8">nav 8</Menu.Item>
-            </Menu>
-          </div>
+          <DashboardSider />
         </Sider>
         <Layout style={{ marginLeft: isCollapse ? 80 : 200 }}>
           <Header style={{ backgroundColor: "#fff" }}>Header</Header>
