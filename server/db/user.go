@@ -6,6 +6,7 @@ import (
 	"myModule/lib"
 	"myModule/pool"
 	"myModule/types"
+	"strings"
 	"time"
 )
 
@@ -93,4 +94,26 @@ func GetUserInfo(username string) (types.User, error) {
 	dbFind := DB.Where("username = ?", username).First(&findUser)
 	err := dbFind.Error
 	return findUser, err
+}
+
+func GetUserMenus(menus string) ([]types.DashboardMenuRes, error) {
+	var userMenus []types.DashboardMenu
+	var userMenuRes []types.DashboardMenuRes
+	var err error
+	if menus == "0" {
+		result := DB.Find(&userMenus)
+		err = result.Error
+	} else {
+		result := DB.Find(&userMenus, strings.Split(menus, ","))
+		err = result.Error
+	}
+	for _, m := range userMenus {
+		userMenuRes = append(userMenuRes, types.DashboardMenuRes{
+			Title:    m.Title,
+			Path:     m.Path,
+			Icon:     m.Icon,
+			ParentID: m.ParentID,
+		})
+	}
+	return userMenuRes, err
 }

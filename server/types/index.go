@@ -11,6 +11,7 @@ type (
 		DbName   string
 		User     string
 		Password string
+		Port     string
 	}
 	RedisConfig struct {
 		//redis配置文件结构
@@ -57,5 +58,11 @@ type (
 	CheckLogin struct {
 		RepMsg
 		IsLogin bool
+	}
+	DashboardMenuRes struct {
+		Title    string
+		Path     string
+		Icon     string
+		ParentID int
 	}
 )

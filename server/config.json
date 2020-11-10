@@ -2,7 +2,8 @@
   "db": {
     "dbName": "carv2",
     "user": "root",
-    "password": "Aa123456"
+    "password": "Aa123456",
+    "port": "3306"
   },
   "redis": {
     "addr": "localhost:6379",

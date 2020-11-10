@@ -18,6 +18,7 @@ func InitUserRouter(r *gin.RouterGroup) {
 	signIn(r)
 	GetUserInfo(r)
 	CheckSignIn(r)
+	GetUserMenus(r)
 }
 
 //注册接口
@@ -97,5 +98,28 @@ func CheckSignIn(r *gin.RouterGroup) {
 			"code": 200,
 			"msg":  "token有效！",
 		})
+	})
+}
+
+//获取用户的菜单
+func GetUserMenus(r *gin.RouterGroup) {
+	r.POST(Address["getUserMenus"], func(c *gin.Context) {
+		username, _ := c.Get("username")
+		userInfo, err := db.GetUserInfo(username.(string))
+
+		userMenus, err := db.GetUserMenus(userInfo.Menus)
+
+		if err == nil {
+			c.JSON(200, gin.H{
+				"code":  200,
+				"msg":   "查询成功！",
+				"menus": userMenus,
+			})
+		} else {
+			c.JSON(200, gin.H{
+				"code": 406,
+				"msg":  "获取用户菜单！",
+			})
+		}
 	})
 }
