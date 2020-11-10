@@ -28,12 +28,17 @@ const Main = lazy(() => import("@/pages/Main"));
 const SignIn = lazy(() => import("@/pages/SignIn"));
 const SignUp = lazy(() => import("@/pages/SignUp"));
 const Settings = lazy(() => import("@/pages/Settings"));
-const ShopList = lazy(() => import("@/pages/ShopList"));
 const Layout = lazy(() => import("@/components/Layout"));
 const Analysis = lazy(() => import("@/pages/Analysis"));
 
 export const mainRoutes: any[] = [
-  { title: "首页", path: "/", name: "Main", component: Main, exact: true },
+  {
+    title: "首页",
+    path: "/",
+    name: "Main",
+    component: Main,
+    exact: true,
+  },
   {
     title: "登录",
     path: "/sign-in",
@@ -55,18 +60,18 @@ export const mainRoutes: any[] = [
     component: Layout,
     routes: [
       {
-        title: "设置",
-        path: "/dashboard/settings",
-        name: "Settings",
-        component: Settings,
-        auth: true,
-        exact: true,
-      },
-      {
         title: "统计",
         path: "/dashboard/analysis",
         name: "Analysis",
         component: Analysis,
+        auth: true,
+        exact: true,
+      },
+      {
+        title: "设置",
+        path: "/dashboard/settings",
+        name: "Settings",
+        component: Settings,
         auth: true,
         exact: true,
       },
@@ -77,13 +82,6 @@ export const mainRoutes: any[] = [
         render: () => <Redirect to="/dashboard/analysis" />,
       },
     ],
-  },
-  {
-    title: "列表",
-    path: "/shop/shop-list",
-    name: "ShopList",
-    component: ShopList,
-    auth: true,
   },
   {
     title: "403",
@@ -110,3 +108,14 @@ export const mainRoutes: any[] = [
     render: () => <Redirect to="/404" />,
   },
 ];
+
+export const flatRoutes = function (routes: any[], res: any[] = []) {
+  for (let i = 0; i < routes.length; i++) {
+    const route = routes[i];
+    res.push(route);
+    if (Array.isArray(route.routes) && route.routes.length) {
+      flatRoutes(route.routes, res);
+    }
+  }
+  return res;
+};

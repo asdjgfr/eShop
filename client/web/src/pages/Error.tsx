@@ -38,7 +38,6 @@ class Error extends React.Component<iProps, iState> {
     }
   }
   render() {
-    console.log(this.props.history, this.props, this.state);
     const { errorCode, history } = this.props;
     const errorMsg: any = history?.location.state;
     return (

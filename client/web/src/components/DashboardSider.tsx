@@ -40,7 +40,7 @@ class DashboardSider extends React.Component<iProps, iState> {
   }
   render() {
     const menus = this.props.userMenus?.menus ?? [];
-    const defaultSelectedKeys = menus[0] ? [menus[0].key] : [];
+    const defaultSelectedKeys = menus.length ? [menus[0].path] : [];
     const { pathname } = this.state;
 
     return (
