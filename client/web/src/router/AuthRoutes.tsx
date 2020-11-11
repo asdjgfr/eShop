@@ -8,6 +8,7 @@ import { Redirect } from "react-router-dom";
 import { checkSignin } from "@/api/user";
 import { inject } from "mobx-react";
 import store from "@/store";
+import { syncSetState } from "@/lib/pubfn";
 
 interface iProps extends WithTranslation {
   location?: any;
@@ -40,18 +41,18 @@ class AuthRoutes extends React.Component<iProps, iState> {
   }
   async authUser() {
     const needAuth = this.matchRouter(mainRoutes, this.props.location.pathname);
-    this.setState({
+    await syncSetState({
       needAuth,
     });
     if (needAuth) {
       const tip = this.props.t("authing");
       this.props.globalConfig?.setLoadingTip(tip);
-      this.setState({ authing: true });
+      await syncSetState({ authing: true, passAuth: false });
       const res = await checkSignin();
       if (res.code === 200) {
-        this.setState({ passAuth: true });
+        await syncSetState({ passAuth: true });
       }
-      this.setState({ authing: false });
+      await syncSetState({ authing: false });
       this.props.globalConfig?.toggleLoading(false);
     }
   }
@@ -62,6 +63,9 @@ class AuthRoutes extends React.Component<iProps, iState> {
       if (this.state.pathname !== location.pathname) {
         this.setState({
           pathname: location.pathname,
+          needAuth: false,
+          passAuth: false,
+          authing: false,
         });
         this.authUser();
       }

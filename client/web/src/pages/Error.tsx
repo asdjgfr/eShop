@@ -44,7 +44,9 @@ class Error extends React.Component<iProps, iState> {
       <Result
         status={errorCode}
         title={errorCode}
-        subTitle={this.errorMsg + (errorCode === 500 ? errorMsg.error : "")}
+        subTitle={
+          this.errorMsg + (errorCode === 500 ? errorMsg?.error ?? "" : "")
+        }
         extra={[
           [
             errorCode === 403 ? (

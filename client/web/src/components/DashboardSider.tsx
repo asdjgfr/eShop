@@ -28,6 +28,7 @@ class DashboardSider extends React.Component<iProps, iState> {
       loading: true,
     });
     const res = await getUserMenus();
+    console.log(66, res.cancel);
     if (res.code === 200) {
       this.props.userMenus?.setUserMenus(res.menus);
     } else {
