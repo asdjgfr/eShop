@@ -24,6 +24,7 @@ interface iState {
   authing: boolean;
   // 当前保存的路由地址
   pathname: string;
+  unListen: any;
 }
 @inject("globalConfig", "history")
 class AuthRoutes extends React.Component<iProps, iState> {
@@ -32,6 +33,7 @@ class AuthRoutes extends React.Component<iProps, iState> {
     passAuth: false,
     authing: false,
     pathname: "",
+    unListen: () => {},
   };
   matchRouter(mainRoutes: any[], path: string) {
     return find(flatRoutes(mainRoutes), { path, auth: true }) !== undefined;
@@ -55,7 +57,7 @@ class AuthRoutes extends React.Component<iProps, iState> {
   }
   componentDidMount() {
     this.authUser();
-    this.props.history?.listen((location) => {
+    const unListen = this.props.history?.listen((location) => {
       // 最新路由的 location 对象，可以通过比较 pathname 是否相同来判断路由的变化情况
       if (this.state.pathname !== location.pathname) {
         this.setState({
@@ -64,6 +66,12 @@ class AuthRoutes extends React.Component<iProps, iState> {
         this.authUser();
       }
     });
+    this.setState({
+      unListen,
+    });
+  }
+  componentWillUnmount() {
+    this.state.unListen();
   }
   shouldComponentUpdate(
     nextProps: Readonly<iProps>,

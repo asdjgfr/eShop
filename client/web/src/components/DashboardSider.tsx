@@ -12,6 +12,7 @@ interface iProps {
 interface iState {
   pathname: string;
   loading: boolean;
+  unListen: any;
 }
 
 @inject("userMenus", "history")
@@ -20,6 +21,7 @@ class DashboardSider extends React.Component<iProps, iState> {
   state = {
     pathname: "",
     loading: true,
+    unListen: () => {},
   };
   async loadUserMenu() {
     this.setState({
@@ -38,7 +40,7 @@ class DashboardSider extends React.Component<iProps, iState> {
   }
   componentDidMount() {
     this.loadUserMenu();
-    this.props.history?.listen((location) => {
+    const unListen = this.props.history?.listen((location) => {
       // 最新路由的 location 对象，可以通过比较 pathname 是否相同来判断路由的变化情况
       if (this.state.pathname !== location.pathname) {
         this.setState({
@@ -46,6 +48,12 @@ class DashboardSider extends React.Component<iProps, iState> {
         });
       }
     });
+    this.setState({
+      unListen,
+    });
+  }
+  componentWillUnmount() {
+    this.state.unListen();
   }
   render() {
     const menus = this.props.userMenus?.menus ?? [];
