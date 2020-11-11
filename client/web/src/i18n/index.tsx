@@ -16,7 +16,6 @@ i18next
       loadPath: `/i18n/{{lng}}.json`,
     },
   });
-// i18next.changeLanguage("en-US");
 
 interface iProps {}
 interface iState {}

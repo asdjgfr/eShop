@@ -3,13 +3,13 @@ import React from "react";
 import { renderRoutes } from "react-router-config";
 import { mainRoutes, flatRoutes } from "@/router/routeMap";
 import find from "lodash/find";
-import Loading from "@/pages/Loading";
+import { withTranslation, WithTranslation } from "react-i18next";
 import { Redirect } from "react-router-dom";
 import { checkSignin } from "@/api/user";
 import { inject } from "mobx-react";
 import store from "@/store";
 
-interface iProps {
+interface iProps extends WithTranslation {
   location?: any;
   globalConfig?: typeof store.globalConfig;
 }
@@ -27,7 +27,7 @@ class AuthRoutes extends React.Component<iProps, iState> {
   state = {
     needAuth: false,
     passAuth: false,
-    authing: true,
+    authing: false,
   };
   matchRouter(mainRoutes: any[], path: string) {
     return find(flatRoutes(mainRoutes), { path, auth: true }) !== undefined;
@@ -63,11 +63,13 @@ class AuthRoutes extends React.Component<iProps, iState> {
     }
     if (this.state.authing) {
       this.props.globalConfig?.toggleLoading(true);
-      this.props.globalConfig?.setLoadingTip("正在验证身份...");
+      const tip = this.props.t("authing");
+      this.props.globalConfig?.setLoadingTip(tip);
     }
   }
   render() {
     const { needAuth, passAuth, authing } = this.state;
+
     let render = null;
     if (needAuth) {
       if (!authing) {
@@ -83,5 +85,4 @@ class AuthRoutes extends React.Component<iProps, iState> {
     return <>{render}</>;
   }
 }
-
-export default AuthRoutes;
+export default withTranslation()(AuthRoutes);

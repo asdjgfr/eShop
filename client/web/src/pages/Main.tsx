@@ -7,6 +7,7 @@ import { inject, observer } from "mobx-react";
 interface iProps {
   shopInfo?: typeof store.shopInfo;
   history?: typeof store.history;
+  globalConfig?: typeof store.globalConfig;
 }
 interface iState {}
 
@@ -16,6 +17,11 @@ class Main extends React.Component<iProps, iState> {
   public state = {};
   handleJump(path: string) {
     this.props.history?.push(path);
+  }
+  componentDidMount() {
+    if (localStorage.getItem("autoSignIn") === "true") {
+      this.handleJump("/dashboard/analysis");
+    }
   }
   render() {
     return (
