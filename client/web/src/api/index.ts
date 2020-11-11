@@ -36,6 +36,7 @@ axios.interceptors.response.use(
     const { data } = response;
     if (data.code === 401) {
       localStorage.removeItem("Authorization");
+      localStorage.removeItem("autoSignIn");
       message.error(data.msg + "2秒后跳转至登录！");
       await sleep(2000);
       history.push("/sign-in");
