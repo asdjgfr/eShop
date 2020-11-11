@@ -22,3 +22,7 @@ export const getUserInfo = function () {
 export const checkSignin = function () {
   return post("/api/check-sign-in");
 };
+
+export const getUserMenus = function () {
+  return post("/api/get-user-menus");
+};

@@ -22,6 +22,7 @@ class GlobalConfig implements globalConfig {
     }
   }
   @action.bound setLoadingTip(tip: string) {
+    this.loading = true;
     this.loadingTip = tip;
   }
 }

@@ -48,7 +48,11 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a27ab6c6-a950-4442-ba9f-00845ee34f39" name="Default Changelist" comment="" />
+    <list default="true" id="a27ab6c6-a950-4442-ba9f-00845ee34f39" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../client/web/src/api/user.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/src/api/user.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/src/components/DashboardSider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/src/components/DashboardSider.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/types/index.go" beforeDir="false" afterPath="$PROJECT_DIR$/types/index.go" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

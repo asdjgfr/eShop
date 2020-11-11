@@ -79,7 +79,7 @@ export const mainRoutes: any[] = [
         title: "404",
         path: "*",
         name: "404",
-        render: () => <Redirect to="/dashboard/analysis" />,
+        render: () => <Redirect push to="/dashboard/analysis" />,
       },
     ],
   },
@@ -105,7 +105,7 @@ export const mainRoutes: any[] = [
     title: "404",
     path: "*",
     name: "404",
-    render: () => <Redirect to="/404" />,
+    render: () => <Redirect push to="/404" />,
   },
 ];
 

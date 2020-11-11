@@ -60,9 +60,9 @@ type (
 		IsLogin bool
 	}
 	DashboardMenuRes struct {
-		Title    string
-		Path     string
-		Icon     string
-		ParentID int
+		Title    string `json:"title"`
+		Path     string `json:"path"`
+		Icon     string `json:"icon"`
+		ParentID int    `json:"parentID"`
 	}
 )

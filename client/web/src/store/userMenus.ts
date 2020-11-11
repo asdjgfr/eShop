@@ -4,6 +4,8 @@ interface userMenu {
   // 标题
   title: string;
   path: string;
+  parentID: string;
+  icon: string;
   children?: userMenu[];
 }
 interface userMenus {

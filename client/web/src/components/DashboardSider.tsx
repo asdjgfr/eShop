@@ -1,14 +1,17 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { Menu } from "antd";
+import { Link, useLocation } from "react-router-dom";
+import { Menu, Spin, message } from "antd";
 import { inject, observer } from "mobx-react";
 import store from "@/store";
+import { getUserMenus } from "@/api/user";
+
 interface iProps {
   userMenus?: typeof store.userMenus;
   history?: typeof store.history;
 }
 interface iState {
   pathname: string;
+  loading: boolean;
 }
 
 @inject("userMenus", "history")
@@ -16,51 +19,57 @@ interface iState {
 class DashboardSider extends React.Component<iProps, iState> {
   state = {
     pathname: "",
+    loading: true,
   };
-  handleClickMenu(item: any) {
+  async loadUserMenu() {
     this.setState({
-      pathname: item.key,
+      loading: true,
     });
-  }
-  componentDidMount() {
+    const res = await getUserMenus();
+    if (res.code === 200) {
+      this.props.userMenus?.setUserMenus(res.menus);
+    } else {
+      message.error("菜单加载失败，请刷新后重试！" + res.msg);
+    }
     this.setState({
+      loading: false,
       pathname: this.props.history?.location.pathname ?? "",
     });
   }
-  componentDidUpdate(
-    prevProps: Readonly<iProps>,
-    prevState: Readonly<iState>,
-    snapshot?: any
-  ) {
-    if (this.state.pathname !== this.props.history?.location.pathname) {
-      this.setState({
-        pathname: this.props.history?.location.pathname ?? "",
-      });
-    }
+  componentDidMount() {
+    this.loadUserMenu();
+    this.props.history?.listen((location) => {
+      // 最新路由的 location 对象，可以通过比较 pathname 是否相同来判断路由的变化情况
+      if (this.state.pathname !== location.pathname) {
+        this.setState({
+          pathname: location.pathname,
+        });
+      }
+    });
   }
   render() {
     const menus = this.props.userMenus?.menus ?? [];
     const defaultSelectedKeys = menus.length ? [menus[0].path] : [];
-    const { pathname } = this.state;
-
+    const { loading, pathname } = this.state;
     return (
       <>
         <div className="logo" />
-        <div className="layout-sider-container">
-          <Menu
-            theme="dark"
-            mode="inline"
-            defaultSelectedKeys={defaultSelectedKeys}
-            selectedKeys={[pathname]}
-            onClick={this.handleClickMenu.bind(this)}
-          >
-            {menus.map((menu) => (
-              <Menu.Item key={menu.path}>
-                <Link to={menu.path}>{menu.title}</Link>
-              </Menu.Item>
-            ))}
-          </Menu>
-        </div>
+        <Spin spinning={loading}>
+          <div className="layout-sider-container">
+            <Menu
+              theme="dark"
+              mode="inline"
+              defaultSelectedKeys={defaultSelectedKeys}
+              selectedKeys={[pathname]}
+            >
+              {menus.map((menu) => (
+                <Menu.Item key={menu.path}>
+                  <Link to={menu.path}>{menu.title}</Link>
+                </Menu.Item>
+              ))}
+            </Menu>
+          </div>
+        </Spin>
       </>
     );
   }

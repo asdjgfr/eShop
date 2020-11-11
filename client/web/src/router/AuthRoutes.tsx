@@ -12,6 +12,7 @@ import store from "@/store";
 interface iProps extends WithTranslation {
   location?: any;
   globalConfig?: typeof store.globalConfig;
+  history?: typeof store.history;
 }
 
 interface iState {
@@ -21,63 +22,64 @@ interface iState {
   passAuth: boolean;
   // 正在验证
   authing: boolean;
+  // 当前保存的路由地址
+  pathname: string;
 }
-@inject("globalConfig")
+@inject("globalConfig", "history")
 class AuthRoutes extends React.Component<iProps, iState> {
   state = {
     needAuth: false,
     passAuth: false,
     authing: false,
+    pathname: "",
   };
   matchRouter(mainRoutes: any[], path: string) {
     return find(flatRoutes(mainRoutes), { path, auth: true }) !== undefined;
   }
   async authUser() {
-    this.setState({ authing: true });
-    const res = await checkSignin();
-    if (res.code === 200) {
-      this.setState({ authing: false, passAuth: true });
-    }
-    this.props.globalConfig?.toggleLoading(false);
-  }
-  componentDidMount() {
     const needAuth = this.matchRouter(mainRoutes, this.props.location.pathname);
-    if (needAuth) {
-      this.authUser();
-    }
     this.setState({
       needAuth,
     });
-  }
-  componentDidUpdate(
-    prevProps: Readonly<iProps>,
-    prevState: Readonly<iState>,
-    snapshot?: any
-  ) {
-    const needAuth = this.matchRouter(mainRoutes, this.props.location.pathname);
-    if (needAuth !== this.state.needAuth) {
-      this.authUser();
-      this.setState({
-        needAuth,
-      });
-    }
-    if (this.state.authing) {
-      this.props.globalConfig?.toggleLoading(true);
+    if (needAuth) {
       const tip = this.props.t("authing");
       this.props.globalConfig?.setLoadingTip(tip);
+      this.setState({ authing: true });
+      const res = await checkSignin();
+      if (res.code === 200) {
+        this.setState({ passAuth: true });
+      }
+      this.setState({ authing: false });
+      this.props.globalConfig?.toggleLoading(false);
     }
   }
+  componentDidMount() {
+    this.authUser();
+    this.props.history?.listen((location) => {
+      // 最新路由的 location 对象，可以通过比较 pathname 是否相同来判断路由的变化情况
+      if (this.state.pathname !== location.pathname) {
+        this.setState({
+          pathname: location.pathname,
+        });
+        this.authUser();
+      }
+    });
+  }
+  shouldComponentUpdate(
+    nextProps: Readonly<iProps>,
+    nextState: Readonly<iState>,
+    nextContext: any
+  ): boolean {
+    return !nextState.authing;
+  }
   render() {
-    const { needAuth, passAuth, authing } = this.state;
-
+    const { needAuth, passAuth } = this.state;
     let render = null;
     if (needAuth) {
-      if (!authing) {
-        if (passAuth) {
-          render = renderRoutes(mainRoutes);
-        } else {
-          render = <Redirect to="/403" />;
-        }
+      if (passAuth) {
+        render = renderRoutes(mainRoutes);
+      } else {
+        render = <Redirect to="/403" />;
       }
     } else {
       render = renderRoutes(mainRoutes);
