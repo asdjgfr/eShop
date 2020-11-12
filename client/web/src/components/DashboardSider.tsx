@@ -6,6 +6,7 @@ import store from "@/store";
 import { getUserMenus } from "@/api/user";
 import { syncSetState } from "@/lib/pubfn";
 import { withTranslation, WithTranslation } from "react-i18next";
+import Icons from "@/components/Icons";
 
 interface iProps extends WithTranslation {
   userMenus?: typeof store.userMenus;
@@ -70,6 +71,7 @@ class DashboardSider extends React.Component<iProps, iState> {
     const menus = this.props.userMenus?.menus ?? [];
     const defaultSelectedKeys = menus.length ? [menus[0].path] : [];
     const { loading, pathname } = this.state;
+
     return (
       <>
         <div className="layout-logo" />
@@ -82,7 +84,7 @@ class DashboardSider extends React.Component<iProps, iState> {
               selectedKeys={[pathname]}
             >
               {menus.map((menu) => (
-                <Menu.Item key={menu.path}>
+                <Menu.Item key={menu.path} icon={<Icons type={menu.icon} />}>
                   <Link to={menu.path}>{menu.title}</Link>
                 </Menu.Item>
               ))}
