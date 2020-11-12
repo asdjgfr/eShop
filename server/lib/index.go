@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"github.com/mssola/user_agent"
 	"github.com/satori/go.uuid"
 	"golang.org/x/crypto/argon2"
 	"io/ioutil"
@@ -71,4 +72,18 @@ func StringToTime(s string) time.Time {
 func GenerateUUID() string {
 	u := uuid.NewV4()
 	return u.String()
+}
+
+func GetDeviceType(ua string) string {
+	formatUa := user_agent.New(ua)
+	device := "unknown"
+	if formatUa.Mobile() {
+		fmt.Printf("%v\n", formatUa.Mozilla())
+		fmt.Printf("%v\n", formatUa.Platform())
+		fmt.Printf("os%v\n", formatUa.OS())
+		device = "mobile"
+	} else if formatUa.Platform() != "" && formatUa.OS() != "" {
+		device = "pc"
+	}
+	return device
 }

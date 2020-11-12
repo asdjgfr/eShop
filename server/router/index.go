@@ -36,6 +36,7 @@ func VerifyPermissions() gin.HandlerFunc {
 			loginRes, userToken := CheckLogin(Authorization)
 			if loginRes.IsLogin && checkRole(Authorization) {
 				context.Set("username", userToken.Username)
+				context.Set("token", userToken.Token)
 			} else {
 				context.JSON(200, gin.H{
 					"code": loginRes.Code,

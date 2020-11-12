@@ -10,6 +10,7 @@ func InitRouterAddress() {
 	apiAddress := map[string]string{
 		"signIn":       "sign-in",
 		"signUp":       "sign-up",
+		"signOut":      "sign-out",
 		"getUserInfo":  "get-user-info",
 		"checkSignIn":  "check-sign-in",
 		"getUserMenus": "get-user-menus",

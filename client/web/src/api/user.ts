@@ -13,6 +13,13 @@ export const signIn = function (username: string, password: string) {
     }
   );
 };
+
+export const signOut = function () {
+  return post("/api/sign-out", "", {
+    globalLoading: true,
+  });
+};
+
 export const getUserInfo = function () {
   return post("/api/get-user-info", "", {
     globalLoading: true,

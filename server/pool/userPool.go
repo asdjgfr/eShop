@@ -18,24 +18,43 @@ func SetUserToken(user types.User, device string) string {
 	redisKey := token + "#" + user.Username + "#" + device
 	resToken := lib.EncryptAES(redisKey, globalConfig.Crypto.AES)
 
-	userToken := types.UserToken{Username: user.Username, UpdateAt: time.Now(), Role: user.Role, Device: device}
+	userToken := types.UserToken{
+		Username: user.Username,
+		UpdateAt: time.Now(),
+		Role:     user.Role,
+		Device:   device,
+		Token:    token,
+	}
 	userTokenJson, _ := json.Marshal(userToken)
 	//用户token72小时过期
 	redis.Rdb.Set(redis.RdbCtx, redisKey, userTokenJson, time.Hour*72)
 	return resToken
 }
 
-func RemoveToken(username, device string) {
-	iter := redis.Rdb.Scan(redis.RdbCtx, 0, "*#"+username+"#"+device, 0).Iterator()
+func RemoveToken(token, username, device string) error {
+	var err error
+
+	if token == "" {
+		token = "*"
+	}
+	if username == "" {
+		username = "*"
+	}
+	if device == "" {
+		device = "*"
+	}
+	fmt.Println(token + "#" + username + "#" + device)
+	iter := redis.Rdb.Scan(redis.RdbCtx, 0, token+"#"+username+"#"+device, 0).Iterator()
 	for iter.Next(redis.RdbCtx) {
-		err := redis.Rdb.Del(redis.RdbCtx, iter.Val()).Err()
+		err = redis.Rdb.Del(redis.RdbCtx, iter.Val()).Err()
 		if err != nil {
-			fmt.Println("删除已旧的token失败：", err)
+			fmt.Println("删除旧的token失败：", err)
 		}
 	}
-	if err := iter.Err(); err != nil {
+	if err = iter.Err(); err != nil {
 		fmt.Println("查找旧token失败：", err)
 	}
+	return err
 }
 
 func decodeTokenAndUsername(encryptedString string) (string, string, bool) {

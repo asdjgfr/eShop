@@ -5,8 +5,9 @@ import { inject, observer } from "mobx-react";
 import store from "@/store";
 import { getUserMenus } from "@/api/user";
 import { syncSetState } from "@/lib/pubfn";
+import { withTranslation, WithTranslation } from "react-i18next";
 
-interface iProps {
+interface iProps extends WithTranslation {
   userMenus?: typeof store.userMenus;
   history?: typeof store.history;
 }
@@ -38,12 +39,14 @@ class DashboardSider extends React.Component<iProps, iState> {
     if (res.code === 200) {
       this.props.userMenus?.setUserMenus(res.menus);
     } else {
-      message.error("菜单加载失败，请刷新后重试！" + res.msg);
+      message.error(this.props.t("loadUserMenuFail") + res.msg);
     }
-    this.setState({
-      loading: false,
-      pathname: this.props.history?.location.pathname ?? "",
-    });
+    if (/\/dashboard/.test(this.props.history?.location.pathname ?? "")) {
+      this.setState({
+        loading: false,
+        pathname: this.props.history?.location.pathname ?? "",
+      });
+    }
   }
   componentDidMount() {
     this.loadUserMenu();
@@ -69,7 +72,7 @@ class DashboardSider extends React.Component<iProps, iState> {
     const { loading, pathname } = this.state;
     return (
       <>
-        <div className="logo" />
+        <div className="layout-logo" />
         <Spin spinning={loading}>
           <div className="layout-sider-container">
             <Menu
@@ -91,4 +94,4 @@ class DashboardSider extends React.Component<iProps, iState> {
   }
 }
 
-export default DashboardSider;
+export default withTranslation()(DashboardSider);

@@ -4,6 +4,7 @@ import { renderRoutes } from "react-router-config";
 import { Switch } from "react-router-dom";
 
 import DashboardSider from "@/components/DashboardSider";
+import DashbordHeader from "@/components/DashbordHeader";
 
 interface iProps {
   route: any;
@@ -44,7 +45,9 @@ class Layouts extends React.Component<iProps, iState> {
           <DashboardSider />
         </Sider>
         <Layout style={{ marginLeft: isCollapse ? 80 : 200 }}>
-          <Header style={{ backgroundColor: "#fff" }}>Header</Header>
+          <Header style={{ backgroundColor: "#fff" }}>
+            <DashbordHeader />
+          </Header>
           <Content>
             <Switch>{renderRoutes(route.routes)}</Switch>
           </Content>

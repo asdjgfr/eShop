@@ -15,5 +15,17 @@
   "least3": "最少3位",
   "least8": "最少8位",
   "most16": "最多16位",
-  "authing": "正在验证身份..."
+  "authing": "正在验证身份...",
+  "help": "帮助",
+  "message": "消息",
+  "list": "列表",
+  "details": "详情",
+  "markRead": "标记已读",
+  "person": "个人",
+  "center": "中心",
+  "setting": "设置",
+  "success": "成功",
+  "fail": "失败",
+  "sureSignOut": "确定注销？",
+  "loadUserMenuFail": "菜单加载失败，请刷新后重试！"
 }

@@ -44,6 +44,7 @@ type (
 		Success       bool
 		Menus         []DashboardMenu
 	}
+
 	Userinfo struct {
 		RepMsg
 		Username string
@@ -54,6 +55,7 @@ type (
 		UpdateAt time.Time
 		Role     int
 		Device   string
+		Token    string
 	}
 	CheckLogin struct {
 		RepMsg
