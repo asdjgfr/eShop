@@ -11,7 +11,8 @@ const initFn = async function () {
  * @description 初始化店铺的信息
  * */
 async function initShopInfo() {
-  const res = await getShopInfo();
+  const gsi = getShopInfo();
+  const res = await gsi.data;
   store.shopInfo.setShopInfo({
     title: res.data.name,
     titleSuffix: res.data.suffix,

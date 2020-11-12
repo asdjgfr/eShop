@@ -1,9 +1,10 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Menu, Spin, message } from "antd";
 import { inject, observer } from "mobx-react";
 import store from "@/store";
 import { getUserMenus } from "@/api/user";
+import { syncSetState } from "@/lib/pubfn";
 
 interface iProps {
   userMenus?: typeof store.userMenus;
@@ -13,6 +14,7 @@ interface iState {
   pathname: string;
   loading: boolean;
   unListen: any;
+  cancelReq: any;
 }
 
 @inject("userMenus", "history")
@@ -22,13 +24,17 @@ class DashboardSider extends React.Component<iProps, iState> {
     pathname: "",
     loading: true,
     unListen: () => {},
+    cancelReq: () => {},
   };
   async loadUserMenu() {
     this.setState({
       loading: true,
     });
-    const res = await getUserMenus();
-    console.log(66, res.cancel);
+    const userMenus = getUserMenus();
+    await syncSetState({
+      cancelReq: userMenus.cancel,
+    });
+    const res = await userMenus.data;
     if (res.code === 200) {
       this.props.userMenus?.setUserMenus(res.menus);
     } else {
@@ -54,6 +60,7 @@ class DashboardSider extends React.Component<iProps, iState> {
     });
   }
   componentWillUnmount() {
+    this.state.cancelReq();
     this.state.unListen();
   }
   render() {

@@ -48,7 +48,8 @@ class AuthRoutes extends React.Component<iProps, iState> {
       const tip = this.props.t("authing");
       this.props.globalConfig?.setLoadingTip(tip);
       await syncSetState({ authing: true, passAuth: false });
-      const res = await checkSignin();
+      const cs = checkSignin();
+      const res = await cs.data;
       if (res.code === 200) {
         await syncSetState({ passAuth: true });
       }

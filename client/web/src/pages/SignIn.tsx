@@ -30,7 +30,8 @@ class SignIn extends React.Component<iProps, iState> {
     });
     const { username, password, autoSignin } = values;
     autoSignIn("set", autoSignin);
-    const res = await signIn(username, password);
+    const si = signIn(username, password);
+    const res = await si.data;
     if (res.code === 200) {
       localStorage.setItem("Authorization", res.Authorization);
       message.success(res.msg + "1秒后跳转。");
