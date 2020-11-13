@@ -51,7 +51,9 @@ class Layouts extends React.Component<iProps, iState> {
           <Content className="layout-content">
             <Switch>{renderRoutes(route.routes)}</Switch>
           </Content>
-          <Footer>Footer</Footer>
+          <Footer>
+            <div className="align-center">Copyright © liu出品</div>
+          </Footer>
         </Layout>
       </Layout>
     );
