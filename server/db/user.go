@@ -114,6 +114,7 @@ func GetUserMenus(menus string) ([]types.DashboardMenuRes, error) {
 			Path:     m.Path,
 			Icon:     m.Icon,
 			ParentID: m.ParentID,
+			Order:    m.Order,
 		})
 	}
 	return userMenuRes, err

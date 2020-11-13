@@ -66,5 +66,6 @@ type (
 		Path     string `json:"path"`
 		Icon     string `json:"icon"`
 		ParentID int    `json:"parentID"`
+		Order    int    `json:"order"`
 	}
 )

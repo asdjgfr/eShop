@@ -27,5 +27,13 @@
   "success": "成功",
   "fail": "失败",
   "sureSignOut": "确定注销？",
-  "loadUserMenuFail": "菜单加载失败，请刷新后重试！"
+  "loadUserMenuFail": "菜单加载失败，请刷新后重试！",
+  "basicInformation": "基本信息",
+  "contactInformation": "联系信息",
+  "role": "角色",
+  "userGroup": "用户组",
+  "email": "邮箱",
+  "phoneNumber": "手机号",
+  "operationRecord": "操作记录",
+  "actionTime": "操作时间"
 }

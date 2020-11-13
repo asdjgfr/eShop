@@ -38,7 +38,13 @@ class DashboardSider extends React.Component<iProps, iState> {
     });
     const res = await userMenus.data;
     if (res.code === 200) {
-      this.props.userMenus?.setUserMenus(res.menus);
+      this.props.userMenus?.setUserMenus(
+        Array.isArray(res.menus)
+          ? res.menus.sort(
+              (menu1: any, menu2: any) => menu1.order - menu2.order
+            )
+          : []
+      );
     } else {
       message.error(this.props.t("loadUserMenuFail") + res.msg);
     }
@@ -75,8 +81,8 @@ class DashboardSider extends React.Component<iProps, iState> {
     return (
       <>
         <div className="layout-logo" />
-        <Spin spinning={loading}>
-          <div className="layout-sider-container">
+        <div className="layout-sider-container">
+          <Spin spinning={loading}>
             <Menu
               theme="dark"
               mode="inline"
@@ -89,8 +95,8 @@ class DashboardSider extends React.Component<iProps, iState> {
                 </Menu.Item>
               ))}
             </Menu>
-          </div>
-        </Spin>
+          </Spin>
+        </div>
       </>
     );
   }

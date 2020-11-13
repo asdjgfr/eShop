@@ -3,6 +3,7 @@ import {
   LineChartOutlined,
   FileTextOutlined,
   SettingOutlined,
+  UserOutlined,
   CloseCircleOutlined,
 } from "@ant-design/icons";
 
@@ -22,6 +23,9 @@ class Icons extends React.Component<iProps, iState> {
         break;
       case "SettingOutlined":
         icon = <SettingOutlined />;
+        break;
+      case "UserOutlined":
+        icon = <UserOutlined />;
         break;
       case "CloseCircleOutlined":
         icon = <CloseCircleOutlined />;

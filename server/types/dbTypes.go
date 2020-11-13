@@ -18,6 +18,8 @@ type User struct {
 	Birthday time.Time
 	//储存密码时的盐
 	Salt string
+	//头像地址
+	Avatar string
 	//菜单的ID集合
 	Menus string
 }
@@ -41,4 +43,6 @@ type DashboardMenu struct {
 	Path     string
 	Icon     string
 	ParentID int
+	//排序依据
+	Order int
 }

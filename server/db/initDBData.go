@@ -20,6 +20,7 @@ func InitAdminUser(db *gorm.DB) {
 			Phone:    "",
 			Email:    "",
 			Role:     1,
+			Avatar:   "",
 			Birthday: time.Now(),
 		}
 		salt, pas := lib.EncryptionString(newUser.Password)
@@ -52,9 +53,11 @@ func InitDashboardMenus(db *gorm.DB) {
 	result := db.First(&dashboardMenu)
 	if result.Error != nil {
 		defaultMenus := []types.DashboardMenu{
-			{Title: "资产分析", Path: "/dashboard/analysis", Icon: "LineChartOutlined"},
-			{Title: "订单管理", Path: "/dashboard/order-management", Icon: "FileTextOutlined"},
-			{Title: "系统设置", Path: "/dashboard/settings", Icon: "SettingOutlined"}}
+			{Title: "资产分析", Path: "/dashboard/analysis", Icon: "LineChartOutlined", Order: 1},
+			{Title: "订单管理", Path: "/dashboard/order-management", Icon: "FileTextOutlined", Order: 2},
+			{Title: "个人中心", Path: "/dashboard/center", Icon: "UserOutlined", Order: 3},
+			{Title: "系统设置", Path: "/dashboard/settings", Icon: "SettingOutlined", Order: 4},
+		}
 		for _, m := range defaultMenus {
 			menu := types.DashboardMenu{Title: m.Title, Path: m.Path, Icon: m.Icon}
 			_ = DB.Create(&menu)

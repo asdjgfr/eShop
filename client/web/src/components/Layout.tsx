@@ -48,7 +48,7 @@ class Layouts extends React.Component<iProps, iState> {
           <Header style={{ backgroundColor: "#fff" }}>
             <DashbordHeader />
           </Header>
-          <Content>
+          <Content className="layout-content">
             <Switch>{renderRoutes(route.routes)}</Switch>
           </Content>
           <Footer>Footer</Footer>

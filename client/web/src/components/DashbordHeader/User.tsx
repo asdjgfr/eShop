@@ -87,7 +87,7 @@ class User extends React.Component<iProps, iState> {
         overlay={
           <Menu onClick={this.handleSignOut.bind(this)}>
             <Menu.Item key="center">
-              <Link to="/dashboard/user-center">
+              <Link to="/dashboard/center">
                 <UserOutlined />
                 {t("person")}
                 {t("center")}

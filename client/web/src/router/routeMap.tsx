@@ -30,6 +30,7 @@ const SignUp = lazy(() => import("@/pages/SignUp"));
 const Settings = lazy(() => import("@/pages/Settings"));
 const Layout = lazy(() => import("@/components/Layout"));
 const Analysis = lazy(() => import("@/pages/Analysis"));
+const UserCenter = lazy(() => import("@/pages/User/Center"));
 
 export const mainRoutes: any[] = [
   {
@@ -72,6 +73,14 @@ export const mainRoutes: any[] = [
         path: "/dashboard/settings",
         name: "Settings",
         component: Settings,
+        auth: true,
+        exact: true,
+      },
+      {
+        title: "用户中心",
+        path: "/dashboard/center",
+        name: "Center",
+        component: UserCenter,
         auth: true,
         exact: true,
       },
