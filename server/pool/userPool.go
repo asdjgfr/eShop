@@ -43,7 +43,6 @@ func RemoveToken(token, username, device string) error {
 	if device == "" {
 		device = "*"
 	}
-	fmt.Println(token + "#" + username + "#" + device)
 	iter := redis.Rdb.Scan(redis.RdbCtx, 0, token+"#"+username+"#"+device, 0).Iterator()
 	for iter.Next(redis.RdbCtx) {
 		err = redis.Rdb.Del(redis.RdbCtx, iter.Val()).Err()

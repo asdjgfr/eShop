@@ -1,6 +1,7 @@
 package router
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"myModule/db"
 	"myModule/lib"
@@ -17,6 +18,7 @@ func InitUserRouter(r *gin.RouterGroup) {
 	GetUserInfo(r)
 	CheckSignIn(r)
 	GetUserMenus(r)
+	GetUserMessages(r)
 }
 
 //注册接口
@@ -129,6 +131,29 @@ func GetUserMenus(r *gin.RouterGroup) {
 				"code":  200,
 				"msg":   "查询成功！",
 				"menus": userMenus,
+			})
+		} else {
+			c.JSON(200, gin.H{
+				"code": 406,
+				"msg":  "获取用户菜单！",
+			})
+		}
+	})
+}
+
+//获取用户的消息
+func GetUserMessages(r *gin.RouterGroup) {
+	r.POST(Address["getUserMessages"], func(c *gin.Context) {
+		username, _ := c.Get("username")
+
+		messages, err := db.GetUserMessages(username.(string))
+
+		fmt.Println(messages, err)
+		if err == nil {
+			c.JSON(200, gin.H{
+				"code":     200,
+				"msg":      "查询成功！",
+				"messages": messages,
 			})
 		} else {
 			c.JSON(200, gin.H{

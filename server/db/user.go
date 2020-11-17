@@ -119,3 +119,22 @@ func GetUserMenus(menus string) ([]types.DashboardMenuRes, error) {
 	}
 	return userMenuRes, err
 }
+
+func GetUserMessages(username string) ([]types.UserMessagesRes, error) {
+	var userMessages []types.UserMessages
+	var userMessagesRes []types.UserMessagesRes
+
+	dbFind := DB.Limit(10).Where("read = ?", false).Where(
+		DB.Where(DB.Where("username = ?", username).Or("username = ?", "any")),
+	).Find(&userMessages)
+	err := dbFind.Error
+
+	for _, m := range userMessages {
+		userMessagesRes = append(userMessagesRes, types.UserMessagesRes{
+			Title:       m.Title,
+			Description: m.Description,
+			ID:          m.ID,
+		})
+	}
+	return userMessagesRes, err
+}

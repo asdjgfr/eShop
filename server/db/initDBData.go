@@ -64,3 +64,8 @@ func InitDashboardMenus(db *gorm.DB) {
 		}
 	}
 }
+
+func InitUserMessages(db *gorm.DB) {
+	//初始化消息表
+	_ = db.AutoMigrate(&types.UserMessages{})
+}

@@ -46,3 +46,12 @@ type DashboardMenu struct {
 	//排序依据
 	Order int
 }
+
+//用户的消息
+type UserMessages struct {
+	gorm.Model
+	Title       string `gorm:"comment:'消息的标题'"`
+	Description string `gorm:"comment:'消息详情'"`
+	Username    string `gorm:"comment:'消息所属的用户名'"`
+	Read        bool   `gorm:"comment:'是否已读'"`
+}

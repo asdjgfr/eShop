@@ -68,4 +68,9 @@ type (
 		ParentID int    `json:"parentID"`
 		Order    int    `json:"order"`
 	}
+	UserMessagesRes struct {
+		Title       string `json:"title"`
+		Description string `json:"description"`
+		ID          uint   `json:"id"`
+	}
 )
