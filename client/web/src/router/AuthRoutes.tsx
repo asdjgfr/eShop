@@ -9,6 +9,7 @@ import { checkSignin } from "@/api/user";
 import { inject } from "mobx-react";
 import store from "@/store";
 import { syncSetState } from "@/lib/pubfn";
+import globalApi from "@/api/globalApi";
 
 interface iProps extends WithTranslation {
   location?: any;
@@ -49,6 +50,8 @@ class AuthRoutes extends React.Component<iProps, iState> {
       this.props.globalConfig?.setLoadingTip(tip);
       await syncSetState({ authing: true, passAuth: false });
       const cs = checkSignin();
+      globalApi["/api/check-sign-in"]?.cancel();
+      globalApi["/api/check-sign-in"] = cs;
       const res = await cs.data;
       if (res.code === 200) {
         await syncSetState({ passAuth: true });

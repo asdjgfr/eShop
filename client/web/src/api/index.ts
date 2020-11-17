@@ -49,13 +49,15 @@ axios.interceptors.response.use(
     return response;
   },
   function (error) {
-    message.error("服务器错误！请联系管理员解决。");
-    history.push({
-      pathname: "/500",
-      state: {
-        error,
-      },
-    });
+    if (!error.__CANCEL__) {
+      message.error("服务器错误！请联系管理员解决。");
+      history.push({
+        pathname: "/500",
+        state: {
+          error,
+        },
+      });
+    }
     store.globalConfig.toggleLoading(false);
     // 对响应错误做点什么
     return Promise.reject(error);
