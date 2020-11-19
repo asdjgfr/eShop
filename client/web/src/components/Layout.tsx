@@ -52,7 +52,16 @@ class Layouts extends React.Component<iProps, iState> {
             <Switch>{renderRoutes(route.routes)}</Switch>
           </Content>
           <Footer>
-            <div className="align-center">Copyright © liu出品</div>
+            <div className="align-center">
+              Copyright&emsp;©&emsp;
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.2077tech.com/"
+              >
+                Nian.Liu
+              </a>
+            </div>
           </Footer>
         </Layout>
       </Layout>

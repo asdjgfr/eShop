@@ -145,8 +145,8 @@ func GetUserMenus(r *gin.RouterGroup) {
 func GetUserMessages(r *gin.RouterGroup) {
 	r.POST(Address["getUserMessages"], func(c *gin.Context) {
 		username, _ := c.Get("username")
-
-		messages, err := db.GetUserMessages(username.(string))
+		limit, _ := strconv.Atoi(c.Request.PostFormValue("limit"))
+		messages, err := db.GetUserMessages(username.(string), limit)
 
 		fmt.Println(messages, err)
 		if err == nil {
