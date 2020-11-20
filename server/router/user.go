@@ -18,6 +18,7 @@ func InitUserRouter(r *gin.RouterGroup) {
 	CheckSignIn(r)
 	GetUserMenus(r)
 	GetUserMessages(r)
+	GetMessageByID(r)
 }
 
 //注册接口
@@ -152,6 +153,24 @@ func GetUserMessages(r *gin.RouterGroup) {
 				"code":     200,
 				"msg":      "查询成功！",
 				"messages": messages,
+			})
+		} else {
+			c.JSON(200, gin.H{
+				"code": 406,
+				"msg":  "获取用户菜单失败！",
+			})
+		}
+	})
+}
+
+func GetMessageByID(r *gin.RouterGroup) {
+	r.POST(Address["getMessageByID"], func(c *gin.Context) {
+		message, err := db.GetMessageByID(c.Request.PostFormValue("id"))
+		if err == nil {
+			c.JSON(200, gin.H{
+				"code":    200,
+				"msg":     "查询成功！",
+				"message": message,
 			})
 		} else {
 			c.JSON(200, gin.H{

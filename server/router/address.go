@@ -15,6 +15,7 @@ func InitRouterAddress() {
 		"checkSignIn":     "check-sign-in",
 		"getUserMenus":    "get-user-menus",
 		"getUserMessages": "get-user-messages",
+		"getMessageByID":  "get-message-by-id",
 	}
 	for k, v := range apiAddress {
 		Address[k] = v

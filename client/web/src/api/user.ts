@@ -33,3 +33,11 @@ export const checkSignin = function () {
 export const getUserMenus = function () {
   return post("/api/get-user-menus");
 };
+
+export const getUserMessages = function (data: { limit: number }) {
+  return post("/api/get-user-messages", data);
+};
+
+export const getMessageByID = function (data: { id: number }) {
+  return post("/api/get-message-by-id", data);
+};

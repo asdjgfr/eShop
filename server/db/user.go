@@ -1,11 +1,13 @@
 package db
 
 import (
+	"fmt"
 	"myModule/lib"
 	"myModule/pool"
 	"myModule/types"
 	"strings"
 	"time"
+	"unicode/utf8"
 )
 
 func SignUp(newUser types.User) types.RepMsg {
@@ -130,11 +132,30 @@ func GetUserMessages(username string, limit int) ([]types.UserMessagesRes, error
 	err := dbFind.Error
 
 	for _, m := range userMessages {
+		d := ""
+
+		if utf8.RuneCountInString(m.Description) > 7 {
+			d = string([]rune(m.Description)[:7]) + "..."
+		} else {
+			d = m.Description
+		}
+		fmt.Println(len(m.Description), d)
 		userMessagesRes = append(userMessagesRes, types.UserMessagesRes{
 			Title:       m.Title,
-			Description: m.Description,
+			Description: d,
 			ID:          m.ID,
 		})
 	}
 	return userMessagesRes, err
+}
+
+func GetMessageByID(id string) (types.UserMessagesRes, error) {
+	var userMessage types.UserMessages
+	dbFind := DB.First(&userMessage, id)
+	err := dbFind.Error
+	return types.UserMessagesRes{
+		Title:       userMessage.Title,
+		Description: userMessage.Description,
+		ID:          userMessage.ID,
+	}, err
 }

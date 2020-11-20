@@ -1,34 +1,41 @@
 import React from "react";
-import { List, Tooltip, Drawer, Button } from "antd";
+import { List, Tooltip, Drawer, Button, Skeleton } from "antd";
 import { inject, observer } from "mobx-react";
-
 import { BellOutlined } from "@ant-design/icons";
 import { withTranslation, WithTranslation } from "react-i18next";
+import store from "@/store";
+import context from "@/store/context";
+import { getMessageByID } from "@/api/user";
+import { syncSetState } from "@/lib/pubfn";
 
 interface iMessage {
+  id: number;
   title: string;
   description: string;
 }
-interface iProps extends WithTranslation {}
+interface iProps extends WithTranslation {
+  userMessages?: typeof store.userMessages;
+}
 interface iState {
   visible: boolean;
   childrenDrawer: boolean;
-  messages: iMessage[];
+  childLoading: boolean;
+  detailsTitle: string;
+  details: string;
+  cancel: any;
 }
 
-@inject("userMenus", "history")
+@inject("userMenus", "history", "userMessages")
 @observer
 class Message extends React.Component<iProps, iState> {
+  static contextType = context;
   state = {
     visible: false,
+    childLoading: true,
     childrenDrawer: false,
-    messages: [
-      {
-        title: "消息1",
-        description:
-          "详情1详情1详情1详情1详情1详情1详情1详情1详情1详情1详情1详情1详情1详情1详情1详情1详情1详情1详情1",
-      },
-    ],
+    detailsTitle: "",
+    details: "",
+    cancel: () => {},
   };
   showDrawer = () => {
     this.setState({
@@ -41,21 +48,46 @@ class Message extends React.Component<iProps, iState> {
     });
   };
   onChildrenDrawerClose = () => {
+    this.state.cancel();
     this.setState({
+      childLoading: true,
       childrenDrawer: false,
+      detailsTitle: "",
+      details: "",
     });
   };
-  showDetails(message: iMessage) {
-    console.log(message);
-    this.setState({
+  async showDetails(message: iMessage) {
+    await syncSetState({
       childrenDrawer: true,
+      detailsTitle: message.title,
     });
+    console.log(111, message.id);
+    // this.setState({
+    //   childrenDrawer: true,
+    //   detailsTitle: message.title,
+    // });
+    // const getMsg = getMessageByID({ id: message.id });
+    //
+    // await syncSetState({
+    //   cancel: getMsg.cancel,
+    // });
+    // const res = await getMsg.data;
+    // if (res.code === 200) {
+    //   this.setState({
+    //     childLoading: false,
+    //   });
+    // }
+    // this.setState({
+    //   details: res.message,
+    // });
   }
   markRead(message: iMessage) {
     console.log(message);
   }
   render() {
-    const { t } = this.props;
+    const { detailsTitle, details, childLoading } = this.state;
+    const { t, userMessages } = this.props!;
+    const messages = userMessages?.messages ?? [];
     return (
       <>
         <Tooltip title={t("message")}>
@@ -70,7 +102,7 @@ class Message extends React.Component<iProps, iState> {
         >
           <List
             itemLayout="horizontal"
-            dataSource={this.state.messages}
+            dataSource={messages}
             renderItem={(message: iMessage) => (
               <List.Item
                 actions={[
@@ -79,12 +111,6 @@ class Message extends React.Component<iProps, iState> {
                     onClick={this.showDetails.bind(this, message)}
                   >
                     {t("details")}
-                  </Button>,
-                  <Button
-                    type="link"
-                    onClick={this.markRead.bind(this, message)}
-                  >
-                    {t("markRead")}
                   </Button>,
                 ]}
               >
@@ -96,13 +122,15 @@ class Message extends React.Component<iProps, iState> {
             )}
           />
           <Drawer
-            title={t("message") + t("details")}
+            title={detailsTitle}
             width={420}
             closable={false}
             onClose={this.onChildrenDrawerClose}
             visible={this.state.childrenDrawer}
           >
-            消息详情
+            <Skeleton loading={childLoading} active>
+              {details}
+            </Skeleton>
           </Drawer>
         </Drawer>
       </>
