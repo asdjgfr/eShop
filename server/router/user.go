@@ -1,7 +1,6 @@
 package router
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"myModule/db"
 	"myModule/lib"
@@ -148,7 +147,6 @@ func GetUserMessages(r *gin.RouterGroup) {
 		limit, _ := strconv.Atoi(c.Request.PostFormValue("limit"))
 		messages, err := db.GetUserMessages(username.(string), limit)
 
-		fmt.Println(messages, err)
 		if err == nil {
 			c.JSON(200, gin.H{
 				"code":     200,
