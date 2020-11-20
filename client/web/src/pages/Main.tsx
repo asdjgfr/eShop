@@ -3,8 +3,9 @@ import { Button, Skeleton } from "antd";
 import { ReactComponent as MainBg } from "@/static/img/main.svg";
 import store from "@/store";
 import { inject, observer } from "mobx-react";
+import { withTranslation, WithTranslation } from "react-i18next";
 
-interface iProps {
+interface iProps extends WithTranslation {
   shopInfo?: typeof store.shopInfo;
   history?: typeof store.history;
   globalConfig?: typeof store.globalConfig;
@@ -16,7 +17,11 @@ interface iState {}
 class Main extends React.Component<iProps, iState> {
   public state = {};
   handleJump(path: string) {
-    this.props.history?.push(path);
+    if (path === "help") {
+      window.open("https://www.2077tech.com/", "_blank ");
+    } else {
+      this.props.history?.push(path);
+    }
   }
   componentDidMount() {
     if (localStorage.getItem("autoSignIn") === "true") {
@@ -24,6 +29,7 @@ class Main extends React.Component<iProps, iState> {
     }
   }
   render() {
+    const { t } = this.props;
     return (
       <div className="main-page">
         <div className="main-page-content">
@@ -46,15 +52,15 @@ class Main extends React.Component<iProps, iState> {
               size="large"
               onClick={this.handleJump.bind(this, "sign-in")}
             >
-              登录
+              {t("signIn")}
             </Button>
             &emsp;
             <Button
               shape="round"
               size="large"
-              onClick={this.handleJump.bind(this, "sign-up")}
+              onClick={this.handleJump.bind(this, "help")}
             >
-              注册
+              {t("help")}
             </Button>
           </div>
           <p className="main-page-introduction">
@@ -69,4 +75,4 @@ class Main extends React.Component<iProps, iState> {
   }
 }
 
-export default Main;
+export default withTranslation()(Main);
