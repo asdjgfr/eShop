@@ -7,6 +7,7 @@ import store from "@/store";
 import context from "@/store/context";
 import { getMessageByID } from "@/api/user";
 import { syncSetState } from "@/lib/pubfn";
+import { getUserMessages10 } from "@/lib/rc.local";
 
 interface iMessage {
   id: number;
@@ -19,6 +20,7 @@ interface iProps extends WithTranslation {
 interface iState {
   visible: boolean;
   childrenDrawer: boolean;
+  loading: boolean;
   childLoading: boolean;
   detailsTitle: string;
   details: string;
@@ -31,20 +33,26 @@ class Message extends React.Component<iProps, iState> {
   static contextType = context;
   state = {
     visible: false,
+    loading: true,
     childLoading: true,
     childrenDrawer: false,
     detailsTitle: "",
     details: "",
     cancel: () => {},
   };
-  showDrawer = () => {
+  showDrawer = async () => {
     this.setState({
       visible: true,
+    });
+    await getUserMessages10();
+    this.setState({
+      loading: false,
     });
   };
   onClose = () => {
     this.setState({
       visible: false,
+      loading: true,
     });
   };
   onChildrenDrawerClose = () => {
@@ -57,35 +65,27 @@ class Message extends React.Component<iProps, iState> {
     });
   };
   async showDetails(message: iMessage) {
-    await syncSetState({
+    await syncSetState.call(this, {
       childrenDrawer: true,
       detailsTitle: message.title,
     });
-    console.log(111, message.id);
-    // this.setState({
-    //   childrenDrawer: true,
-    //   detailsTitle: message.title,
-    // });
-    // const getMsg = getMessageByID({ id: message.id });
-    //
-    // await syncSetState({
-    //   cancel: getMsg.cancel,
-    // });
-    // const res = await getMsg.data;
-    // if (res.code === 200) {
-    //   this.setState({
-    //     childLoading: false,
-    //   });
-    // }
-    // this.setState({
-    //   details: res.message,
-    // });
+    const getMsg = getMessageByID({ id: message.id });
+    await syncSetState.call(this, {
+      cancel: getMsg.cancel,
+    });
+    const res = await getMsg.data;
+    if (res.code === 200) {
+      this.setState({
+        childLoading: false,
+        details: res.message.description,
+      });
+    }
   }
   markRead(message: iMessage) {
     console.log(message);
   }
   render() {
-    const { detailsTitle, details, childLoading } = this.state;
+    const { detailsTitle, details, childLoading, loading } = this.state;
     const { t, userMessages } = this.props!;
     const messages = userMessages?.messages ?? [];
     return (
@@ -100,27 +100,29 @@ class Message extends React.Component<iProps, iState> {
           onClose={this.onClose}
           visible={this.state.visible}
         >
-          <List
-            itemLayout="horizontal"
-            dataSource={messages}
-            renderItem={(message: iMessage) => (
-              <List.Item
-                actions={[
-                  <Button
-                    type="link"
-                    onClick={this.showDetails.bind(this, message)}
-                  >
-                    {t("details")}
-                  </Button>,
-                ]}
-              >
-                <List.Item.Meta
-                  title={message.title}
-                  description={message.description}
-                />
-              </List.Item>
-            )}
-          />
+          <Skeleton loading={loading} active>
+            <List
+              itemLayout="horizontal"
+              dataSource={messages}
+              renderItem={(message: iMessage) => (
+                <List.Item
+                  actions={[
+                    <Button
+                      type="link"
+                      onClick={this.showDetails.bind(this, message)}
+                    >
+                      {t("details")}
+                    </Button>,
+                  ]}
+                >
+                  <List.Item.Meta
+                    title={message.title}
+                    description={message.description}
+                  />
+                </List.Item>
+              )}
+            />
+          </Skeleton>
           <Drawer
             title={detailsTitle}
             width={420}
