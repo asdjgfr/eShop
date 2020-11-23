@@ -1,5 +1,5 @@
 import React from "react";
-import { Descriptions, Table, Tabs } from "antd";
+import { Tabs } from "antd";
 import { withTranslation, WithTranslation } from "react-i18next";
 import store from "@/store";
 import Messages from "@/pages/User/Messages";

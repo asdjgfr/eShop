@@ -50,8 +50,14 @@ type DashboardMenu struct {
 //用户的消息
 type UserMessages struct {
 	gorm.Model
-	Title       string `gorm:"comment:'消息的标题'"`
-	Description string `gorm:"comment:'消息详情'"`
-	Username    string `gorm:"comment:'消息所属的用户名'"`
-	Read        bool   `gorm:"comment:'是否已读'"`
+	Title       string `gorm:"comment:消息的标题"`
+	Description string `gorm:"comment:消息详情"`
+	Username    string `gorm:"comment:消息所属的用户名"`
+	Read        bool   `gorm:"comment:是否已读"`
+}
+
+//用户角色
+type UserRole struct {
+	gorm.Model
+	Name string `gorm:"comment:角色的名称"`
 }

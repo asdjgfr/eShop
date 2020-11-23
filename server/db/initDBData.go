@@ -69,3 +69,19 @@ func InitUserMessages(db *gorm.DB) {
 	//初始化消息表
 	_ = db.AutoMigrate(&types.UserMessages{})
 }
+
+func InitRole(db *gorm.DB) {
+	//初始化角色
+	_ = db.AutoMigrate(&types.UserRole{})
+	var userRole types.UserRole
+	result := db.First(&userRole)
+	if result.Error != nil {
+		defaultRoles := []types.UserRole{
+			{Name: "管理员"},
+		}
+		for _, m := range defaultRoles {
+			role := types.UserRole{Name: m.Name}
+			_ = DB.Create(&role)
+		}
+	}
+}

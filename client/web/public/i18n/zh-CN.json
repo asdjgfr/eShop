@@ -42,5 +42,6 @@
   "description": "描述",
   "read/unread": "已读/未读",
   "read": "已读",
-  "unread": "未读"
+  "unread": "未读",
+  "birthday": "生日"
 }

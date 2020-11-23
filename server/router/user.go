@@ -83,6 +83,11 @@ func GetUserInfo(r *gin.RouterGroup) {
 			} else {
 				phone = userInfo.Phone[:3] + "****" + userInfo.Phone[6:]
 			}
+			email := userInfo.Email
+			if email == "" {
+				email = "未绑定邮箱"
+			}
+			role := db.GetUserRole(userInfo.Role)
 			c.JSON(200, gin.H{
 				"code": 200,
 				"msg":  "查询成功！",
@@ -90,13 +95,13 @@ func GetUserInfo(r *gin.RouterGroup) {
 					Username string    `json:"username"`
 					Email    string    `json:"email"`
 					Phone    string    `json:"phone"`
-					Role     int       `json:"role"`
+					Role     string    `json:"role"`
 					Birthday time.Time `json:"birthday"`
 				}{
 					Username: userInfo.Username,
-					Email:    userInfo.Email,
+					Email:    email,
 					Phone:    phone,
-					Role:     userInfo.Role,
+					Role:     role,
 					Birthday: userInfo.Birthday,
 				},
 			})

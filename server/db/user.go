@@ -180,3 +180,9 @@ func GetUnReadCount(username string) int64 {
 
 	return count
 }
+
+func GetUserRole(id int) string {
+	var role types.UserRole
+	DB.First(&role, id)
+	return role.Name
+}
