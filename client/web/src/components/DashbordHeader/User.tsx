@@ -32,7 +32,7 @@ class User extends React.Component<iProps, iState> {
   };
   async componentDidMount() {
     const ui = getUserInfo();
-    await syncSetState({
+    await syncSetState.call(this, {
       cancel: ui.cancel,
     });
     const res = await ui.data;

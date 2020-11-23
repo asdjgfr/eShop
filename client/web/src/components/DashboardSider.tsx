@@ -33,7 +33,7 @@ class DashboardSider extends React.Component<iProps, iState> {
       loading: true,
     });
     const userMenus = getUserMenus();
-    await syncSetState({
+    await syncSetState.call(this, {
       cancelReq: userMenus.cancel,
     });
     const res = await userMenus.data;

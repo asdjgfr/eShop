@@ -42,36 +42,39 @@ class AuthRoutes extends React.Component<iProps, iState> {
   }
   async authUser() {
     const needAuth = this.matchRouter(mainRoutes, this.props.location.pathname);
-    await syncSetState({
-      needAuth,
-    });
     if (needAuth) {
       const tip = this.props.t("authing");
       this.props.globalConfig?.setLoadingTip(tip);
-      await syncSetState({ authing: true, passAuth: false });
+      await syncSetState.call(this, {
+        needAuth,
+        authing: true,
+        passAuth: false,
+      });
+      console.log(123, this.state.authing);
       const cs = checkSignin();
       globalApi["/api/check-sign-in"]?.cancel();
       globalApi["/api/check-sign-in"] = cs;
       const res = await cs.data;
+      console.log(456, res);
       if (res.code === 200) {
-        await syncSetState({ passAuth: true });
+        await syncSetState.call(this, { passAuth: true });
       }
-      await syncSetState({ authing: false });
+      await syncSetState.call(this, { authing: false });
       this.props.globalConfig?.toggleLoading(false);
     }
   }
-  componentDidMount() {
-    this.authUser();
-    const unListen = this.props.history?.listen((location) => {
+  async componentDidMount() {
+    await this.authUser();
+    const unListen = this.props.history?.listen(async (location) => {
       // 最新路由的 location 对象，可以通过比较 pathname 是否相同来判断路由的变化情况
       if (this.state.pathname !== location.pathname) {
-        this.setState({
+        await syncSetState.call(this, {
           pathname: location.pathname,
           needAuth: false,
           passAuth: false,
           authing: false,
         });
-        this.authUser();
+        await this.authUser();
       }
     });
     this.setState({
@@ -89,8 +92,11 @@ class AuthRoutes extends React.Component<iProps, iState> {
     return !nextState.authing;
   }
   render() {
-    const { needAuth, passAuth } = this.state;
+    const { needAuth, passAuth, authing } = this.state;
     let render = null;
+    console.log(1, needAuth);
+    console.log(2, passAuth);
+    console.log(3, authing);
     if (needAuth) {
       if (passAuth) {
         render = renderRoutes(mainRoutes);

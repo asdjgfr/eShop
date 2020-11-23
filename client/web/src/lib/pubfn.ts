@@ -5,11 +5,10 @@ export const sleep = function (time: number) {
 /**
  * 同步setState
  * */
-export const syncSetState = (data: object) => {
-  const that: any = this;
+export const syncSetState = function (data: object) {
   return new Promise((resolve) => {
-    if (that?.setState) {
-      that?.setState(data, resolve);
+    if (this?.setState) {
+      this?.setState(data, resolve);
     } else {
       resolve(false);
     }

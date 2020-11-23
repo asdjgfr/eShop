@@ -37,18 +37,24 @@ function initCheckSigninPolling() {
   }
   setTimeout(initCheckSigninPolling, 300000);
 }
+
+export const getUserMessages10 = async function () {
+  globalApi["/api/get-user-messages"]?.cancel();
+  const gum = getUserMessages({ limit: 10 });
+  globalApi["/api/get-user-messages"] = gum;
+  const res = await gum.data;
+  if (res.code === 200) {
+    store.userMessages.setUserMessages(res.messages);
+  }
+  return res;
+};
+
 /**
  * @description 轮询获取消息，5分钟一次
  * */
 async function initGetUserMessage() {
   if (localStorage.getItem("Authorization")) {
-    globalApi["/api/get-user-messages"]?.cancel();
-    const gum = getUserMessages({ limit: 10 });
-    globalApi["/api/get-user-messages"] = gum;
-    const res = await gum.data;
-    if (res.code === 200) {
-      store.userMessages.setUserMessages(res.messages);
-    }
+    await getUserMessages10();
   }
   setTimeout(initGetUserMessage, 300000);
 }
