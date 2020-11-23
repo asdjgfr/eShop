@@ -6,7 +6,7 @@ interface iState {
 }
 let timer: any = undefined;
 class SuspenseLoading extends React.Component<iProps, iState> {
-  state = {
+  state: iState = {
     percent: 0,
   };
   fakePercent() {

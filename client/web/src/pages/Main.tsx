@@ -15,7 +15,7 @@ interface iState {}
 @inject("shopInfo", "history")
 @observer
 class Main extends React.Component<iProps, iState> {
-  public state = {};
+  public state: iState = {};
   handleJump(path: string) {
     if (path === "help") {
       window.open("https://www.2077tech.com/", "_blank ");

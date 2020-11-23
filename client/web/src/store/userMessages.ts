@@ -12,9 +12,13 @@ interface userMessages {
 
 class UserMessages implements userMessages {
   @observable public messages: UserMessage[] = [];
+  @observable public unreadCount: number = 0;
 
   @action.bound setUserMessages(messages: UserMessage[]) {
     this.messages.splice(0, this.messages.length, ...messages);
+  }
+  @action.bound setUnreadCount(count: number) {
+    this.unreadCount = count;
   }
 }
 

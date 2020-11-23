@@ -30,7 +30,7 @@ interface iState {
 }
 @inject("globalConfig", "history")
 class AuthRoutes extends React.Component<iProps, iState> {
-  state = {
+  state: iState = {
     needAuth: false,
     passAuth: false,
     authing: false,
@@ -50,12 +50,10 @@ class AuthRoutes extends React.Component<iProps, iState> {
         authing: true,
         passAuth: false,
       });
-      console.log(123, this.state.authing);
       const cs = checkSignin();
       globalApi["/api/check-sign-in"]?.cancel();
       globalApi["/api/check-sign-in"] = cs;
       const res = await cs.data;
-      console.log(456, res);
       if (res.code === 200) {
         await syncSetState.call(this, { passAuth: true });
       }
@@ -92,11 +90,8 @@ class AuthRoutes extends React.Component<iProps, iState> {
     return !nextState.authing;
   }
   render() {
-    const { needAuth, passAuth, authing } = this.state;
+    const { needAuth, passAuth } = this.state;
     let render = null;
-    console.log(1, needAuth);
-    console.log(2, passAuth);
-    console.log(3, authing);
     if (needAuth) {
       if (passAuth) {
         render = renderRoutes(mainRoutes);

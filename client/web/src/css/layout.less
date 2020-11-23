@@ -24,11 +24,12 @@
   .layout-header {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     height: 100%;
     > * {
       padding: 0 12px;
       cursor: pointer;
-      height: 100%;
+      height: calc(100% - 20px);
       transition: 0.4s;
       background-color: rgba(0, 0, 0, 0);
       display: flex;
@@ -40,5 +41,12 @@
     a {
       color: inherit;
     }
+  }
+}
+.layout-message-header {
+  display: flex;
+  justify-content: space-between;
+  a {
+    font-size: 12px;
   }
 }

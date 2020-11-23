@@ -19,6 +19,7 @@ func InitUserRouter(r *gin.RouterGroup) {
 	GetUserMenus(r)
 	GetUserMessages(r)
 	GetMessageByID(r)
+	GetUnReadMessagesCount(r)
 }
 
 //注册接口
@@ -123,7 +124,6 @@ func GetUserMenus(r *gin.RouterGroup) {
 	r.POST(Address["getUserMenus"], func(c *gin.Context) {
 		username, _ := c.Get("username")
 		userInfo, err := db.GetUserInfo(username.(string))
-
 		userMenus, err := db.GetUserMenus(userInfo.Menus)
 
 		if err == nil {
@@ -145,14 +145,25 @@ func GetUserMenus(r *gin.RouterGroup) {
 func GetUserMessages(r *gin.RouterGroup) {
 	r.POST(Address["getUserMessages"], func(c *gin.Context) {
 		username, _ := c.Get("username")
-		limit, _ := strconv.Atoi(c.Request.PostFormValue("limit"))
-		messages, err := db.GetUserMessages(username.(string), limit)
+		fePage := c.Request.PostFormValue("page")
+		fePageSize := c.Request.PostFormValue("pageSize")
+		page := 1
+		pageSize := 20
+		if fePage != "" {
+			page, _ = strconv.Atoi(fePage)
+		}
+		if fePageSize != "" {
+			pageSize, _ = strconv.Atoi(fePageSize)
+		}
+
+		messages, count, err := db.GetUserMessages(username.(string), pageSize, (page-1)*pageSize, c.Request.PostFormValue("getAll") == "true")
 
 		if err == nil {
 			c.JSON(200, gin.H{
 				"code":     200,
 				"msg":      "查询成功！",
 				"messages": messages,
+				"count":    count,
 			})
 		} else {
 			c.JSON(200, gin.H{
@@ -178,5 +189,17 @@ func GetMessageByID(r *gin.RouterGroup) {
 				"msg":  "获取用户菜单！",
 			})
 		}
+	})
+}
+
+func GetUnReadMessagesCount(r *gin.RouterGroup) {
+	r.POST(Address["getUnReadMessagesCount"], func(c *gin.Context) {
+		username, _ := c.Get("username")
+		count := db.GetUnReadCount(username.(string))
+		c.JSON(200, gin.H{
+			"code":  200,
+			"msg":   "查询成功！",
+			"count": count,
+		})
 	})
 }

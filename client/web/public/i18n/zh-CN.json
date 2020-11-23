@@ -35,5 +35,12 @@
   "email": "邮箱",
   "phoneNumber": "手机号",
   "operationRecord": "操作记录",
-  "actionTime": "操作时间"
+  "actionTime": "操作时间",
+  "userInfo": "用户信息",
+  "allMessages": "全部信息",
+  "title": "标题",
+  "description": "描述",
+  "read/unread": "已读/未读",
+  "read": "已读",
+  "unread": "未读"
 }

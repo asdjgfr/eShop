@@ -22,7 +22,7 @@ interface iState {
 @inject("userMenus", "history")
 @observer
 class DashboardSider extends React.Component<iProps, iState> {
-  state = {
+  state: iState = {
     pathname: "",
     loading: true,
     unListen: () => {},

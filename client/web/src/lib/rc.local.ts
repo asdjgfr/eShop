@@ -1,13 +1,13 @@
 import store from "@/store";
 import globalApi from "@/api/globalApi";
 import { getShopInfo } from "@/api/universal";
-import { checkSignin, getUserMessages } from "@/api/user";
+import { checkSignin, getUnreadMessagesCount } from "@/api/user";
 
 // 需要初始化执行的内容
 const initFn = async function () {
   await syncInit();
   initCheckSigninPolling();
-  initGetUserMessage();
+  initGetUserMessageCount();
 };
 
 async function syncInit() {
@@ -38,24 +38,19 @@ function initCheckSigninPolling() {
   setTimeout(initCheckSigninPolling, 300000);
 }
 
-export const getUserMessages10 = async function () {
-  globalApi["/api/get-user-messages"]?.cancel();
-  const gum = getUserMessages({ limit: 10 });
-  globalApi["/api/get-user-messages"] = gum;
-  const res = await gum.data;
-  if (res.code === 200) {
-    store.userMessages.setUserMessages(res.messages);
-  }
-  return res;
-};
-
 /**
- * @description 轮询获取消息，5分钟一次
+ * @description 轮询获取消息个数，5分钟一次
  * */
-async function initGetUserMessage() {
-  if (localStorage.getItem("Authorization")) {
-    await getUserMessages10();
+let gmcTimer: NodeJS.Timeout;
+export const initGetUserMessageCount = async function () {
+  if (gmcTimer) {
+    clearTimeout(gmcTimer);
   }
-  setTimeout(initGetUserMessage, 300000);
-}
+  if (localStorage.getItem("Authorization")) {
+    const gmc = getUnreadMessagesCount();
+    const res = await gmc.data;
+    store.userMessages.setUnreadCount(res.code === 200 ? res.count : 0);
+  }
+  gmcTimer = setTimeout(initGetUserMessageCount, 300000);
+};
 export default initFn;

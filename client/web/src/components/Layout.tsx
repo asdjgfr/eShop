@@ -15,7 +15,7 @@ interface iState {
 const { Header, Footer, Sider, Content } = Layout;
 
 class Layouts extends React.Component<iProps, iState> {
-  state = {
+  state: iState = {
     isCollapse: false,
   };
   handleToggleSider(isCollapse: boolean) {

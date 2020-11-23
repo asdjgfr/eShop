@@ -27,7 +27,7 @@ const { confirm } = Modal;
 @inject("userInfo", "history")
 @observer
 class User extends React.Component<iProps, iState> {
-  state = {
+  state: iState = {
     cancel: () => {},
   };
   async componentDidMount() {

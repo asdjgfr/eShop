@@ -72,5 +72,6 @@ type (
 		Title       string `json:"title"`
 		Description string `json:"description"`
 		ID          uint   `json:"id"`
+		Read        bool   `json:"read"`
 	}
 )

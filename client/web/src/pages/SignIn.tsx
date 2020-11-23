@@ -9,6 +9,7 @@ import store from "@/store";
 import { usernameAndPassword, autoSignIn } from "@/lib/validator";
 import { signIn } from "@/api/user";
 import { sleep } from "@/lib/pubfn";
+import { initGetUserMessageCount } from "@/lib/rc.local";
 
 interface iProps extends WithTranslation {
   history?: typeof store.history;
@@ -21,7 +22,7 @@ interface iState {
 @inject("history", "shopInfo")
 @observer
 class SignIn extends React.Component<iProps, iState> {
-  state = {
+  state: iState = {
     loading: false,
   };
   async onFinish(values: any) {
@@ -34,6 +35,7 @@ class SignIn extends React.Component<iProps, iState> {
     const res = await si.data;
     if (res.code === 200) {
       localStorage.setItem("Authorization", res.Authorization);
+      await initGetUserMessageCount();
       message.success(res.msg + "1秒后跳转。");
       await sleep(1000);
       this.props.history?.push("/dashboard/analysis");

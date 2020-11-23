@@ -1,5 +1,5 @@
 import React from "react";
-import { List, Tooltip, Drawer, Button, Skeleton } from "antd";
+import { List, Tooltip, Drawer, Button, Skeleton, Badge } from "antd";
 import { inject, observer } from "mobx-react";
 import { BellOutlined } from "@ant-design/icons";
 import { withTranslation, WithTranslation } from "react-i18next";
@@ -7,7 +7,8 @@ import store from "@/store";
 import context from "@/store/context";
 import { getMessageByID } from "@/api/user";
 import { syncSetState } from "@/lib/pubfn";
-import { getUserMessages10 } from "@/lib/rc.local";
+import { getUserMessages10 } from "@/api/user";
+import { Link } from "react-router-dom";
 
 interface iMessage {
   id: number;
@@ -31,7 +32,7 @@ interface iState {
 @observer
 class Message extends React.Component<iProps, iState> {
   static contextType = context;
-  state = {
+  state: iState = {
     visible: false,
     loading: true,
     childLoading: true,
@@ -81,20 +82,27 @@ class Message extends React.Component<iProps, iState> {
       });
     }
   }
-  markRead(message: iMessage) {
-    console.log(message);
-  }
   render() {
     const { detailsTitle, details, childLoading, loading } = this.state;
     const { t, userMessages } = this.props!;
     const messages = userMessages?.messages ?? [];
+    const unreadCount = userMessages?.unreadCount ?? 0;
     return (
       <>
         <Tooltip title={t("message")}>
-          <BellOutlined onClick={this.showDrawer} />
+          <Badge size="small" count={unreadCount}>
+            <BellOutlined onClick={this.showDrawer} />
+          </Badge>
         </Tooltip>
         <Drawer
-          title={t("message") + t("list")}
+          title={
+            <div className="layout-message-header">
+              <span>{t("message") + t("list")}</span>
+              <Link to="/dashboard/center?activeKey=allMessages">
+                {t("allMessages")}
+              </Link>
+            </div>
+          }
           width={320}
           closable={false}
           onClose={this.onClose}

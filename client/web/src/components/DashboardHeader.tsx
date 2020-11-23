@@ -13,7 +13,7 @@ interface iState {}
 @inject("userMenus")
 @observer
 class DashboardHeader extends React.Component<iProps, iState> {
-  state = {};
+  state: iState = {};
   render() {
     const { t } = this.props;
     return (

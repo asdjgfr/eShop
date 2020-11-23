@@ -1,7 +1,6 @@
 package db
 
 import (
-	"fmt"
 	"myModule/lib"
 	"myModule/pool"
 	"myModule/types"
@@ -122,11 +121,20 @@ func GetUserMenus(menus string) ([]types.DashboardMenuRes, error) {
 	return userMenuRes, err
 }
 
-func GetUserMessages(username string, limit int) ([]types.UserMessagesRes, error) {
+func GetUserMessages(username string, limit, offset int, getAll bool) ([]types.UserMessagesRes, int64, error) {
 	var userMessages []types.UserMessages
 	var userMessagesRes []types.UserMessagesRes
+	var count int64
 
-	dbFind := DB.Limit(limit).Where(map[string]interface{}{"Read": false}).Where(
+	DB.Model(&types.UserMessages{}).Where(
+		DB.Where(DB.Where("username = ?", username).Or("username = ?", "any")),
+	).Count(&count)
+
+	getAllWhere := map[string]interface{}{"Read": false}
+	if getAll {
+		getAllWhere = map[string]interface{}{}
+	}
+	dbFind := DB.Limit(limit).Offset(offset).Where(getAllWhere).Where(
 		DB.Where(DB.Where("username = ?", username).Or("username = ?", "any")),
 	).Find(&userMessages)
 	err := dbFind.Error
@@ -139,23 +147,36 @@ func GetUserMessages(username string, limit int) ([]types.UserMessagesRes, error
 		} else {
 			d = m.Description
 		}
-		fmt.Println(len(m.Description), d)
 		userMessagesRes = append(userMessagesRes, types.UserMessagesRes{
 			Title:       m.Title,
 			Description: d,
 			ID:          m.ID,
+			Read:        m.Read,
 		})
 	}
-	return userMessagesRes, err
+	return userMessagesRes, count, err
 }
 
 func GetMessageByID(id string) (types.UserMessagesRes, error) {
 	var userMessage types.UserMessages
 	dbFind := DB.First(&userMessage, id)
 	err := dbFind.Error
+	if err == nil {
+		userMessage.Read = true
+		DB.Save(&userMessage)
+	}
 	return types.UserMessagesRes{
 		Title:       userMessage.Title,
 		Description: userMessage.Description,
 		ID:          userMessage.ID,
 	}, err
+}
+
+func GetUnReadCount(username string) int64 {
+	var count int64
+	DB.Model(&types.UserMessages{}).Where(map[string]interface{}{"Read": false}).Where(
+		DB.Where(DB.Where("username = ?", username).Or("username = ?", "any")),
+	).Count(&count)
+
+	return count
 }
