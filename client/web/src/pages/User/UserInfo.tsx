@@ -6,7 +6,7 @@ import store from "@/store";
 import dayjs from "dayjs";
 
 interface iProps extends WithTranslation {
-  userInfo: typeof store.userInfo;
+  userInfo?: typeof store.userInfo;
 }
 interface iState {}
 
