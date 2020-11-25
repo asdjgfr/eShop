@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { Switch, Router } from "react-router-dom";
+import { Router } from "react-router-dom";
 import history from "@/router/history";
 import AuthRoutes from "@/router/AuthRoutes";
 import SuspenseLoading from "@/components/SuspenseLoading";
