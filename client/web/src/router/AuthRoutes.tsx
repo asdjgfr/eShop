@@ -10,9 +10,9 @@ import { inject } from "mobx-react";
 import store from "@/store";
 import { syncSetState } from "@/lib/pubfn";
 import globalApi from "@/api/globalApi";
+import history from "@/router/history";
 
 interface iProps extends WithTranslation {
-  location?: any;
   globalConfig?: typeof store.globalConfig;
   history?: typeof store.history;
 }
@@ -41,7 +41,7 @@ class AuthRoutes extends React.Component<iProps, iState> {
     return find(flatRoutes(mainRoutes), { path, auth: true }) !== undefined;
   }
   async authUser() {
-    const needAuth = this.matchRouter(mainRoutes, this.props.location.pathname);
+    const needAuth = this.matchRouter(mainRoutes, history.location.pathname);
     if (needAuth) {
       const tip = this.props.t("authing");
       this.props.globalConfig?.setLoadingTip(tip);
@@ -63,7 +63,7 @@ class AuthRoutes extends React.Component<iProps, iState> {
   }
   async componentDidMount() {
     await this.authUser();
-    const unListen = this.props.history?.listen(async (location) => {
+    const unListen = this.props.history?.listen(async (location: any) => {
       // 最新路由的 location 对象，可以通过比较 pathname 是否相同来判断路由的变化情况
       if (this.state.pathname !== location.pathname) {
         await syncSetState.call(this, {

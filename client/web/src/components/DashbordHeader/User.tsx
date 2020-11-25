@@ -70,7 +70,7 @@ class User extends React.Component<iProps, iState> {
                       that.props.t("!")
                   );
                 }
-                resolve();
+                resolve(res);
               })
               .catch((e) => {
                 resolve(e);

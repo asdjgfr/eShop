@@ -85,3 +85,7 @@ func InitRole(db *gorm.DB) {
 		}
 	}
 }
+
+func InitLogger(db *gorm.DB) {
+	_ = db.AutoMigrate(&types.Logger{})
+}

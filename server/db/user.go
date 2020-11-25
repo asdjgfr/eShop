@@ -118,6 +118,9 @@ func GetUserMenus(menus string) ([]types.DashboardMenuRes, error) {
 			Order:    m.Order,
 		})
 	}
+	if len(userMenuRes) == 0 {
+		userMenuRes = []types.DashboardMenuRes{}
+	}
 	return userMenuRes, err
 }
 
@@ -153,6 +156,9 @@ func GetUserMessages(username string, limit, offset int, getAll bool) ([]types.U
 			ID:          m.ID,
 			Read:        m.Read,
 		})
+	}
+	if len(userMessagesRes) == 0 {
+		userMessagesRes = []types.UserMessagesRes{}
 	}
 	return userMessagesRes, count, err
 }

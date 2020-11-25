@@ -2,10 +2,10 @@ package router
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"myModule/config"
 	"myModule/lib"
+	"myModule/log"
 	"myModule/redis"
 	"myModule/types"
 	"strings"
@@ -29,15 +29,17 @@ func InitAPIRoutes(r *gin.RouterGroup) {
 func VerifyPermissions() gin.HandlerFunc {
 	//权限验证中间件
 	return func(context *gin.Context) {
+		Authorization := context.Request.Header.Get("Authorization")
+		loginRes, userToken := CheckLogin(Authorization)
 		if excludeUrl[context.Request.URL.Path] {
-			fmt.Print("中间件启用", context.Request.URL.Path, excludeUrl)
+			log.Info(context, "")
 		} else {
-			Authorization := context.Request.Header.Get("Authorization")
-			loginRes, userToken := CheckLogin(Authorization)
 			if loginRes.IsLogin && checkRole(Authorization) {
 				context.Set("username", userToken.Username)
 				context.Set("token", userToken.Token)
+				log.Info(context, "")
 			} else {
+				log.Warn(context, loginRes.Msg)
 				context.JSON(200, gin.H{
 					"code": loginRes.Code,
 					"msg":  loginRes.Msg,
@@ -64,7 +66,6 @@ func CheckLogin(authorization string) (types.CheckLogin, types.UserToken) {
 		res.Code = 401
 		res.IsLogin = false
 		return res, userToken
-
 	}
 	globalConfig := config.GlobalConfig
 	tokenAndUsername, success := lib.DecryptAES(authorization, globalConfig.Crypto.AES)

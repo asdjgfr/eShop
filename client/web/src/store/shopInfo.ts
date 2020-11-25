@@ -1,4 +1,4 @@
-import { action, observable } from "mobx";
+import { makeAutoObservable } from "mobx";
 
 interface shopInfo {
   // 店铺的标题
@@ -10,11 +10,13 @@ interface shopInfo {
 }
 
 class ShopInfo implements shopInfo {
-  @observable public title = "";
-  @observable public titleSuffix = "";
-  @observable public introduction = "";
-
-  @action.bound setShopInfo(info: shopInfo) {
+  public title = "";
+  public titleSuffix = "";
+  public introduction = "";
+  constructor() {
+    makeAutoObservable(this);
+  }
+  setShopInfo(info: shopInfo) {
     this.title = info.title;
     this.titleSuffix = info.titleSuffix;
     this.introduction = info.introduction;

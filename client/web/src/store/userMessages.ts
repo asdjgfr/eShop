@@ -1,4 +1,4 @@
-import { action, observable } from "mobx";
+import { makeAutoObservable } from "mobx";
 
 interface UserMessage {
   description: string;
@@ -11,13 +11,15 @@ interface userMessages {
 }
 
 class UserMessages implements userMessages {
-  @observable public messages: UserMessage[] = [];
-  @observable public unreadCount: number = 0;
-
-  @action.bound setUserMessages(messages: UserMessage[]) {
+  public messages: UserMessage[] = [];
+  public unreadCount: number = 0;
+  constructor() {
+    makeAutoObservable(this);
+  }
+  setUserMessages(messages: UserMessage[]) {
     this.messages.splice(0, this.messages.length, ...messages);
   }
-  @action.bound setUnreadCount(count: number) {
+  setUnreadCount(count: number) {
     this.unreadCount = count;
   }
 }

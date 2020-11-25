@@ -61,3 +61,13 @@ type UserRole struct {
 	gorm.Model
 	Name string `gorm:"comment:角色的名称"`
 }
+
+type Logger struct {
+	gorm.Model
+	Level       string `gorm:"comment:日志等级"`
+	Path        string `gorm:"comment:访问的接口"`
+	Username    string `gorm:"comment:用户名"`
+	IP          string `gorm:"comment:IP地址"`
+	UA          string `gorm:"comment:ua"`
+	Description string `gorm:"comment:说明"`
+}

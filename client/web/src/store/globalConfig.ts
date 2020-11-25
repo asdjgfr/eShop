@@ -1,4 +1,4 @@
-import { action, observable } from "mobx";
+import { makeAutoObservable } from "mobx";
 
 interface globalConfig {
   // 全局的加载
@@ -8,10 +8,12 @@ interface globalConfig {
 }
 
 class GlobalConfig implements globalConfig {
-  @observable public loading = true;
-  @observable public loadingTip = "";
-
-  @action.bound toggleLoading(bool?: boolean) {
+  public loading = false;
+  public loadingTip = "";
+  constructor() {
+    makeAutoObservable(this);
+  }
+  toggleLoading(bool?: boolean) {
     if (bool !== undefined) {
       this.loading = bool;
     } else {
@@ -21,10 +23,11 @@ class GlobalConfig implements globalConfig {
       this.loadingTip = "";
     }
   }
-  @action.bound setLoadingTip(tip: string) {
+  setLoadingTip(tip: string) {
     this.loading = true;
     this.loadingTip = tip;
   }
 }
+
 const globalConfig = new GlobalConfig();
 export default globalConfig;

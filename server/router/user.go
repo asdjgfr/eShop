@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"myModule/db"
 	"myModule/lib"
+	"myModule/log"
 	"myModule/types"
 	"strconv"
 	"time"
@@ -35,6 +36,7 @@ func signUp(r *gin.RouterGroup) {
 			Role:     role,
 			Birthday: lib.StringToTime(c.Request.PostFormValue("birthday") + " 00:00:00.000"),
 		})
+		log.Info(c, res.Msg)
 		c.JSON(200, gin.H{
 			"code": res.Code,
 			"msg":  res.Msg,
@@ -50,6 +52,7 @@ func signIn(r *gin.RouterGroup) {
 			Username: c.Request.PostFormValue("username"),
 			Password: c.Request.PostFormValue("password"),
 		}, lib.GetDeviceType(c.Request.Header.Get("user-agent")))
+		log.Info(c, res.Msg)
 		c.JSON(200, gin.H{
 			"code":          res.Code,
 			"msg":           res.Msg,
@@ -64,6 +67,7 @@ func signOut(r *gin.RouterGroup) {
 		username, _ := c.Get("username")
 		token, _ := c.Get("token")
 		res := db.SignOut(token.(string), username.(string))
+		log.Info(c, res.Msg)
 		c.JSON(200, gin.H{
 			"code": res.Code,
 			"msg":  res.Msg,
@@ -71,6 +75,7 @@ func signOut(r *gin.RouterGroup) {
 	})
 }
 
+//获取用户信息
 func GetUserInfo(r *gin.RouterGroup) {
 	//获取用户的信息
 	r.POST(Address["getUserInfo"], func(c *gin.Context) {
@@ -88,6 +93,7 @@ func GetUserInfo(r *gin.RouterGroup) {
 				email = "未绑定邮箱"
 			}
 			role := db.GetUserRole(userInfo.Role)
+			log.Info(c, "获取用户信息成功！")
 			c.JSON(200, gin.H{
 				"code": 200,
 				"msg":  "查询成功！",
@@ -106,6 +112,7 @@ func GetUserInfo(r *gin.RouterGroup) {
 				},
 			})
 		} else {
+			log.Info(c, "获取用户信息失败！")
 			c.JSON(200, gin.H{
 				"code": 406,
 				"msg":  "获取用户信息失败！",
@@ -117,6 +124,7 @@ func GetUserInfo(r *gin.RouterGroup) {
 //监测是否登录
 func CheckSignIn(r *gin.RouterGroup) {
 	r.POST(Address["checkSignIn"], func(c *gin.Context) {
+		log.Info(c, "token有效！")
 		c.JSON(200, gin.H{
 			"code": 200,
 			"msg":  "token有效！",
@@ -132,15 +140,17 @@ func GetUserMenus(r *gin.RouterGroup) {
 		userMenus, err := db.GetUserMenus(userInfo.Menus)
 
 		if err == nil {
+			log.Info(c, "获取用户菜单成功！")
 			c.JSON(200, gin.H{
 				"code":  200,
-				"msg":   "查询成功！",
+				"msg":   "获取用户菜单成功！",
 				"menus": userMenus,
 			})
 		} else {
+			log.Info(c, "获取用户菜单失败！")
 			c.JSON(200, gin.H{
 				"code": 406,
-				"msg":  "获取用户菜单！",
+				"msg":  "获取用户菜单失败！",
 			})
 		}
 	})
@@ -164,46 +174,53 @@ func GetUserMessages(r *gin.RouterGroup) {
 		messages, count, err := db.GetUserMessages(username.(string), pageSize, (page-1)*pageSize, c.Request.PostFormValue("getAll") == "true")
 
 		if err == nil {
+			log.Info(c, "获取用户通知成功！")
 			c.JSON(200, gin.H{
 				"code":     200,
-				"msg":      "查询成功！",
+				"msg":      "获取用户通知成功！",
 				"messages": messages,
 				"count":    count,
 			})
 		} else {
+			log.Info(c, "获取用户通知失败！")
 			c.JSON(200, gin.H{
 				"code": 406,
-				"msg":  "获取用户菜单失败！",
+				"msg":  "获取用户通知失败！",
 			})
 		}
 	})
 }
 
+//获取消息详情
 func GetMessageByID(r *gin.RouterGroup) {
 	r.POST(Address["getMessageByID"], func(c *gin.Context) {
 		message, err := db.GetMessageByID(c.Request.PostFormValue("id"))
 		if err == nil {
+			log.Info(c, "获取消息详情成功！")
 			c.JSON(200, gin.H{
 				"code":    200,
-				"msg":     "查询成功！",
+				"msg":     "获取消息详情成功！",
 				"message": message,
 			})
 		} else {
+			log.Info(c, "获取消息详情失败！")
 			c.JSON(200, gin.H{
 				"code": 406,
-				"msg":  "获取用户菜单！",
+				"msg":  "获取消息详情失败！",
 			})
 		}
 	})
 }
 
+//获取未读消息个数
 func GetUnReadMessagesCount(r *gin.RouterGroup) {
 	r.POST(Address["getUnReadMessagesCount"], func(c *gin.Context) {
 		username, _ := c.Get("username")
 		count := db.GetUnReadCount(username.(string))
+		log.Info(c, "获取未读消息个数成功！")
 		c.JSON(200, gin.H{
 			"code":  200,
-			"msg":   "查询成功！",
+			"msg":   "获取未读消息个数成功！",
 			"count": count,
 		})
 	})

@@ -1,11 +1,9 @@
 import React from "react";
 import { Result, Button } from "antd";
-import { inject } from "mobx-react";
-import store from "@/store";
+import history from "@/router/history";
 
 interface iProps {
   errorCode: 403 | 404 | 500;
-  history?: typeof store.history;
   error?: string;
 }
 
@@ -13,7 +11,6 @@ interface iState {
   error?: string;
 }
 
-@inject("history")
 class Error extends React.Component<iProps, iState> {
   get errorMsg() {
     let msg = "对不起，";
@@ -32,14 +29,14 @@ class Error extends React.Component<iProps, iState> {
   }
   backToHome(path: string) {
     if (path === "back") {
-      this.props.history?.go(-1);
+      history?.go(-1);
     } else {
-      this.props.history?.push(path);
+      history?.push(path);
     }
   }
   render() {
-    const { errorCode, history } = this.props;
-    const errorMsg: any = history?.location.state;
+    const { errorCode } = this.props;
+    const errorMsg: any = history.location.state;
     return (
       <Result
         status={errorCode}

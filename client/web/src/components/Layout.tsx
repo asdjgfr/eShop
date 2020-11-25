@@ -26,6 +26,7 @@ class Layouts extends React.Component<iProps, iState> {
   render() {
     const { route } = this.props;
     const { isCollapse } = this.state;
+    console.log("layout");
     return (
       <Layout className="layout-box">
         <Sider
@@ -49,7 +50,7 @@ class Layouts extends React.Component<iProps, iState> {
             <DashboardHeader />
           </Header>
           <Content className="layout-content">
-            <Switch>{renderRoutes(route.routes)}</Switch>
+            {/*<Switch>{renderRoutes(route.routes)}</Switch>*/}
           </Content>
           <Footer>
             <div className="align-center">

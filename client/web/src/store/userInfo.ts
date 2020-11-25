@@ -1,4 +1,4 @@
-import { action, observable } from "mobx";
+import { makeAutoObservable } from "mobx";
 
 interface userInfo {
   username: string;
@@ -9,13 +9,15 @@ interface userInfo {
 }
 
 class UserInfo implements userInfo {
-  @observable public username: string = "";
-  @observable public email: string = "";
-  @observable public phone: string = "";
-  @observable public role: number = -1;
-  @observable public birthday: string = "";
-
-  @action.bound setUserInfo(
+  public username: string = "";
+  public email: string = "";
+  public phone: string = "";
+  public role: number = -1;
+  public birthday: string = "";
+  constructor() {
+    makeAutoObservable(this);
+  }
+  setUserInfo(
     userInfo: userInfo = {
       username: "",
       email: "",

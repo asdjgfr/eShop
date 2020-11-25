@@ -7,6 +7,7 @@ import { getUserMenus } from "@/api/user";
 import { syncSetState } from "@/lib/pubfn";
 import { withTranslation, WithTranslation } from "react-i18next";
 import Icons from "@/components/Icons";
+import history from "@/router/history";
 
 interface iProps extends WithTranslation {
   userMenus?: typeof store.userMenus;
@@ -15,17 +16,15 @@ interface iProps extends WithTranslation {
 interface iState {
   pathname: string;
   loading: boolean;
-  unListen: any;
   cancelReq: any;
 }
-
+let unListen: any = () => {};
 @inject("userMenus", "history")
 @observer
 class DashboardSider extends React.Component<iProps, iState> {
   state: iState = {
     pathname: "",
     loading: true,
-    unListen: () => {},
     cancelReq: () => {},
   };
   async loadUserMenu() {
@@ -46,18 +45,18 @@ class DashboardSider extends React.Component<iProps, iState> {
           : []
       );
     } else {
-      message.error(this.props.t("loadUserMenuFail") + res.msg);
+      message.error(this.props.t("加载菜单失败：") + res.msg);
     }
-    if (/\/dashboard/.test(this.props.history?.location.pathname ?? "")) {
+    if (/\/dashboard/.test(history.location.pathname ?? "")) {
       this.setState({
         loading: false,
-        pathname: this.props.history?.location.pathname ?? "",
+        pathname: history.location.pathname ?? "",
       });
     }
   }
   componentDidMount() {
     this.loadUserMenu();
-    const unListen = this.props.history?.listen((location) => {
+    unListen = history.listen((location: any) => {
       // 最新路由的 location 对象，可以通过比较 pathname 是否相同来判断路由的变化情况
       if (this.state.pathname !== location.pathname) {
         this.setState({
@@ -65,19 +64,15 @@ class DashboardSider extends React.Component<iProps, iState> {
         });
       }
     });
-    this.setState({
-      unListen,
-    });
   }
   componentWillUnmount() {
     this.state.cancelReq();
-    this.state.unListen();
+    unListen();
   }
   render() {
     const menus = this.props.userMenus?.menus ?? [];
     const defaultSelectedKeys = menus.length ? [menus[0].path] : [];
     const { loading, pathname } = this.state;
-
     return (
       <>
         <div className="layout-logo" />

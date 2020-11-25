@@ -1,4 +1,4 @@
-import { action, observable } from "mobx";
+import { makeAutoObservable } from "mobx";
 
 interface userMenu {
   // 标题
@@ -14,10 +14,12 @@ interface userMenus {
 }
 
 class UserMenus implements userMenus {
-  @observable public menus: userMenu[] = [];
-
-  @action.bound setUserMenus(menus: userMenu[] = []) {
-    this.menus = menus;
+  public menus: userMenu[] = [];
+  constructor() {
+    makeAutoObservable(this);
+  }
+  setUserMenus(menus: userMenu[] = []) {
+    this.menus.splice(0, this.menus.length, ...menus);
   }
 }
 

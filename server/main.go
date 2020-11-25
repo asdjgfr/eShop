@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"myModule/config"
 	"myModule/db"
+	"myModule/log"
 	"myModule/redis"
 	"myModule/router"
 	"strconv"
@@ -26,6 +27,7 @@ func main() {
 	apiGroup := r.Group("/api")
 	//挂载中间件
 	apiGroup.Use(router.VerifyPermissions())
+	r.Use(log.LoggerMiddleware())
 	router.InitAPIRoutes(apiGroup)
 	router.InitRoutes(r)
 	_ = r.Run(":" + strconv.Itoa(globalConfig.Port))

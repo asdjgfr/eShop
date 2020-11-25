@@ -15,8 +15,8 @@
     "dev:s": "yarn dev:server"
   },
   "devDependencies": {
-    "nodemon": "^2.0.4",
-    "prettier": "2.1.2"
+    "nodemon": "^2.0.6",
+    "prettier": "2.2.0"
   },
   "nodemonConfig": {
     "ignore": [

@@ -9,6 +9,7 @@ import { getMessageByID } from "@/api/user";
 import { syncSetState } from "@/lib/pubfn";
 import { getUserMessages10 } from "@/api/user";
 import { Link } from "react-router-dom";
+import { initGetUserMessageCount } from "@/lib/rc.local";
 
 interface iMessage {
   id: number;
@@ -56,15 +57,16 @@ class Message extends React.Component<iProps, iState> {
       loading: true,
     });
   };
-  onChildrenDrawerClose = () => {
+  onChildrenDrawerClose() {
     this.state.cancel();
+    initGetUserMessageCount();
     this.setState({
       childLoading: true,
       childrenDrawer: false,
       detailsTitle: "",
       details: "",
     });
-  };
+  }
   async showDetails(message: iMessage) {
     await syncSetState.call(this, {
       childrenDrawer: true,
@@ -135,7 +137,7 @@ class Message extends React.Component<iProps, iState> {
             title={detailsTitle}
             width={420}
             closable={false}
-            onClose={this.onChildrenDrawerClose}
+            onClose={this.onChildrenDrawerClose.bind(this)}
             visible={this.state.childrenDrawer}
           >
             <Skeleton loading={childLoading} active>
