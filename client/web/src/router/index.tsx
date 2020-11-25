@@ -11,9 +11,7 @@ export default function App() {
     <Router history={history}>
       <HistoryContext.Provider value={{ history }}>
         <Suspense fallback={<SuspenseLoading />}>
-          <Switch>
-            <AuthRoutes />
-          </Switch>
+          <AuthRoutes />
         </Suspense>
       </HistoryContext.Provider>
     </Router>
