@@ -29,7 +29,7 @@ interface iState {
   cancel: any;
 }
 
-@inject("userMenus", "history", "userMessages")
+@inject("userMenus", "userMessages")
 @observer
 class Message extends React.Component<iProps, iState> {
   static contextType = context;

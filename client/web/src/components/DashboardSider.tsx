@@ -11,7 +11,6 @@ import history from "@/router/history";
 
 interface iProps extends WithTranslation {
   userMenus?: typeof store.userMenus;
-  history?: typeof store.history;
 }
 interface iState {
   pathname: string;
@@ -19,7 +18,7 @@ interface iState {
   cancelReq: any;
 }
 let unListen: any = () => {};
-@inject("userMenus", "history")
+@inject("userMenus")
 @observer
 class DashboardSider extends React.Component<iProps, iState> {
   state: iState = {

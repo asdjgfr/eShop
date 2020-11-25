@@ -1,6 +1,6 @@
 import axios from "axios";
 import qs from "qs";
-import history from "@/store/history";
+import history from "@/router/history";
 import { message } from "antd";
 import { sleep } from "@/lib/pubfn";
 import store from "@/store";

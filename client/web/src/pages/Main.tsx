@@ -4,15 +4,15 @@ import { ReactComponent as MainBg } from "@/static/img/main.svg";
 import store from "@/store";
 import { inject, observer } from "mobx-react";
 import { withTranslation, WithTranslation } from "react-i18next";
+import history from "@/router/history";
 
 interface iProps extends WithTranslation {
   shopInfo?: typeof store.shopInfo;
-  history?: typeof store.history;
   globalConfig?: typeof store.globalConfig;
 }
 interface iState {}
 
-@inject("shopInfo", "history")
+@inject("shopInfo")
 @observer
 class Main extends React.Component<iProps, iState> {
   public state: iState = {};
@@ -20,7 +20,7 @@ class Main extends React.Component<iProps, iState> {
     if (path === "help") {
       window.open("https://www.2077tech.com/", "_blank ");
     } else {
-      this.props.history?.push(path);
+      history.push(path);
     }
   }
   componentDidMount() {

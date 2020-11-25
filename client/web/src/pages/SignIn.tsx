@@ -10,16 +10,16 @@ import { usernameAndPassword, autoSignIn } from "@/lib/validator";
 import { signIn } from "@/api/user";
 import { sleep } from "@/lib/pubfn";
 import { initGetUserMessageCount } from "@/lib/rc.local";
+import history from "@/router/history";
 
 interface iProps extends WithTranslation {
-  history?: typeof store.history;
   shopInfo?: typeof store.shopInfo;
 }
 interface iState {
   loading: boolean;
 }
 
-@inject("history", "shopInfo")
+@inject("shopInfo")
 @observer
 class SignIn extends React.Component<iProps, iState> {
   state: iState = {
@@ -38,7 +38,7 @@ class SignIn extends React.Component<iProps, iState> {
       await initGetUserMessageCount();
       message.success(res.msg + "1秒后跳转。");
       await sleep(1000);
-      this.props.history?.push("/dashboard/analysis");
+      history.push("/dashboard/analysis");
     } else {
       this.setState({
         loading: false,

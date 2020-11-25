@@ -14,7 +14,6 @@ import history from "@/router/history";
 
 interface iProps extends WithTranslation {
   globalConfig?: typeof store.globalConfig;
-  history?: typeof store.history;
 }
 
 interface iState {
@@ -28,7 +27,7 @@ interface iState {
   pathname: string;
   unListen: any;
 }
-@inject("globalConfig", "history")
+@inject("globalConfig")
 class AuthRoutes extends React.Component<iProps, iState> {
   state: iState = {
     needAuth: false,
@@ -63,7 +62,7 @@ class AuthRoutes extends React.Component<iProps, iState> {
   }
   async componentDidMount() {
     await this.authUser();
-    const unListen = this.props.history?.listen(async (location: any) => {
+    const unListen = history.listen(async (location: any) => {
       // 最新路由的 location 对象，可以通过比较 pathname 是否相同来判断路由的变化情况
       if (this.state.pathname !== location.pathname) {
         await syncSetState.call(this, {

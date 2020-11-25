@@ -13,10 +13,10 @@ import { getUserInfo } from "@/api/user";
 import store from "@/store";
 import { syncSetState } from "@/lib/pubfn";
 import { signOut } from "@/api/user";
+import history from "@/router/history";
 
 interface iProps extends WithTranslation {
   userInfo?: typeof store.userInfo;
-  history?: typeof store.history;
 }
 interface iState {
   cancel: any;
@@ -24,7 +24,7 @@ interface iState {
 
 const { confirm } = Modal;
 
-@inject("userInfo", "history")
+@inject("userInfo")
 @observer
 class User extends React.Component<iProps, iState> {
   state: iState = {
@@ -62,7 +62,7 @@ class User extends React.Component<iProps, iState> {
                       that.props.t("!")
                   );
                   localStorage.removeItem("autoSignIn");
-                  that.props.history?.replace("/");
+                  history.replace("/");
                 } else {
                   message.error(
                     that.props.t("signOut") +

@@ -1,14 +1,12 @@
 import React from "react";
 import { Tabs } from "antd";
 import { withTranslation, WithTranslation } from "react-i18next";
-import store from "@/store";
 import Messages from "@/pages/User/Messages";
 import UserInfo from "@/pages/User/UserInfo";
 import OperationRecord from "@/pages/User/OperationRecord";
+import history from "@/router/history";
 
-interface iProps extends WithTranslation {
-  history?: typeof store.history;
-}
+interface iProps extends WithTranslation {}
 interface iTab {
   type: string;
   component: any;
@@ -40,7 +38,7 @@ class Center extends React.Component<iProps, iState> {
     ],
   };
   handleClickTab(activeKey: string) {
-    this.props.history?.replace(
+    history.replace(
       `/dashboard/center?${new URLSearchParams({ activeKey }).toString()}`
     );
   }
@@ -49,9 +47,8 @@ class Center extends React.Component<iProps, iState> {
     const { tabs } = this.state;
 
     let activeKey =
-      new URLSearchParams(this.props.history?.location.search).get(
-        "activeKey"
-      ) ?? "userInfo";
+      new URLSearchParams(history.location.search).get("activeKey") ??
+      "userInfo";
     return (
       <>
         <Tabs

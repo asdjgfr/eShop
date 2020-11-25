@@ -29,9 +29,9 @@ class Error extends React.Component<iProps, iState> {
   }
   backToHome(path: string) {
     if (path === "back") {
-      history?.go(-1);
+      history.go(-1);
     } else {
-      history?.push(path);
+      history.push(path);
     }
   }
   render() {
