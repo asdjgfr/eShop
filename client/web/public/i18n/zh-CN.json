@@ -43,5 +43,14 @@
   "read/unread": "已读/未读",
   "read": "已读",
   "unread": "未读",
-  "birthday": "生日"
+  "birthday": "生日",
+  "level": "等级",
+  "path": "路径",
+  "ip": "ip地址",
+  "ua": "用户代理",
+  "browserInfo": "浏览器信息",
+  "cpuInfo": "处理器信息",
+  "osInfo": "系统信息",
+  "time": "时间",
+  "unknown": "未知"
 }

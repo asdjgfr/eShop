@@ -73,6 +73,8 @@ export const post = function (url: string, data?: any, config?: {}) {
         ...config,
       })
       .then((res) => res.data),
-    cancel: source.cancel,
+    cancel: (msg = "") => {
+      source.cancel(msg);
+    },
   };
 };
