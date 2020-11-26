@@ -74,4 +74,13 @@ type (
 		ID          uint   `json:"id"`
 		Read        bool   `json:"read"`
 	}
+	LogsRes struct {
+		Level       string    `json:"level"`
+		Path        string    `json:"path"`
+		Username    string    `json:"username"`
+		IP          string    `json:"ip"`
+		UA          string    `json:"ua"`
+		Description string    `json:"description"`
+		Time        time.Time `json:"time"`
+	}
 )
