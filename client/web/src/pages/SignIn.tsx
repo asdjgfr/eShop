@@ -63,7 +63,7 @@ class SignIn extends React.Component<iProps, iState> {
               }
             >
               <header className="sign-in-title">
-                <i />
+                <i style={{ backgroundImage: `url("/logo192.png")` }} />
                 <span>{this.props.shopInfo?.title}</span>
               </header>
               <p className="sign-in-sub-title">

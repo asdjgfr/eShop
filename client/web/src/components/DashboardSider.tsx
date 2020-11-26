@@ -74,7 +74,10 @@ class DashboardSider extends React.Component<iProps, iState> {
     const { loading, pathname } = this.state;
     return (
       <>
-        <div className="layout-logo" />
+        <div
+          className="layout-logo"
+          style={{ backgroundImage: `url("/logo192.png")` }}
+        />
         <div className="layout-sider-container">
           <Spin spinning={loading}>
             <Menu

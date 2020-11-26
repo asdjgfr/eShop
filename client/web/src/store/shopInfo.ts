@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 
-interface shopInfo {
+interface iShopInfo {
   // 店铺的标题
   title: string;
   // 店铺的后缀
@@ -9,14 +9,14 @@ interface shopInfo {
   introduction: string;
 }
 
-class ShopInfo implements shopInfo {
+class ShopInfo implements iShopInfo {
   public title = "";
   public titleSuffix = "";
   public introduction = "";
   constructor() {
     makeAutoObservable(this);
   }
-  setShopInfo(info: shopInfo) {
+  setShopInfo(info: iShopInfo) {
     this.title = info.title;
     this.titleSuffix = info.titleSuffix;
     this.introduction = info.introduction;

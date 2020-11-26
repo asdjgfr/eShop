@@ -1,13 +1,13 @@
 import { makeAutoObservable } from "mobx";
 
-interface globalConfig {
+interface iGlobalConfig {
   // 全局的加载
   loading: boolean;
   // 全局加载的自定义文字
   loadingTip: string;
 }
 
-class GlobalConfig implements globalConfig {
+class GlobalConfig implements iGlobalConfig {
   public loading = false;
   public loadingTip = "";
   constructor() {
