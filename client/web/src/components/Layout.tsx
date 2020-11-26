@@ -1,7 +1,6 @@
 import React from "react";
 import { Layout } from "antd";
 import { renderRoutes } from "react-router-config";
-import { Switch } from "react-router-dom";
 
 import DashboardSider from "@/components/DashboardSider";
 import DashboardHeader from "@/components/DashboardHeader";
@@ -19,6 +18,7 @@ class Layouts extends React.Component<iProps, iState> {
     isCollapse: false,
   };
   handleToggleSider(isCollapse: boolean) {
+    console.log("触发", isCollapse);
     this.setState({
       isCollapse,
     });
@@ -33,14 +33,10 @@ class Layouts extends React.Component<iProps, iState> {
           collapsible
           collapsed={isCollapse}
           onCollapse={this.handleToggleSider.bind(this)}
-          breakpoint="lg"
           style={{
             height: "100vh",
             position: "fixed",
             left: 0,
-          }}
-          onBreakpoint={(broken) => {
-            this.handleToggleSider.call(this, broken);
           }}
         >
           <DashboardSider />
@@ -50,7 +46,7 @@ class Layouts extends React.Component<iProps, iState> {
             <DashboardHeader />
           </Header>
           <Content className="layout-content">
-            {/*<Switch>{renderRoutes(route.routes)}</Switch>*/}
+            {renderRoutes(route.routes)}
           </Content>
           <Footer>
             <div className="align-center">
