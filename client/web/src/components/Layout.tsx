@@ -26,7 +26,6 @@ class Layouts extends React.Component<iProps, iState> {
   render() {
     const { route } = this.props;
     const { isCollapse } = this.state;
-    console.log("layout");
     return (
       <Layout className="layout-box">
         <Sider
