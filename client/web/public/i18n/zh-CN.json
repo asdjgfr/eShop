@@ -66,5 +66,12 @@
   "status": "状态",
   "action": "操作",
   "delete": "删除",
-  "remarks": "备注"
+  "remarks": "备注",
+  "itemID": "物品ID",
+  "itemName": "物品名称",
+  "supplier": "供货商",
+  "storageTime": "入库时间",
+  "deliveryTime": "出库时间",
+  "typesOfGoods": "商品种类",
+  "amountOfGoods": "商品数量"
 }

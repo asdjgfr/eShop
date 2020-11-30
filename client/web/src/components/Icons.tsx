@@ -5,6 +5,7 @@ import {
   SettingOutlined,
   UserOutlined,
   CloseCircleOutlined,
+  BankOutlined,
 } from "@ant-design/icons";
 
 interface iProps {
@@ -29,6 +30,9 @@ class Icons extends React.Component<iProps, iState> {
         break;
       case "CloseCircleOutlined":
         icon = <CloseCircleOutlined />;
+        break;
+      case "BankOutlined":
+        icon = <BankOutlined />;
         break;
       default:
         icon = <CloseCircleOutlined />;

@@ -32,6 +32,7 @@ const Layout = lazy(() => import("@/components/Layout"));
 const Analysis = lazy(() => import("@/pages/Analysis"));
 const UserCenter = lazy(() => import("@/pages/User/Center"));
 const OrderManagement = lazy(() => import("@/pages/OrderManagement"));
+const InventoryManagement = lazy(() => import("@/pages/InventoryManagement"));
 
 export const mainRoutes: any[] = [
   {
@@ -72,6 +73,13 @@ export const mainRoutes: any[] = [
         path: "/dashboard/order-management",
         name: "OrderManagement",
         component: OrderManagement,
+        auth: true,
+        exact: true,
+      },
+      {
+        path: "/dashboard/inventory-management",
+        name: "InventoryManagement",
+        component: InventoryManagement,
         auth: true,
         exact: true,
       },
