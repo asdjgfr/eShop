@@ -31,6 +31,7 @@ const Settings = lazy(() => import("@/pages/Settings"));
 const Layout = lazy(() => import("@/components/Layout"));
 const Analysis = lazy(() => import("@/pages/Analysis"));
 const UserCenter = lazy(() => import("@/pages/User/Center"));
+const OrderManagement = lazy(() => import("@/pages/OrderManagement"));
 
 export const mainRoutes: any[] = [
   {
@@ -61,7 +62,6 @@ export const mainRoutes: any[] = [
     component: Layout,
     routes: [
       {
-        title: "统计",
         path: "/dashboard/analysis",
         name: "Analysis",
         component: Analysis,
@@ -69,7 +69,13 @@ export const mainRoutes: any[] = [
         exact: true,
       },
       {
-        title: "设置",
+        path: "/dashboard/order-management",
+        name: "OrderManagement",
+        component: OrderManagement,
+        auth: true,
+        exact: true,
+      },
+      {
         path: "/dashboard/settings",
         name: "Settings",
         component: Settings,
@@ -77,7 +83,6 @@ export const mainRoutes: any[] = [
         exact: true,
       },
       {
-        title: "用户中心",
         path: "/dashboard/center",
         name: "Center",
         component: UserCenter,

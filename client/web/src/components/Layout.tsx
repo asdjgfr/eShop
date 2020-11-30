@@ -18,7 +18,6 @@ class Layouts extends React.Component<iProps, iState> {
     isCollapse: false,
   };
   handleToggleSider(isCollapse: boolean) {
-    console.log("触发", isCollapse);
     this.setState({
       isCollapse,
     });
