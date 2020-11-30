@@ -96,8 +96,7 @@ class User extends React.Component<iProps, iState> {
             <Menu.Item key="setting">
               <Link to="/dashboard/settings">
                 <SettingOutlined />
-                {t("person")}
-                {t("setting")}
+                {t("systemSettings")}
               </Link>
             </Menu.Item>
             <Menu.Divider />

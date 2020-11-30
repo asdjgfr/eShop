@@ -53,5 +53,6 @@
   "osInfo": "系统信息",
   "time": "时间",
   "unknown": "未知",
-  "operationUser": "操作用户"
+  "operationUser": "操作用户",
+  "systemSettings": "系统设置"
 }
