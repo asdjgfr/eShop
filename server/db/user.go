@@ -137,7 +137,7 @@ func GetUserMessages(username string, limit, offset int, getAll bool) ([]types.U
 	if getAll {
 		getAllWhere = map[string]interface{}{}
 	}
-	dbFind := DB.Limit(limit).Offset(offset).Where(getAllWhere).Where(
+	dbFind := DB.Order("created_at DESC").Limit(limit).Offset(offset).Where(getAllWhere).Where(
 		DB.Where(DB.Where("username = ?", username).Or("username = ?", "any")),
 	).Find(&userMessages)
 	err := dbFind.Error

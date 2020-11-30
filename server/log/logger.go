@@ -6,6 +6,7 @@ import (
 	"myModule/types"
 )
 
+var excludePath = map[string]bool{"/api/get-logs": true}
 var actions = map[string]string{
 	"/info/get-shop-info":            "获取商铺信息",
 	"/api/sign-in":                   "登录系统",
@@ -54,21 +55,23 @@ func Warn(c *gin.Context, description string) {
 }
 
 func SaveLog(level, path, username, IP, ua, description string) {
-	if IP == "" {
-		IP = "0.0.0.0"
+	if !excludePath[path] {
+		if IP == "" {
+			IP = "0.0.0.0"
+		}
+		if username == "" {
+			username = "未知用户"
+		}
+		if description == "" {
+			description = actions[path]
+		}
+		db.SaveLogger(types.Logger{
+			Level:       level,
+			Path:        path,
+			Username:    username,
+			IP:          IP,
+			UA:          ua,
+			Description: description,
+		})
 	}
-	if username == "" {
-		username = "未知用户"
-	}
-	if description == "" {
-		description = actions[path]
-	}
-	db.SaveLogger(types.Logger{
-		Level:       level,
-		Path:        path,
-		Username:    username,
-		IP:          IP,
-		UA:          ua,
-		Description: description,
-	})
 }

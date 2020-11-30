@@ -16,19 +16,20 @@ func getLog(r *gin.RouterGroup) {
 		fePage := c.Request.PostFormValue("page")
 		fePageSize := c.Request.PostFormValue("pageSize")
 		page := 1
-		pageSize := 20
+		pageSize := 10
 		if fePage != "" {
 			page, _ = strconv.Atoi(fePage)
 		}
 		if fePageSize != "" {
 			pageSize, _ = strconv.Atoi(fePageSize)
 		}
-		logs, errMsg := db.GetLogs(username.(string), pageSize, (page-1)*pageSize)
+		logs, total, errMsg := db.GetLogs(username.(string), pageSize, (page-1)*pageSize)
 
 		c.JSON(200, gin.H{
-			"code": 200,
-			"msg":  errMsg,
-			"logs": logs,
+			"code":  200,
+			"msg":   errMsg,
+			"logs":  logs,
+			"total": total,
 		})
 	})
 }

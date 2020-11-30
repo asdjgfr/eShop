@@ -52,5 +52,6 @@
   "cpuInfo": "处理器信息",
   "osInfo": "系统信息",
   "time": "时间",
-  "unknown": "未知"
+  "unknown": "未知",
+  "operationUser": "操作用户"
 }

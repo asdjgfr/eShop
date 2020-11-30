@@ -3,6 +3,7 @@ import { Table } from "antd";
 import { withTranslation, WithTranslation } from "react-i18next";
 import { getLogs } from "@/api/log";
 import { UAParser } from "ua-parser-js";
+import { WarningTwoTone, InfoCircleTwoTone } from "@ant-design/icons";
 
 interface iProps extends WithTranslation {}
 interface iLog {
@@ -13,37 +14,66 @@ interface iLog {
   description: string;
   time: string;
 }
+interface iPagination {
+  current: number;
+  pageSize: number;
+  total: number;
+}
 interface iState {
-  page: number;
+  loading: boolean;
   logs: iLog[];
+  pagination: iPagination;
 }
 let cancel = () => {};
 class OperationRecord extends React.Component<iProps, iState> {
   state: iState = {
-    page: 1,
+    loading: true,
     logs: [],
+    pagination: {
+      current: 1,
+      pageSize: 10,
+      total: 0,
+    },
   };
-  async getLogs() {
+  async getLogs(pagination?: any) {
+    const page = pagination
+      ? pagination.current
+      : this.state.pagination.current;
+    const pageSize = pagination
+      ? pagination.pageSize
+      : this.state.pagination.pageSize;
+    this.setState({
+      loading: true,
+    });
     const { t } = this.props;
     cancel();
-    const gl = getLogs({ page: this.state.page, pageSize: 20 });
+    const gl = getLogs({
+      page,
+      pageSize,
+    });
     cancel = gl.cancel;
     const res = await gl.data;
-
-    const logs = this.state.logs;
-    res.logs.forEach((log: any) => {
-      const ua: any = new UAParser(log.ua).getResult();
-      logs.push({
-        key: Math.random(),
-        ...log,
-        browser: (ua.browser.name ?? t("unknown")) + (ua.browser.version ?? ""),
-        cpu: ua.cpu.architecture ?? t("unknown"),
-        os: (ua.os.name ?? t("unknown")) + (ua.os.version ?? ""),
-      });
-    });
-
+    const p = {
+      current: page,
+      pageSize,
+      total: res?.total ?? 0,
+    };
     this.setState({
-      logs,
+      loading: false,
+      logs: Array.isArray(res.logs)
+        ? res.logs.map((log: any) => {
+            const ua: any = new UAParser(log.ua).getResult();
+            return {
+              ...log,
+              key: Math.random(),
+              browser:
+                (ua.browser.name ?? t("unknown")) + (ua.browser.version ?? ""),
+              cpu: ua.cpu.architecture ?? t("unknown"),
+              os: (ua.os.name ?? t("unknown")) + (ua.os.version ?? ""),
+            };
+          })
+        : [],
+      pagination: p,
     });
   }
   componentDidMount() {
@@ -52,8 +82,7 @@ class OperationRecord extends React.Component<iProps, iState> {
 
   render() {
     const { t } = this.props;
-    const { logs } = this.state;
-    console.log(logs);
+    const { logs, loading, pagination } = this.state;
     return (
       <>
         <Table
@@ -62,14 +91,21 @@ class OperationRecord extends React.Component<iProps, iState> {
               title: t("level"),
               dataIndex: "level",
               key: "level",
+              render: (level) => {
+                let icon = <InfoCircleTwoTone />;
+                switch (level) {
+                  case "info":
+                    icon = <InfoCircleTwoTone />;
+                    break;
+                  case "warn":
+                    icon = <WarningTwoTone twoToneColor="orange" />;
+                    break;
+                }
+                return icon;
+              },
             },
             {
-              title: t("path"),
-              dataIndex: "path",
-              key: "path",
-            },
-            {
-              title: t("username"),
+              title: t("operationUser"),
               dataIndex: "username",
               key: "username",
             },
@@ -99,12 +135,21 @@ class OperationRecord extends React.Component<iProps, iState> {
               key: "description",
             },
             {
+              title: t("path"),
+              dataIndex: "path",
+              key: "path",
+            },
+            {
               title: t("time"),
               dataIndex: "time",
               key: "time",
             },
           ]}
           dataSource={logs}
+          loading={loading}
+          pagination={pagination}
+          scroll={{ x: "max-content" }}
+          onChange={this.getLogs.bind(this)}
         />
       </>
     );
