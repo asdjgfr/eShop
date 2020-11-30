@@ -41,7 +41,7 @@ class Layouts extends React.Component<iProps, iState> {
           <DashboardSider />
         </Sider>
         <Layout style={{ marginLeft: isCollapse ? 80 : 200 }}>
-          <Header style={{ backgroundColor: "#fff" }}>
+          <Header className="layout-header-box">
             <DashboardHeader />
           </Header>
           <Content className="layout-content">

@@ -50,12 +50,8 @@
   <component name="ChangeListManager">
     <list default="true" id="a27ab6c6-a950-4442-ba9f-00845ee34f39" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../client/web/.eslintcache" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/.eslintcache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/src/pages/User/OperationRecord.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/src/pages/User/OperationRecord.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/logger.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/logger.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/user.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/logger.go" beforeDir="false" afterPath="$PROJECT_DIR$/log/logger.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/router/logger.go" beforeDir="false" afterPath="$PROJECT_DIR$/router/logger.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/public/i18n/zh-CN.json" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/public/i18n/zh-CN.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/src/pages/Settings.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/src/pages/Settings.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -164,9 +160,9 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1605783485264" />
-    <state x="706" y="92" width="594" height="852" key="find.popup" timestamp="1606717175415">
+    <state x="706" y="92" width="594" height="852" key="find.popup" timestamp="1606717389409">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="706" y="92" width="594" height="852" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1606717175415" />
+    <state x="706" y="92" width="594" height="852" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1606717389409" />
   </component>
 </project>

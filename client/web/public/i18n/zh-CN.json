@@ -54,5 +54,9 @@
   "time": "时间",
   "unknown": "未知",
   "operationUser": "操作用户",
-  "systemSettings": "系统设置"
+  "systemSettings": "系统设置",
+  "edit": "编辑",
+  "save": "保存",
+  "alipay": "支付宝",
+  "avatar": "头像"
 }
