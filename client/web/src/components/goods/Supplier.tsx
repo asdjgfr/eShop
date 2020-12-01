@@ -6,6 +6,7 @@ import { getSuppliers } from "@/api/supplies";
 
 interface iProps extends WithTranslation {
   onChangeSupplier: (data: { id: number; name: string }) => void;
+  canCreated?: boolean;
 }
 interface iSupplier {
   id: number;
@@ -36,24 +37,29 @@ class Supplier extends React.Component<iProps, iState> {
     const gs = getSuppliers(query);
     cancel = gs.cancel;
     const res = await gs.data;
+    let canCreated = [
+      {
+        id: -1,
+        name: t("add") + t("：") + query,
+      },
+    ];
+    if (!this.props.canCreated) {
+      canCreated = [];
+    }
     this.setState({
-      data: res.supplies.length
-        ? res.supplies
-        : [
-            {
-              id: -1,
-              name: t("add") + t(":") + query,
-            },
-          ],
+      data: res.supplies.length ? res.supplies : canCreated,
       fetching: false,
       enterValue: query,
     });
   }, 400);
-  handleChange(id: number) {
+  handleChange(id: number, item: any) {
     this.setState({
       value: id,
     });
-    this.props.onChangeSupplier({ id, name: this.state.enterValue });
+    this.props.onChangeSupplier({
+      id,
+      name: id === -1 ? this.state.enterValue : item.name,
+    });
   }
   render() {
     const { fetching, value, data } = this.state;
@@ -70,7 +76,7 @@ class Supplier extends React.Component<iProps, iState> {
         onChange={this.handleChange.bind(this)}
       >
         {data.map((d: iSupplier) => (
-          <Option key={d.id} value={d.id}>
+          <Option key={d.id} value={d.id} name={d.name}>
             {d.name}
           </Option>
         ))}

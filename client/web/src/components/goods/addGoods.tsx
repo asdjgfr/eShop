@@ -42,7 +42,10 @@ class AddGoods extends React.Component<iProps, iState> {
       label: "supplier",
       rules: [{ required: true }],
       children: (
-        <Supplier onChangeSupplier={this.handleChangeSupplier.bind(this)} />
+        <Supplier
+          onChangeSupplier={this.handleChangeSupplier.bind(this)}
+          canCreated={true}
+        />
       ),
     },
     {
