@@ -71,3 +71,10 @@ type Logger struct {
 	UA          string `gorm:"comment:ua"`
 	Description string `gorm:"comment:说明"`
 }
+type Supplier struct {
+	gorm.Model
+	Name     string `gorm:"comment:供货商名称"`
+	Contacts string `gorm:"comment:联系方式"`
+	Address  string `gorm:"comment:地址"`
+	Remarks  string `gorm:"comment:备注"`
+}

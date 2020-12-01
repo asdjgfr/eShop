@@ -14,3 +14,18 @@ export const syncSetState = function (data: object) {
     }
   });
 };
+
+/**
+ * 价格格式化
+ * */
+export const priceFormatter = function (value: number) {
+  return `￥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
+/**
+ * 价格格式化
+ * */
+export const priceParse = function (value: number | string | undefined) {
+  value = value ?? "";
+  return (value + "").replace(/￥\s?|(,*)/g, "");
+};

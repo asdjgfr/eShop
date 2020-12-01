@@ -90,3 +90,7 @@ func InitRole(db *gorm.DB) {
 func InitLogger(db *gorm.DB) {
 	_ = db.AutoMigrate(&types.Logger{})
 }
+func InitSupplier(db *gorm.DB) {
+	//初始化供货商
+	_ = db.AutoMigrate(&types.Supplier{})
+}

@@ -24,6 +24,7 @@ func InitDB(config types.DbConfig) {
 func initDBData(db *gorm.DB) {
 	//需要初始化的数据库数据
 	InitLogger(db)
+	InitSupplier(db)
 	InitAdminUser(db)
 	InitShopInfo(db)
 	InitDashboardMenus(db)

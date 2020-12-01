@@ -48,7 +48,18 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a27ab6c6-a950-4442-ba9f-00845ee34f39" name="Default Changelist" comment="" />
+    <list default="true" id="a27ab6c6-a950-4442-ba9f-00845ee34f39" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../client/web/src/components/goods/Supplier.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../client/web/src/components/goods/addGoods.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/.eslintcache" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/.eslintcache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/public/i18n/zh-CN.json" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/public/i18n/zh-CN.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/src/lib/pubfn.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/src/lib/pubfn.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/src/pages/InventoryManagement.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/src/pages/InventoryManagement.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/index.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/index.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/initDBData.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/initDBData.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/types/dbTypes.go" beforeDir="false" afterPath="$PROJECT_DIR$/types/dbTypes.go" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -156,9 +167,9 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1605783485264" />
-    <state x="706" y="92" width="594" height="852" key="find.popup" timestamp="1606717389409">
+    <state x="706" y="92" width="594" height="852" key="find.popup" timestamp="1606802826293">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="706" y="92" width="594" height="852" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1606717389409" />
+    <state x="706" y="92" width="594" height="852" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1606802826293" />
   </component>
 </project>
