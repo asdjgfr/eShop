@@ -20,5 +20,8 @@ func GetSupplier(query string) ([]types.SupplierRes, error) {
 			CreatedAt: s.CreatedAt,
 		})
 	}
+	if len(res) == 0 {
+		res = []types.SupplierRes{}
+	}
 	return res, dbFind.Error
 }

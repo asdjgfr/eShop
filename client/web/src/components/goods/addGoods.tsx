@@ -11,69 +11,91 @@ interface iProps extends WithTranslation {
 }
 interface iState {
   confirmLoading: boolean;
+  postData: {
+    supplier: {
+      id: number | undefined;
+      name: string;
+    };
+  };
 }
 
-const formItems = [
-  {
-    name: "name",
-    label: "goodsName",
-    rules: [{ required: true }],
-    children: <Input />,
-  },
-  {
-    name: "supplier",
-    label: "supplier",
-    rules: [{ required: true }],
-    children: <Supplier />,
-  },
-  {
-    name: "typesOfGoods",
-    label: "typesOfGoods",
-    rules: [{ required: true }],
-    children: <Input />,
-  },
-  {
-    name: "unit",
-    label: "unit",
-    rules: [{ required: true }],
-    children: <Input />,
-  },
-  {
-    name: "inventory",
-    label: "inventory",
-    rules: [{ required: true }],
-    children: <InputNumber min={0} />,
-  },
-  {
-    name: "costPrice",
-    label: "costPrice",
-    rules: [{ required: true }],
-    children: <InputNumber min={0} step={0.01} />,
-  },
-  {
-    name: "sellingPrice",
-    label: "sellingPrice",
-    rules: [{ required: true }],
-    children: <InputNumber min={0} step={0.01} />,
-  },
-  {
-    name: "guidePrice",
-    label: "guidePrice",
-    rules: [{ required: true }],
-    children: <InputNumber min={0} step={0.01} />,
-  },
-  {
-    name: "minPackages",
-    label: "minPackages",
-    rules: [{ required: true }],
-    children: <InputNumber min={1} step={0} />,
-  },
-];
 class AddGoods extends React.Component<iProps, iState> {
   formRef = React.createRef<FormInstance>();
   state: iState = {
     confirmLoading: false,
+    postData: {
+      supplier: {
+        id: undefined,
+        name: "",
+      },
+    },
   };
+  formItems = [
+    {
+      name: "name",
+      label: "goodsName",
+      rules: [{ required: true }],
+      children: <Input />,
+    },
+    {
+      name: "supplier",
+      label: "supplier",
+      rules: [{ required: true }],
+      children: (
+        <Supplier onChangeSupplier={this.handleChangeSupplier.bind(this)} />
+      ),
+    },
+    {
+      name: "typesOfGoods",
+      label: "typesOfGoods",
+      rules: [{ required: true }],
+      children: <Input />,
+    },
+    {
+      name: "unit",
+      label: "unit",
+      rules: [{ required: true }],
+      children: <Input />,
+    },
+    {
+      name: "inventory",
+      label: "inventory",
+      rules: [{ required: true }],
+      children: <InputNumber min={0} />,
+    },
+    {
+      name: "costPrice",
+      label: "costPrice",
+      rules: [{ required: true }],
+      children: <InputNumber min={0} step={0.01} />,
+    },
+    {
+      name: "sellingPrice",
+      label: "sellingPrice",
+      rules: [{ required: true }],
+      children: <InputNumber min={0} step={0.01} />,
+    },
+    {
+      name: "guidePrice",
+      label: "guidePrice",
+      rules: [{ required: true }],
+      children: <InputNumber min={0} step={0.01} />,
+    },
+    {
+      name: "minPackages",
+      label: "minPackages",
+      rules: [{ required: true }],
+      children: <InputNumber min={1} step={0} />,
+    },
+  ];
+  handleChangeSupplier(data: { id: number; name: string }) {
+    this.setState({
+      postData: {
+        ...this.state.postData,
+        supplier: { id: data.id, name: data.name },
+      },
+    });
+  }
   handleOk() {
     this.props.toggleVisible(false);
     this.onReset();
@@ -106,7 +128,7 @@ class AddGoods extends React.Component<iProps, iState> {
           wrapperCol={{ span: 16 }}
           onValuesChange={this.handleValueChange.bind(this)}
         >
-          {formItems.map((item: any, i) => (
+          {this.formItems.map((item: any, i) => (
             <Form.Item
               key={i}
               name={item.name}

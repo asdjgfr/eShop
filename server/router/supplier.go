@@ -12,7 +12,7 @@ func InitSupplierRouter(r *gin.RouterGroup) {
 }
 
 func getSupplier(r *gin.RouterGroup) {
-	r.POST(Address["getSupplier"], func(c *gin.Context) {
+	r.POST(Address["getSuppliers"], func(c *gin.Context) {
 		supplies, err := db.GetSupplier(c.Request.PostFormValue("query"))
 		log.Info(c, "获取供货商")
 		msg := "获取供货商成功！"

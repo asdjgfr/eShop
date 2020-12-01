@@ -18,7 +18,7 @@ func InitRouterAddress() {
 		"getMessageByID":         "get-message-by-id",
 		"getUnReadMessagesCount": "get-unread-messages-count",
 		"getLogs":                "get-logs",
-		"getSupplier":            "get-supplier",
+		"getSuppliers":           "get-suppliers",
 	}
 	for k, v := range apiAddress {
 		Address[k] = v
