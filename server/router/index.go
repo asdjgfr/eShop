@@ -25,6 +25,7 @@ func InitAPIRoutes(r *gin.RouterGroup) {
 	//初始化api下面的路由
 	InitUserRouter(r)
 	InitLoggerRouter(r)
+	InitSupplierRouter(r)
 }
 
 func VerifyPermissions() gin.HandlerFunc {

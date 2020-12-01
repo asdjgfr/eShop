@@ -83,4 +83,12 @@ type (
 		Description string    `json:"description"`
 		Time        time.Time `json:"time"`
 	}
+	SupplierRes struct {
+		ID        uint      `json:"id"`
+		Name      string    `json:"name"`
+		Contacts  string    `json:"contacts"`
+		Address   string    `json:"address"`
+		Remarks   string    `json:"remarks"`
+		CreatedAt time.Time `json:"createdAt"`
+	}
 )

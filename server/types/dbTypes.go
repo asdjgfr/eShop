@@ -77,4 +77,5 @@ type Supplier struct {
 	Contacts string `gorm:"comment:联系方式"`
 	Address  string `gorm:"comment:地址"`
 	Remarks  string `gorm:"comment:备注"`
+	Pinyin   string `gorm:"comment:拼音"`
 }
