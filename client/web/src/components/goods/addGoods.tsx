@@ -13,24 +13,15 @@ interface iProps extends WithTranslation {
 }
 interface iState {
   confirmLoading: boolean;
-  postData: {
-    supplier: {
-      id: number | undefined;
-      name: string;
-    };
-  };
+  postData: any;
 }
 
+const excludeKeys = ["supplier", "unit", "goodsTypes"];
 class AddGoods extends React.Component<iProps, iState> {
   formRef = React.createRef<FormInstance>();
   state: iState = {
     confirmLoading: false,
-    postData: {
-      supplier: {
-        id: undefined,
-        name: "",
-      },
-    },
+    postData: {},
   };
   formItems = [
     {
@@ -42,6 +33,7 @@ class AddGoods extends React.Component<iProps, iState> {
     {
       name: "supplier",
       label: "supplier",
+      noStyle: true,
       rules: [{ required: true }],
       children: (
         <Supplier
@@ -53,6 +45,7 @@ class AddGoods extends React.Component<iProps, iState> {
     {
       name: "goodsTypes",
       label: "goodsTypes",
+      noStyle: true,
       rules: [{ required: true }],
       children: (
         <TypesOfGoods
@@ -65,6 +58,7 @@ class AddGoods extends React.Component<iProps, iState> {
       name: "unit",
       label: "unit",
       rules: [{ required: true }],
+      noStyle: true,
       children: (
         <Unit
           onChangeUnit={this.handleChangePostData.bind(this)}
@@ -76,31 +70,46 @@ class AddGoods extends React.Component<iProps, iState> {
       name: "inventory",
       label: "inventory",
       rules: [{ required: true }],
-      children: <InputNumber min={0} />,
+      props: {
+        initialValue: 1,
+      },
+      children: <InputNumber min={1} precision={0} />,
     },
     {
       name: "costPrice",
       label: "costPrice",
       rules: [{ required: true }],
-      children: <InputNumber min={0} step={0.01} />,
+      props: {
+        initialValue: 0.0_0,
+      },
+      children: <InputNumber min={0} precision={2} />,
     },
     {
       name: "sellingPrice",
       label: "sellingPrice",
       rules: [{ required: true }],
-      children: <InputNumber min={0} step={0.01} />,
+      props: {
+        initialValue: 0.0_0,
+      },
+      children: <InputNumber min={0} precision={2} />,
     },
     {
       name: "guidePrice",
       label: "guidePrice",
       rules: [{ required: true }],
-      children: <InputNumber min={0} step={0.01} />,
+      props: {
+        initialValue: 0.0_0,
+      },
+      children: <InputNumber min={0} precision={2} />,
     },
     {
       name: "minPackages",
       label: "minPackages",
       rules: [{ required: true }],
-      children: <InputNumber min={1} step={0} />,
+      props: {
+        initialValue: 1,
+      },
+      children: <InputNumber min={1} precision={0} />,
     },
   ];
   handleChangePostData(data: { id: number; name: string }, type: string) {
@@ -113,8 +122,16 @@ class AddGoods extends React.Component<iProps, iState> {
     });
   }
   handleOk() {
-    this.props.toggleVisible(false);
-    this.onReset();
+    return this.formRef.current
+      ?.validateFields()
+      .then(() => {
+        console.log(this.state.postData);
+        this.props.toggleVisible(false);
+        this.onReset();
+      })
+      .catch(function (e) {
+        console.log(e);
+      });
   }
   handleCancel() {
     this.props.toggleVisible(false);
@@ -124,7 +141,17 @@ class AddGoods extends React.Component<iProps, iState> {
     this.formRef.current?.resetFields();
   }
   handleValueChange(changedValues: any, allValues: any) {
-    console.log(changedValues, allValues);
+    const postData: any = {
+      ...this.state.postData,
+    };
+    for (const [key, value] of Object.entries(allValues)) {
+      if (!excludeKeys.some((k) => k === key)) {
+        postData[key] = value;
+      }
+    }
+    this.setState({
+      postData,
+    });
   }
   render() {
     const { visible, t } = this.props;
@@ -139,17 +166,17 @@ class AddGoods extends React.Component<iProps, iState> {
       >
         <Form
           ref={this.formRef}
-          name="control-ref"
           labelCol={{ span: 6 }}
           wrapperCol={{ span: 16 }}
           onValuesChange={this.handleValueChange.bind(this)}
         >
           {this.formItems.map((item: any, i) => (
             <Form.Item
-              key={i}
               name={item.name}
+              key={i}
               label={t(item.label)}
               rules={item.rules}
+              {...(item.props ?? {})}
             >
               {item.children}
             </Form.Item>

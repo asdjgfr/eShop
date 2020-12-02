@@ -1,5 +1,5 @@
 import React from "react";
-import { Select, Spin, Empty } from "antd";
+import { Select, Spin, Empty, Form } from "antd";
 import { withTranslation, WithTranslation } from "react-i18next";
 import debounce from "lodash/debounce";
 import { getSuppliers } from "@/api/supplies";
@@ -21,12 +21,13 @@ interface iState {
 
 const { Option } = Select;
 let cancel = () => {};
+
 class Supplier extends React.Component<iProps, iState> {
   state: iState = {
     data: [],
     value: undefined,
     enterValue: "",
-    fetching: false,
+    fetching: true,
   };
   fetchSupplier = debounce(async function (query: string) {
     const { t } = this.props;
@@ -68,22 +69,24 @@ class Supplier extends React.Component<iProps, iState> {
     const { fetching, value, data } = this.state;
     const { t } = this.props;
     return (
-      <Select
-        value={value}
-        placeholder={t("plsSearch") + t("supplier")}
-        notFoundContent={fetching ? <Spin size="small" /> : <Empty />}
-        filterOption={false}
-        onFocus={this.fetchSupplier.bind(this, "")}
-        onSearch={this.fetchSupplier.bind(this)}
-        showSearch={true}
-        onChange={this.handleChange.bind(this)}
-      >
-        {data.map((d: iSupplier) => (
-          <Option key={d.id} value={d.id} name={d.name}>
-            {d.name}
-          </Option>
-        ))}
-      </Select>
+      <Form.Item name="supplier" noStyle={true}>
+        <Select
+          value={value}
+          placeholder={t("plsSearch") + t("supplier")}
+          notFoundContent={fetching ? <Spin size="small" /> : <Empty />}
+          filterOption={false}
+          onFocus={this.fetchSupplier.bind(this, "")}
+          onSearch={this.fetchSupplier.bind(this)}
+          showSearch={true}
+          onChange={this.handleChange.bind(this)}
+        >
+          {data.map((d: iSupplier) => (
+            <Option key={d.id} value={d.id} name={d.name}>
+              {d.name}
+            </Option>
+          ))}
+        </Select>
+      </Form.Item>
     );
   }
 }

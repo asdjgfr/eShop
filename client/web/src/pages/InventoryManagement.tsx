@@ -123,9 +123,9 @@ class InventoryManagement extends React.Component<iProps, iState> {
               key: "goodsName",
             },
             {
-              title: t("typesOfGoods"),
-              dataIndex: "typesOfGoods",
-              key: "typesOfGoods",
+              title: t("goodsTypes"),
+              dataIndex: "goodsTypes",
+              key: "goodsTypes",
             },
             {
               title: t("goodsID"),

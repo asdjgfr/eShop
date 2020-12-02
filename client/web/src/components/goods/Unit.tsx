@@ -1,5 +1,5 @@
 import React from "react";
-import { Select, Spin, Empty } from "antd";
+import { Select, Spin, Empty, Form } from "antd";
 import { withTranslation, WithTranslation } from "react-i18next";
 import debounce from "lodash/debounce";
 import { getUnit } from "@/api/unit";
@@ -26,7 +26,7 @@ class Unit extends React.Component<iProps, iState> {
     data: [],
     value: undefined,
     enterValue: "",
-    fetching: false,
+    fetching: true,
   };
   fetchUnit = debounce(async function (query: string) {
     const { t } = this.props;
@@ -68,22 +68,24 @@ class Unit extends React.Component<iProps, iState> {
     const { fetching, value, data } = this.state;
     const { t } = this.props;
     return (
-      <Select
-        value={value}
-        placeholder={t("plsSearch") + t("unit")}
-        notFoundContent={fetching ? <Spin size="small" /> : <Empty />}
-        filterOption={false}
-        onFocus={this.fetchUnit.bind(this, "")}
-        onSearch={this.fetchUnit.bind(this)}
-        showSearch={true}
-        onChange={this.handleChange.bind(this)}
-      >
-        {data.map((d: iUnit) => (
-          <Option key={d.id} value={d.id} name={d.name}>
-            {d.name}
-          </Option>
-        ))}
-      </Select>
+      <Form.Item name="unit" noStyle={true}>
+        <Select
+          value={value}
+          placeholder={t("plsSearch") + t("unit")}
+          notFoundContent={fetching ? <Spin size="small" /> : <Empty />}
+          filterOption={false}
+          onFocus={this.fetchUnit.bind(this, "")}
+          onSearch={this.fetchUnit.bind(this)}
+          showSearch={true}
+          onChange={this.handleChange.bind(this)}
+        >
+          {data.map((d: iUnit) => (
+            <Option key={d.id} value={d.id} name={d.name}>
+              {d.name}
+            </Option>
+          ))}
+        </Select>
+      </Form.Item>
     );
   }
 }
