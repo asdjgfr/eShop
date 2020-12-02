@@ -20,6 +20,7 @@ func InitRouterAddress() {
 		"getLogs":                "get-logs",
 		"getSuppliers":           "get-suppliers",
 		"getGoodsTypes":          "get-goods-types",
+		"getUnit":                "get-unit",
 	}
 	for k, v := range apiAddress {
 		Address[k] = v

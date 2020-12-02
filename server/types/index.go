@@ -99,4 +99,11 @@ type (
 		Remarks   string    `json:"remarks"`
 		CreatedAt time.Time `json:"createdAt"`
 	}
+	UnitRes struct {
+		ID        uint      `json:"id"`
+		Name      string    `json:"name"`
+		Pinyin    string    `json:"pinyin"`
+		Remarks   string    `json:"remarks"`
+		CreatedAt time.Time `json:"createdAt"`
+	}
 )

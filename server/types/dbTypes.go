@@ -85,3 +85,9 @@ type GoodsTypes struct {
 	Pinyin  string `gorm:"comment:拼音"`
 	Remarks string `gorm:"comment:备注"`
 }
+type Unit struct {
+	gorm.Model
+	Name    string `gorm:"comment:商品类型名称"`
+	Pinyin  string `gorm:"comment:拼音"`
+	Remarks string `gorm:"comment:备注"`
+}

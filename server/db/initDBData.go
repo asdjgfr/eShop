@@ -98,3 +98,7 @@ func InitGoodsTypes(db *gorm.DB) {
 	//初始化商品类型
 	_ = db.AutoMigrate(&types.GoodsTypes{})
 }
+func InitUnit(db *gorm.DB) {
+	//初始化单位
+	_ = db.AutoMigrate(&types.Unit{})
+}

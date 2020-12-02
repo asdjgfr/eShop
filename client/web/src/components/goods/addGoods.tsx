@@ -5,6 +5,7 @@ import { withTranslation, WithTranslation } from "react-i18next";
 import { priceFormatter } from "@/lib/pubfn";
 import Supplier from "@/components/goods/Supplier";
 import TypesOfGoods from "@/components/goods/TypesOfGoods";
+import Unit from "@/components/goods/Unit";
 
 interface iProps extends WithTranslation {
   visible: boolean;
@@ -64,7 +65,12 @@ class AddGoods extends React.Component<iProps, iState> {
       name: "unit",
       label: "unit",
       rules: [{ required: true }],
-      children: <Input />,
+      children: (
+        <Unit
+          onChangeUnit={this.handleChangePostData.bind(this)}
+          canCreated={true}
+        />
+      ),
     },
     {
       name: "inventory",
