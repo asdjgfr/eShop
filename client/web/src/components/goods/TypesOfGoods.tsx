@@ -2,18 +2,18 @@ import React from "react";
 import { Select, Spin, Empty } from "antd";
 import { withTranslation, WithTranslation } from "react-i18next";
 import debounce from "lodash/debounce";
-import { getSuppliers } from "@/api/supplies";
+import { getGoodsTypes } from "@/api/typesOfGoods";
 
 interface iProps extends WithTranslation {
-  onChangeSupplier: (data: { id: number; name: string }, type: string) => void;
+  onChangeGoodsType: (data: { id: number; name: string }, type: string) => void;
   canCreated?: boolean;
 }
-interface iSupplier {
+interface iGoodsTypes {
   id: number;
   name: string;
 }
 interface iState {
-  data: iSupplier[];
+  data: iGoodsTypes[];
   value: number | undefined;
   enterValue: string;
   fetching: boolean;
@@ -21,33 +21,33 @@ interface iState {
 
 const { Option } = Select;
 let cancel = () => {};
-class Supplier extends React.Component<iProps, iState> {
+class TypesOfGoods extends React.Component<iProps, iState> {
   state: iState = {
     data: [],
     value: undefined,
     enterValue: "",
     fetching: false,
   };
-  fetchSupplier = debounce(async function (query: string) {
+  fetchGoodsType = debounce(async function (query: string) {
     const { t } = this.props;
     cancel();
     this.setState({
       fetching: true,
     });
-    const gs = getSuppliers(query);
-    cancel = gs.cancel;
-    const res = await gs.data;
+    const ggt = getGoodsTypes(query);
+    cancel = ggt.cancel;
+    const res = await ggt.data;
     let canCreated = [
       {
         id: -1,
-        name: t("add") + t("supplier") + t("：") + query,
+        name: t("add") + t("goodsTypes") + t("：") + query,
       },
     ];
-    if (!this.props.canCreated || (!res.supplies.length && query === "")) {
+    if (!this.props.canCreated || (!res.goodsTypes.length && query === "")) {
       canCreated = [];
     }
     this.setState({
-      data: res.supplies.length ? res.supplies : canCreated,
+      data: res.goodsTypes.length ? res.goodsTypes : canCreated,
       fetching: false,
       enterValue: query,
     });
@@ -56,12 +56,12 @@ class Supplier extends React.Component<iProps, iState> {
     this.setState({
       value: id,
     });
-    this.props.onChangeSupplier(
+    this.props.onChangeGoodsType(
       {
         id,
         name: id === -1 ? this.state.enterValue : item.name,
       },
-      "supplier"
+      "goodsTypes"
     );
   }
   render() {
@@ -70,15 +70,15 @@ class Supplier extends React.Component<iProps, iState> {
     return (
       <Select
         value={value}
-        placeholder={t("plsSearch") + t("supplier")}
+        placeholder={t("plsSearch") + t("goodsTypes")}
         notFoundContent={fetching ? <Spin size="small" /> : <Empty />}
         filterOption={false}
-        onFocus={this.fetchSupplier.bind(this, "")}
-        onSearch={this.fetchSupplier.bind(this)}
+        onFocus={this.fetchGoodsType.bind(this, "")}
+        onSearch={this.fetchGoodsType.bind(this)}
         showSearch={true}
         onChange={this.handleChange.bind(this)}
       >
-        {data.map((d: iSupplier) => (
+        {data.map((d: iGoodsTypes) => (
           <Option key={d.id} value={d.id} name={d.name}>
             {d.name}
           </Option>
@@ -88,4 +88,4 @@ class Supplier extends React.Component<iProps, iState> {
   }
 }
 
-export default withTranslation()(Supplier);
+export default withTranslation()(TypesOfGoods);

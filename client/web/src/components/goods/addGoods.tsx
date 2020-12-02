@@ -4,6 +4,7 @@ import { FormInstance } from "antd/lib/form";
 import { withTranslation, WithTranslation } from "react-i18next";
 import { priceFormatter } from "@/lib/pubfn";
 import Supplier from "@/components/goods/Supplier";
+import TypesOfGoods from "@/components/goods/TypesOfGoods";
 
 interface iProps extends WithTranslation {
   visible: boolean;
@@ -43,16 +44,21 @@ class AddGoods extends React.Component<iProps, iState> {
       rules: [{ required: true }],
       children: (
         <Supplier
-          onChangeSupplier={this.handleChangeSupplier.bind(this)}
+          onChangeSupplier={this.handleChangePostData.bind(this)}
           canCreated={true}
         />
       ),
     },
     {
-      name: "typesOfGoods",
-      label: "typesOfGoods",
+      name: "goodsTypes",
+      label: "goodsTypes",
       rules: [{ required: true }],
-      children: <Input />,
+      children: (
+        <TypesOfGoods
+          onChangeGoodsType={this.handleChangePostData.bind(this)}
+          canCreated={true}
+        />
+      ),
     },
     {
       name: "unit",
@@ -91,12 +97,13 @@ class AddGoods extends React.Component<iProps, iState> {
       children: <InputNumber min={1} step={0} />,
     },
   ];
-  handleChangeSupplier(data: { id: number; name: string }) {
+  handleChangePostData(data: { id: number; name: string }, type: string) {
+    const postData: any = {
+      ...this.state.postData,
+    };
+    postData[type] = { id: data.id, name: data.name };
     this.setState({
-      postData: {
-        ...this.state.postData,
-        supplier: { id: data.id, name: data.name },
-      },
+      postData,
     });
   }
   handleOk() {

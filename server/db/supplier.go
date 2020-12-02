@@ -16,6 +16,7 @@ func GetSupplier(query string) ([]types.SupplierRes, error) {
 			Name:      s.Name,
 			Contacts:  s.Contacts,
 			Address:   s.Address,
+			Pinyin:    s.Pinyin,
 			Remarks:   s.Remarks,
 			CreatedAt: s.CreatedAt,
 		})

@@ -75,7 +75,7 @@
   "supplier": "供货商",
   "storageTime": "入库时间",
   "deliveryTime": "出库时间",
-  "typesOfGoods": "商品种类",
+  "goodsTypes": "商品种类",
   "amountOfGoods": "商品数量",
   "search": "搜索",
   "clear": "清空",

@@ -94,3 +94,7 @@ func InitSupplier(db *gorm.DB) {
 	//初始化供货商
 	_ = db.AutoMigrate(&types.Supplier{})
 }
+func InitGoodsTypes(db *gorm.DB) {
+	//初始化商品类型
+	_ = db.AutoMigrate(&types.GoodsTypes{})
+}

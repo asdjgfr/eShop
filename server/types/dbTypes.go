@@ -76,6 +76,12 @@ type Supplier struct {
 	Name     string `gorm:"comment:供货商名称"`
 	Contacts string `gorm:"comment:联系方式"`
 	Address  string `gorm:"comment:地址"`
-	Remarks  string `gorm:"comment:备注"`
 	Pinyin   string `gorm:"comment:拼音"`
+	Remarks  string `gorm:"comment:备注"`
+}
+type GoodsTypes struct {
+	gorm.Model
+	Name    string `gorm:"comment:商品类型名称"`
+	Pinyin  string `gorm:"comment:拼音"`
+	Remarks string `gorm:"comment:备注"`
 }

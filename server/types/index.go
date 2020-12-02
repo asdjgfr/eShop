@@ -88,6 +88,14 @@ type (
 		Name      string    `json:"name"`
 		Contacts  string    `json:"contacts"`
 		Address   string    `json:"address"`
+		Pinyin    string    `json:"pinyin"`
+		Remarks   string    `json:"remarks"`
+		CreatedAt time.Time `json:"createdAt"`
+	}
+	GoodsTypesRes struct {
+		ID        uint      `json:"id"`
+		Name      string    `json:"name"`
+		Pinyin    string    `json:"pinyin"`
 		Remarks   string    `json:"remarks"`
 		CreatedAt time.Time `json:"createdAt"`
 	}

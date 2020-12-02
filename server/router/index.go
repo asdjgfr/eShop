@@ -26,6 +26,7 @@ func InitAPIRoutes(r *gin.RouterGroup) {
 	InitUserRouter(r)
 	InitLoggerRouter(r)
 	InitSupplierRouter(r)
+	InitGoodsTypesRouter(r)
 }
 
 func VerifyPermissions() gin.HandlerFunc {
