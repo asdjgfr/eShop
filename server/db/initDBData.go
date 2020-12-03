@@ -102,3 +102,8 @@ func InitUnit(db *gorm.DB) {
 	//初始化单位
 	_ = db.AutoMigrate(&types.Unit{})
 }
+
+func InitInventoryManagement(db *gorm.DB) {
+	//初始化库存
+	_ = db.AutoMigrate(&types.InventoryManagement{})
+}

@@ -6,6 +6,7 @@ import { priceFormatter } from "@/lib/pubfn";
 import Supplier from "@/components/goods/Supplier";
 import TypesOfGoods from "@/components/goods/TypesOfGoods";
 import Unit from "@/components/goods/Unit";
+import { IInventoryData, addInventory } from "@/api/inventoryManagement";
 
 interface iProps extends WithTranslation {
   visible: boolean;
@@ -13,15 +14,26 @@ interface iProps extends WithTranslation {
 }
 interface iState {
   confirmLoading: boolean;
-  postData: any;
+  postData: IInventoryData;
 }
 
 const excludeKeys = ["supplier", "unit", "goodsTypes"];
+let cancel = () => {};
 class AddGoods extends React.Component<iProps, iState> {
   formRef = React.createRef<FormInstance>();
   state: iState = {
     confirmLoading: false,
-    postData: {},
+    postData: {
+      name: "",
+      inventory: 1,
+      costPrice: 0,
+      sellingPrice: 0,
+      guidePrice: 0,
+      minPackages: 1,
+      supplier: { id: undefined, name: "" },
+      goodsTypes: { id: undefined, name: "" },
+      unit: { id: undefined, name: "" },
+    },
   };
   formItems = [
     {
@@ -122,16 +134,20 @@ class AddGoods extends React.Component<iProps, iState> {
     });
   }
   handleOk() {
-    return this.formRef.current
-      ?.validateFields()
-      .then(() => {
-        console.log(this.state.postData);
+    cancel();
+    return new Promise(async (resolve, reject) => {
+      try {
+        await this.formRef.current?.validateFields();
+        const ai = addInventory(this.state.postData);
+        cancel = ai.cancel;
+        const res = await ai.data;
+        resolve(res);
         this.props.toggleVisible(false);
         this.onReset();
-      })
-      .catch(function (e) {
-        console.log(e);
-      });
+      } catch (e) {
+        reject(e);
+      }
+    });
   }
   handleCancel() {
     this.props.toggleVisible(false);

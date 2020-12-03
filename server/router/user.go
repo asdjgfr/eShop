@@ -6,6 +6,7 @@ import (
 	"myModule/lib"
 	"myModule/log"
 	"myModule/types"
+	"net/http"
 	"strconv"
 	"time"
 )
@@ -95,7 +96,7 @@ func GetUserInfo(r *gin.RouterGroup) {
 			role := db.GetUserRole(userInfo.Role)
 			log.Info(c, "获取用户信息成功！")
 			c.JSON(200, gin.H{
-				"code": 200,
+				"code": http.StatusOK,
 				"msg":  "查询成功！",
 				"userinfo": struct {
 					Username string    `json:"username"`
@@ -114,7 +115,7 @@ func GetUserInfo(r *gin.RouterGroup) {
 		} else {
 			log.Info(c, "获取用户信息失败！")
 			c.JSON(200, gin.H{
-				"code": 406,
+				"code": http.StatusNotAcceptable,
 				"msg":  "获取用户信息失败！",
 			})
 		}
@@ -126,7 +127,7 @@ func CheckSignIn(r *gin.RouterGroup) {
 	r.POST(Address["checkSignIn"], func(c *gin.Context) {
 		log.Info(c, "token有效！")
 		c.JSON(200, gin.H{
-			"code": 200,
+			"code": http.StatusOK,
 			"msg":  "token有效！",
 		})
 	})
@@ -142,14 +143,14 @@ func GetUserMenus(r *gin.RouterGroup) {
 		if err == nil {
 			log.Info(c, "获取用户菜单成功！")
 			c.JSON(200, gin.H{
-				"code":  200,
+				"code":  http.StatusOK,
 				"msg":   "获取用户菜单成功！",
 				"menus": userMenus,
 			})
 		} else {
 			log.Info(c, "获取用户菜单失败！")
 			c.JSON(200, gin.H{
-				"code": 406,
+				"code": http.StatusNotAcceptable,
 				"msg":  "获取用户菜单失败！",
 			})
 		}
@@ -176,7 +177,7 @@ func GetUserMessages(r *gin.RouterGroup) {
 		if err == nil {
 			log.Info(c, "获取用户通知成功！")
 			c.JSON(200, gin.H{
-				"code":     200,
+				"code":     http.StatusOK,
 				"msg":      "获取用户通知成功！",
 				"messages": messages,
 				"count":    count,
@@ -184,7 +185,7 @@ func GetUserMessages(r *gin.RouterGroup) {
 		} else {
 			log.Info(c, "获取用户通知失败！")
 			c.JSON(200, gin.H{
-				"code": 406,
+				"code": http.StatusNotAcceptable,
 				"msg":  "获取用户通知失败！",
 			})
 		}
@@ -198,14 +199,14 @@ func GetMessageByID(r *gin.RouterGroup) {
 		if err == nil {
 			log.Info(c, "获取消息详情成功！")
 			c.JSON(200, gin.H{
-				"code":    200,
+				"code":    http.StatusOK,
 				"msg":     "获取消息详情成功！",
 				"message": message,
 			})
 		} else {
 			log.Info(c, "获取消息详情失败！")
 			c.JSON(200, gin.H{
-				"code": 406,
+				"code": http.StatusNotAcceptable,
 				"msg":  "获取消息详情失败！",
 			})
 		}
@@ -219,7 +220,7 @@ func GetUnReadMessagesCount(r *gin.RouterGroup) {
 		count := db.GetUnReadCount(username.(string))
 		log.Info(c, "获取未读消息个数成功！")
 		c.JSON(200, gin.H{
-			"code":  200,
+			"code":  http.StatusOK,
 			"msg":   "获取未读消息个数成功！",
 			"count": count,
 		})

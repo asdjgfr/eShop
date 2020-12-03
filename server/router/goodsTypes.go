@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"myModule/db"
 	"myModule/log"
+	"net/http"
 )
 
 //供货商路由
@@ -20,7 +21,7 @@ func getGoodsTypes(r *gin.RouterGroup) {
 			msg = err.Error()
 		}
 		c.JSON(200, gin.H{
-			"code":       200,
+			"code":       http.StatusOK,
 			"msg":        msg,
 			"goodsTypes": goodsTypes,
 		})

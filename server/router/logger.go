@@ -3,6 +3,7 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 	"myModule/db"
+	"net/http"
 	"strconv"
 )
 
@@ -26,7 +27,7 @@ func getLog(r *gin.RouterGroup) {
 		logs, total, errMsg := db.GetLogs(username.(string), pageSize, (page-1)*pageSize)
 
 		c.JSON(200, gin.H{
-			"code":  200,
+			"code":  http.StatusOK,
 			"msg":   errMsg,
 			"logs":  logs,
 			"total": total,

@@ -91,3 +91,18 @@ type Unit struct {
 	Pinyin  string `gorm:"comment:拼音"`
 	Remarks string `gorm:"comment:备注"`
 }
+type InventoryManagement struct {
+	gorm.Model
+	Name             string `gorm:"comment:商品名称"`
+	Pinyin           string `gorm:"comment:商品名称拼音"`
+	CostPrice        string `gorm:"comment:成本价"`
+	AverageCostPrice string `gorm:"comment:平均成本价"`
+	SellingPrice     string `gorm:"comment:销售价"`
+	GuidePrice       string `gorm:"comment:指导价"`
+	Inventory        int64  `gorm:"comment:库存量"`
+	MinPackages      int64  `gorm:"comment:最小包装数"`
+	SupplierID       int    `gorm:"comment:供货商ID"`
+	GoodsTypesID     int    `gorm:"comment:商品类型ID"`
+	UnitID           int    `gorm:"comment:单位ID"`
+	Remarks          string `gorm:"comment:注释"`
+}

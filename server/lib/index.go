@@ -5,11 +5,13 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"github.com/mozillazg/go-pinyin"
 	"github.com/mssola/user_agent"
 	"github.com/satori/go.uuid"
 	"golang.org/x/crypto/argon2"
 	"io/ioutil"
 	"math/big"
+	"strings"
 	"time"
 )
 
@@ -86,4 +88,12 @@ func GetDeviceType(ua string) string {
 		device = "pc"
 	}
 	return device
+}
+
+func Pinyin(str string) string {
+	a := pinyin.NewArgs()
+	a.Fallback = func(r rune, a pinyin.Args) []string {
+		return []string{string(r)}
+	}
+	return strings.Join(pinyin.LazyPinyin(str, a), "")
 }

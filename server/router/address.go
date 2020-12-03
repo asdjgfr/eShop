@@ -21,6 +21,8 @@ func InitRouterAddress() {
 		"getSuppliers":           "get-suppliers",
 		"getGoodsTypes":          "get-goods-types",
 		"getUnit":                "get-unit",
+		"addInventory":           "add-inventory",
+		"getInventoryByName":     "get-inventory-by-name",
 	}
 	for k, v := range apiAddress {
 		Address[k] = v

@@ -27,6 +27,7 @@ func initDBData(db *gorm.DB) {
 	InitSupplier(db)
 	InitGoodsTypes(db)
 	InitUnit(db)
+	InitInventoryManagement(db)
 	InitAdminUser(db)
 	InitShopInfo(db)
 	InitDashboardMenus(db)

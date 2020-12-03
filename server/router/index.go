@@ -28,6 +28,7 @@ func InitAPIRoutes(r *gin.RouterGroup) {
 	InitSupplierRouter(r)
 	InitGoodsTypesRouter(r)
 	InitUnitRouter(r)
+	InitInventoryManagement(r)
 }
 
 func VerifyPermissions() gin.HandlerFunc {

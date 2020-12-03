@@ -5,6 +5,7 @@ import (
 	"myModule/db"
 	"myModule/log"
 	"myModule/types"
+	"net/http"
 )
 
 func InitInfoRouter(r *gin.Engine) {
@@ -19,13 +20,13 @@ func getShopInfo(r *gin.Engine) {
 		if res.Error != nil {
 			log.Info(c, "获取店铺信息失败！")
 			c.JSON(200, gin.H{
-				"code": 406,
+				"code": http.StatusNotAcceptable,
 				"msg":  "获取店铺信息失败！",
 			})
 		} else {
 			log.Info(c, "获取店铺信息成功！")
 			c.JSON(200, gin.H{
-				"code": 200,
+				"code": http.StatusOK,
 				"msg":  "获取店铺信息成功！",
 				"data": map[string]string{
 					"name":         shopInfo.Name,
