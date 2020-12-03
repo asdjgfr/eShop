@@ -20,3 +20,7 @@ export interface IInventoryData {
 export const addInventory = function (data: IInventoryData) {
   return post("/api/add-inventory", data);
 };
+
+export const getInventoryByName = function (query: string) {
+  return post("/api/get-inventory-by-name", { query });
+};

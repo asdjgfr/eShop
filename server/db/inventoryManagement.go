@@ -6,6 +6,7 @@ import (
 	"github.com/shopspring/decimal"
 	"myModule/lib"
 	"myModule/types"
+	"strconv"
 	"strings"
 )
 
@@ -93,12 +94,15 @@ func GetInventoryByName(query string) ([]types.InventoryNameRes, error) {
 
 	for _, s := range inventories {
 		costPrices := strings.Split(s.CostPrice, ",")
+		costPrice, _ := strconv.ParseFloat(costPrices[len(costPrices)-1], 64)
+		sellingPrice, _ := strconv.ParseFloat(s.SellingPrice, 64)
+		guidePrice, _ := strconv.ParseFloat(s.GuidePrice, 64)
 		res = append(res, types.InventoryNameRes{
 			ID:           s.ID,
 			Name:         s.Name,
-			CostPrice:    costPrices[len(costPrices)-1],
-			SellingPrice: s.SellingPrice,
-			GuidePrice:   s.GuidePrice,
+			CostPrice:    costPrice,
+			SellingPrice: sellingPrice,
+			GuidePrice:   guidePrice,
 			MinPackages:  s.MinPackages,
 			SupplierID:   s.SupplierID,
 			GoodsTypesID: s.GoodsTypesID,

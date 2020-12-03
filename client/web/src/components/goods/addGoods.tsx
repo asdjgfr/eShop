@@ -3,6 +3,7 @@ import { Modal, Form, Input, InputNumber } from "antd";
 import { FormInstance } from "antd/lib/form";
 import { withTranslation, WithTranslation } from "react-i18next";
 import { priceFormatter } from "@/lib/pubfn";
+import GoodsName from "@/components/goods/GoodsName";
 import Supplier from "@/components/goods/Supplier";
 import TypesOfGoods from "@/components/goods/TypesOfGoods";
 import Unit from "@/components/goods/Unit";
@@ -40,7 +41,12 @@ class AddGoods extends React.Component<iProps, iState> {
       name: "name",
       label: "goodsName",
       rules: [{ required: true }],
-      children: <Input />,
+      children: (
+        <GoodsName
+          onChangeGoodsName={this.handleChangePostData.bind(this)}
+          canCreated={true}
+        />
+      ),
     },
     {
       name: "supplier",
@@ -51,6 +57,7 @@ class AddGoods extends React.Component<iProps, iState> {
         <Supplier
           onChangeSupplier={this.handleChangePostData.bind(this)}
           canCreated={true}
+          ref={this.refs.supplier}
         />
       ),
     },
@@ -124,11 +131,24 @@ class AddGoods extends React.Component<iProps, iState> {
       children: <InputNumber min={1} precision={0} />,
     },
   ];
-  handleChangePostData(data: { id: number; name: string }, type: string) {
+  refs: any = {
+    supplier: React.createRef(),
+  };
+  handleChangePostData(
+    data: { id: number; name: string },
+    type: string,
+    item?: any
+  ) {
+    console.log(this.refs.supplier);
     const postData: any = {
       ...this.state.postData,
     };
-    postData[type] = { id: data.id, name: data.name };
+    if (type === "name") {
+      postData.name = data.name;
+      console.log(item);
+    } else {
+      postData[type] = { id: data.id, name: data.name };
+    }
     this.setState({
       postData,
     });

@@ -93,5 +93,6 @@
   "add": "新增",
   "batchImport": "批量导入",
   "export": "导出",
-  "addInventory": "新增库存"
+  "addInventory": "新增库存",
+  "searchOrCreateInventory": "搜索或新增库存"
 }

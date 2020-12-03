@@ -2,19 +2,29 @@ import React from "react";
 import { Select, Spin, Empty, Form } from "antd";
 import { withTranslation, WithTranslation } from "react-i18next";
 import debounce from "lodash/debounce";
-import { getSuppliers } from "@/api/supplies";
+import { getInventoryByName } from "@/api/inventoryManagement";
 
 interface iProps extends WithTranslation {
-  onChangeSupplier: (data: { id: number; name: string }, type: string) => void;
-  ref: any;
+  onChangeGoodsName: (
+    data: { id: number; name: string },
+    type: string,
+    item: any
+  ) => void;
   canCreated?: boolean;
 }
-interface iSupplier {
+interface iGoodsName {
   id: number;
   name: string;
+  costPrice?: number;
+  goodsTypesID?: number;
+  guidePrice?: number;
+  minPackages?: number;
+  sellingPrice?: number;
+  supplierID?: number;
+  unitID?: number;
 }
 interface iState {
-  data: iSupplier[];
+  data: iGoodsName[];
   value: number | undefined;
   enterValue: string;
   fetching: boolean;
@@ -23,34 +33,35 @@ interface iState {
 const { Option } = Select;
 let cancel = () => {};
 
-class Supplier extends React.Component<iProps, iState> {
+class GoodsName extends React.Component<iProps, iState> {
   state: iState = {
     data: [],
     value: undefined,
     enterValue: "",
     fetching: true,
   };
-  ref = this.props.ref;
-  fetchSupplier = debounce(async function (query: string) {
+
+  fetchGoodsName = debounce(async function (query: string) {
     const { t } = this.props;
     cancel();
     this.setState({
       fetching: true,
     });
-    const gs = getSuppliers(query);
-    cancel = gs.cancel;
-    const res = await gs.data;
+
+    const gibn = getInventoryByName(query);
+    cancel = gibn.cancel;
+    const res = await gibn.data;
     let canCreated = [
       {
         id: -1,
-        name: t("add") + t("supplier") + t("：") + query,
+        name: t("addInventory") + t("：") + query,
       },
     ];
-    if (!this.props.canCreated || (!res.supplies.length && query === "")) {
+    if (!this.props.canCreated || (!res.inventories.length && query === "")) {
       canCreated = [];
     }
     this.setState({
-      data: res.supplies.length ? res.supplies : canCreated,
+      data: res.inventories.length ? res.inventories : canCreated,
       fetching: false,
       enterValue: query,
     });
@@ -59,31 +70,32 @@ class Supplier extends React.Component<iProps, iState> {
     this.setState({
       value: id,
     });
-    this.props.onChangeSupplier(
+    this.props.onChangeGoodsName(
       {
         id,
         name: id === -1 ? this.state.enterValue : item.name,
       },
-      "supplier"
+      "name",
+      item.item
     );
   }
   render() {
     const { fetching, value, data } = this.state;
     const { t } = this.props;
     return (
-      <Form.Item name="supplier" noStyle={true}>
+      <Form.Item name="name" noStyle={true}>
         <Select
           value={value}
-          placeholder={t("plsSearch") + t("supplier")}
+          placeholder={t("searchOrCreateInventory")}
           notFoundContent={fetching ? <Spin size="small" /> : <Empty />}
           filterOption={false}
-          onFocus={this.fetchSupplier.bind(this, "")}
-          onSearch={this.fetchSupplier.bind(this)}
+          onFocus={this.fetchGoodsName.bind(this, "")}
+          onSearch={this.fetchGoodsName.bind(this)}
           showSearch={true}
           onChange={this.handleChange.bind(this)}
         >
-          {data.map((d: iSupplier) => (
-            <Option key={d.id} value={d.id} name={d.name}>
+          {data.map((d: iGoodsName) => (
+            <Option key={d.id} value={d.id} name={d.name} item={d}>
               {d.name}
             </Option>
           ))}
@@ -93,4 +105,4 @@ class Supplier extends React.Component<iProps, iState> {
   }
 }
 
-export default withTranslation()(Supplier);
+export default withTranslation()(GoodsName);
