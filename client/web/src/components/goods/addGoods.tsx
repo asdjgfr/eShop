@@ -1,13 +1,13 @@
 import React from "react";
-import { Modal, Form, InputNumber } from "antd";
+import { Modal, Form, InputNumber, message } from "antd";
 import { FormInstance } from "antd/lib/form";
 import { withTranslation, WithTranslation } from "react-i18next";
-import { priceFormatter } from "@/lib/pubfn";
 import GoodsName from "@/components/goods/GoodsName";
 import Supplier from "@/components/goods/Supplier";
 import TypesOfGoods from "@/components/goods/TypesOfGoods";
 import Unit from "@/components/goods/Unit";
 import { IInventoryData, addInventory } from "@/api/inventoryManagement";
+import { maxPrice } from "@/lib/initValue";
 
 interface iProps extends WithTranslation {
   visible: boolean;
@@ -22,7 +22,7 @@ interface iState {
 const excludeKeys = ["supplier", "unit", "goodsTypes"];
 
 let cancel = () => {};
-const max = 100000000;
+
 class AddGoods extends React.Component<iProps, iState> {
   formRef = React.createRef<FormInstance>();
   state: iState = {
@@ -109,7 +109,7 @@ class AddGoods extends React.Component<iProps, iState> {
         initialValue: 1,
         tooltip: this.props.t("newInventoryTooltip"),
       },
-      children: <InputNumber min={1} max={max} precision={0} />,
+      children: <InputNumber min={1} max={maxPrice} precision={0} />,
     },
     {
       name: "costPrice",
@@ -118,7 +118,7 @@ class AddGoods extends React.Component<iProps, iState> {
       props: {
         initialValue: 0.0_0,
       },
-      children: <InputNumber min={0} max={max} precision={2} />,
+      children: <InputNumber min={0} max={maxPrice} precision={2} />,
     },
     {
       name: "sellingPrice",
@@ -127,7 +127,7 @@ class AddGoods extends React.Component<iProps, iState> {
       props: {
         initialValue: 0.0_0,
       },
-      children: <InputNumber min={0} max={max} precision={2} />,
+      children: <InputNumber min={0} max={maxPrice} precision={2} />,
     },
     {
       name: "guidePrice",
@@ -136,7 +136,7 @@ class AddGoods extends React.Component<iProps, iState> {
       props: {
         initialValue: 0.0_0,
       },
-      children: <InputNumber min={0} max={max} precision={2} />,
+      children: <InputNumber min={0} max={maxPrice} precision={2} />,
     },
     {
       name: "minPackages",
@@ -145,11 +145,11 @@ class AddGoods extends React.Component<iProps, iState> {
       props: {
         initialValue: 1,
       },
-      children: <InputNumber min={1} max={max} precision={0} />,
+      children: <InputNumber min={1} max={maxPrice} precision={0} />,
     },
   ];
   handleChangePostData(
-    data: { id: number; name: string },
+    data: { id: number | undefined; name: string },
     type: string,
     item?: any
   ) {
@@ -159,7 +159,6 @@ class AddGoods extends React.Component<iProps, iState> {
     if (type === "name") {
       if (data.id !== -1) {
         const { current } = this.formRef;
-
         current?.setFieldsValue({
           guidePrice: item.guidePrice,
           minPackages: item.minPackages,
@@ -184,17 +183,28 @@ class AddGoods extends React.Component<iProps, iState> {
   handleOk() {
     cancel();
     return new Promise(async (resolve, reject) => {
+      this.setState({
+        confirmLoading: true,
+      });
       try {
         await this.formRef.current?.validateFields();
         const ai = addInventory(this.state.postData);
         cancel = ai.cancel;
         const res = await ai.data;
-        resolve(res);
-        this.props.toggleVisible(false);
-        this.onReset();
+        if (res.code === 200) {
+          resolve(res);
+          this.props.toggleVisible(false);
+          message.success(this.props.t("addSuccessfully"));
+          this.onReset();
+        } else {
+          message.error(this.props.t("addFailed") + res.msg);
+        }
       } catch (e) {
         reject(e);
       }
+      this.setState({
+        confirmLoading: false,
+      });
     });
   }
   handleCancel() {

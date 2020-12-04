@@ -5,7 +5,10 @@ import debounce from "lodash/debounce";
 import { getSuppliers } from "@/api/supplies";
 
 interface iProps extends WithTranslation {
-  onChangeSupplier: (data: { id: number; name: string }, type: string) => void;
+  onChangeSupplier: (
+    data: { id: number | undefined; name: string },
+    type: string
+  ) => void;
   onRef: (ref: any) => void;
   canCreated?: boolean;
 }
@@ -56,13 +59,23 @@ class Supplier extends React.Component<iProps, iState> {
       fetching: false,
       enterValue: query,
     });
+    return res.supplies;
   }
   fetchSupplier = debounce(this.fetchValue, 400);
   async updateVal(formRef: any, value: number) {
-    await this.fetchValue("");
+    const data = await this.fetchValue("");
+    const findVal = data.find((item: any) => item.id === value);
+    const id = findVal === undefined ? undefined : value;
     formRef.setFieldsValue({
-      supplier: value,
+      supplier: id,
     });
+    this.props.onChangeSupplier(
+      {
+        id,
+        name: id === -1 ? this.state.enterValue : "",
+      },
+      "supplier"
+    );
   }
   handleChange(id: number, item: any) {
     this.setState({

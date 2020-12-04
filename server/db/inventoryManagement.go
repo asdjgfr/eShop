@@ -66,7 +66,6 @@ func AddInventory(name, supplierName, goodsTypesName, unitName, costPrice, selli
 			currentNum, _ := decimal.NewFromString(str)
 			initCostPrice = initCostPrice.Add(currentNum)
 		}
-
 		res = DB.Model(&newInventory).Updates(types.InventoryManagement{
 			CostPrice:        strings.Join(costPrices, ","),
 			AverageCostPrice: initCostPrice.Div(decimal.NewFromInt(int64(len(costPrices)))).Round(2).String(),
