@@ -94,5 +94,7 @@
   "batchImport": "批量导入",
   "export": "导出",
   "addInventory": "新增库存",
+  "newInventory": "新增库存量",
+  "newInventoryTooltip": "此为新增库存量，总库存量会自动计算。",
   "searchOrCreateInventory": "搜索或新增库存"
 }

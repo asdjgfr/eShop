@@ -6,6 +6,7 @@ import { getGoodsTypes } from "@/api/goodsTypes";
 
 interface iProps extends WithTranslation {
   onChangeGoodsType: (data: { id: number; name: string }, type: string) => void;
+  onRef: (ref: any) => void;
   canCreated?: boolean;
 }
 interface iGoodsTypes {
@@ -26,9 +27,12 @@ class TypesOfGoods extends React.Component<iProps, iState> {
     data: [],
     value: undefined,
     enterValue: "",
-    fetching: true,
+    fetching: false,
   };
-  fetchGoodsType = debounce(async function (query: string) {
+  componentDidMount() {
+    this.props.onRef(this);
+  }
+  async fetchValue(query: string) {
     const { t } = this.props;
     cancel();
     this.setState({
@@ -51,7 +55,14 @@ class TypesOfGoods extends React.Component<iProps, iState> {
       fetching: false,
       enterValue: query,
     });
-  }, 400);
+  }
+  fetchGoodsType = debounce(this.fetchValue, 400);
+  async updateVal(formRef: any, value: number) {
+    await this.fetchValue("");
+    formRef.setFieldsValue({
+      goodsTypes: value,
+    });
+  }
   handleChange(id: number, item: any) {
     this.setState({
       value: id,
@@ -71,6 +82,7 @@ class TypesOfGoods extends React.Component<iProps, iState> {
       <Form.Item name="goodsTypes" noStyle={true}>
         <Select
           value={value}
+          loading={fetching}
           placeholder={t("plsSearch") + t("goodsTypes")}
           notFoundContent={fetching ? <Spin size="small" /> : <Empty />}
           filterOption={false}

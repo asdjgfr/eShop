@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Form, Input, InputNumber } from "antd";
+import { Modal, Form, InputNumber } from "antd";
 import { FormInstance } from "antd/lib/form";
 import { withTranslation, WithTranslation } from "react-i18next";
 import { priceFormatter } from "@/lib/pubfn";
@@ -13,13 +13,16 @@ interface iProps extends WithTranslation {
   visible: boolean;
   toggleVisible: (arg: boolean) => void;
 }
+
 interface iState {
   confirmLoading: boolean;
   postData: IInventoryData;
 }
 
 const excludeKeys = ["supplier", "unit", "goodsTypes"];
+
 let cancel = () => {};
+const max = 100000000;
 class AddGoods extends React.Component<iProps, iState> {
   formRef = React.createRef<FormInstance>();
   state: iState = {
@@ -35,6 +38,11 @@ class AddGoods extends React.Component<iProps, iState> {
       goodsTypes: { id: undefined, name: "" },
       unit: { id: undefined, name: "" },
     },
+  };
+  $refs: any = {
+    supplier: undefined,
+    goodsTypes: undefined,
+    unit: undefined,
   };
   formItems = [
     {
@@ -57,7 +65,9 @@ class AddGoods extends React.Component<iProps, iState> {
         <Supplier
           onChangeSupplier={this.handleChangePostData.bind(this)}
           canCreated={true}
-          ref={this.refs.supplier}
+          onRef={(ref: any) => {
+            this.$refs.supplier = ref;
+          }}
         />
       ),
     },
@@ -70,6 +80,9 @@ class AddGoods extends React.Component<iProps, iState> {
         <TypesOfGoods
           onChangeGoodsType={this.handleChangePostData.bind(this)}
           canCreated={true}
+          onRef={(ref: any) => {
+            this.$refs.goodsTypes = ref;
+          }}
         />
       ),
     },
@@ -82,17 +95,21 @@ class AddGoods extends React.Component<iProps, iState> {
         <Unit
           onChangeUnit={this.handleChangePostData.bind(this)}
           canCreated={true}
+          onRef={(ref: any) => {
+            this.$refs.unit = ref;
+          }}
         />
       ),
     },
     {
       name: "inventory",
-      label: "inventory",
+      label: "newInventory",
       rules: [{ required: true }],
       props: {
         initialValue: 1,
+        tooltip: this.props.t("newInventoryTooltip"),
       },
-      children: <InputNumber min={1} precision={0} />,
+      children: <InputNumber min={1} max={max} precision={0} />,
     },
     {
       name: "costPrice",
@@ -101,7 +118,7 @@ class AddGoods extends React.Component<iProps, iState> {
       props: {
         initialValue: 0.0_0,
       },
-      children: <InputNumber min={0} precision={2} />,
+      children: <InputNumber min={0} max={max} precision={2} />,
     },
     {
       name: "sellingPrice",
@@ -110,7 +127,7 @@ class AddGoods extends React.Component<iProps, iState> {
       props: {
         initialValue: 0.0_0,
       },
-      children: <InputNumber min={0} precision={2} />,
+      children: <InputNumber min={0} max={max} precision={2} />,
     },
     {
       name: "guidePrice",
@@ -119,7 +136,7 @@ class AddGoods extends React.Component<iProps, iState> {
       props: {
         initialValue: 0.0_0,
       },
-      children: <InputNumber min={0} precision={2} />,
+      children: <InputNumber min={0} max={max} precision={2} />,
     },
     {
       name: "minPackages",
@@ -128,24 +145,35 @@ class AddGoods extends React.Component<iProps, iState> {
       props: {
         initialValue: 1,
       },
-      children: <InputNumber min={1} precision={0} />,
+      children: <InputNumber min={1} max={max} precision={0} />,
     },
   ];
-  refs: any = {
-    supplier: React.createRef(),
-  };
   handleChangePostData(
     data: { id: number; name: string },
     type: string,
     item?: any
   ) {
-    console.log(this.refs.supplier);
     const postData: any = {
       ...this.state.postData,
     };
     if (type === "name") {
+      if (data.id !== -1) {
+        const { current } = this.formRef;
+
+        current?.setFieldsValue({
+          guidePrice: item.guidePrice,
+          minPackages: item.minPackages,
+          sellingPrice: item.sellingPrice,
+          costPrice: item.costPrice,
+        });
+        this.$refs.supplier?.updateVal(current, item.supplierID);
+        this.$refs.goodsTypes?.updateVal(
+          this.formRef.current,
+          item.goodsTypesID
+        );
+        this.$refs.unit?.updateVal(this.formRef.current, item.unitID);
+      }
       postData.name = data.name;
-      console.log(item);
     } else {
       postData[type] = { id: data.id, name: data.name };
     }

@@ -6,7 +6,7 @@ import { getSuppliers } from "@/api/supplies";
 
 interface iProps extends WithTranslation {
   onChangeSupplier: (data: { id: number; name: string }, type: string) => void;
-  ref: any;
+  onRef: (ref: any) => void;
   canCreated?: boolean;
 }
 interface iSupplier {
@@ -28,10 +28,12 @@ class Supplier extends React.Component<iProps, iState> {
     data: [],
     value: undefined,
     enterValue: "",
-    fetching: true,
+    fetching: false,
   };
-  ref = this.props.ref;
-  fetchSupplier = debounce(async function (query: string) {
+  componentDidMount() {
+    this.props.onRef(this);
+  }
+  async fetchValue(query: string) {
     const { t } = this.props;
     cancel();
     this.setState({
@@ -54,7 +56,14 @@ class Supplier extends React.Component<iProps, iState> {
       fetching: false,
       enterValue: query,
     });
-  }, 400);
+  }
+  fetchSupplier = debounce(this.fetchValue, 400);
+  async updateVal(formRef: any, value: number) {
+    await this.fetchValue("");
+    formRef.setFieldsValue({
+      supplier: value,
+    });
+  }
   handleChange(id: number, item: any) {
     this.setState({
       value: id,
@@ -74,6 +83,7 @@ class Supplier extends React.Component<iProps, iState> {
       <Form.Item name="supplier" noStyle={true}>
         <Select
           value={value}
+          loading={fetching}
           placeholder={t("plsSearch") + t("supplier")}
           notFoundContent={fetching ? <Spin size="small" /> : <Empty />}
           filterOption={false}

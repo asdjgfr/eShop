@@ -38,7 +38,7 @@ class GoodsName extends React.Component<iProps, iState> {
     data: [],
     value: undefined,
     enterValue: "",
-    fetching: true,
+    fetching: false,
   };
 
   fetchGoodsName = debounce(async function (query: string) {
@@ -86,6 +86,7 @@ class GoodsName extends React.Component<iProps, iState> {
       <Form.Item name="name" noStyle={true}>
         <Select
           value={value}
+          loading={fetching}
           placeholder={t("searchOrCreateInventory")}
           notFoundContent={fetching ? <Spin size="small" /> : <Empty />}
           filterOption={false}

@@ -6,6 +6,7 @@ import { getUnit } from "@/api/unit";
 
 interface iProps extends WithTranslation {
   onChangeUnit: (data: { id: number; name: string }, type: string) => void;
+  onRef: (ref: any) => void;
   canCreated?: boolean;
 }
 interface iUnit {
@@ -26,9 +27,12 @@ class Unit extends React.Component<iProps, iState> {
     data: [],
     value: undefined,
     enterValue: "",
-    fetching: true,
+    fetching: false,
   };
-  fetchUnit = debounce(async function (query: string) {
+  componentDidMount() {
+    this.props.onRef(this);
+  }
+  async fetchValue(query: string) {
     const { t } = this.props;
     cancel();
     this.setState({
@@ -51,7 +55,14 @@ class Unit extends React.Component<iProps, iState> {
       fetching: false,
       enterValue: query,
     });
-  }, 400);
+  }
+  fetchUnit = debounce(this.fetchValue, 400);
+  async updateVal(formRef: any, value: number) {
+    await this.fetchValue("");
+    formRef.setFieldsValue({
+      unit: value,
+    });
+  }
   handleChange(id: number, item: any) {
     this.setState({
       value: id,
@@ -71,6 +82,7 @@ class Unit extends React.Component<iProps, iState> {
       <Form.Item name="unit" noStyle={true}>
         <Select
           value={value}
+          loading={fetching}
           placeholder={t("plsSearch") + t("unit")}
           notFoundContent={fetching ? <Spin size="small" /> : <Empty />}
           filterOption={false}
