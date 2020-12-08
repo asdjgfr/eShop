@@ -1,6 +1,7 @@
 package db
 
 import (
+	"errors"
 	"myModule/types"
 )
 
@@ -25,4 +26,17 @@ func GetSupplier(query string) ([]types.SupplierRes, error) {
 		res = []types.SupplierRes{}
 	}
 	return res, dbFind.Error
+}
+
+func AddSupplier(supplier types.Supplier) error {
+	var iSupplier types.Supplier
+	result := DB.Where("name = ?", supplier.Name).First(&iSupplier)
+	err := result.Error
+	if result.RowsAffected == 0 {
+		result = DB.Create(&supplier)
+		err = result.Error
+	} else if result.RowsAffected == 1 {
+		err = errors.New("供货商已存在！")
+	}
+	return err
 }

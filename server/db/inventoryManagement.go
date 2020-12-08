@@ -30,19 +30,30 @@ func AddInventory(inventoryName, supplierName, goodsTypesName, unitName, costPri
 	if minPackages <= 0 {
 		return errors.New("最小包装数不能小于等于0！")
 	}
+
 	if supplierID == -1 {
-		fmt.Println("添加", supplierName)
+		supplierErr := AddSupplier(types.Supplier{Name: supplierName, Pinyin: lib.Pinyin(supplierName)})
+		if supplierErr != nil {
+			return supplierErr
+		}
 	}
+	fmt.Println("goodsTypesID:", goodsTypesID)
 	if goodsTypesID == -1 {
-		fmt.Println("添加", goodsTypesName)
+		goodsTypesErr := AddGoodTypes(types.GoodsTypes{Name: goodsTypesName, Pinyin: lib.Pinyin(goodsTypesName)})
+		if goodsTypesErr != nil {
+			return goodsTypesErr
+		}
 	}
 	if unitID == -1 {
-		fmt.Println("添加unit", unitName)
+		unitErr := AddUnit(types.Unit{Name: unitName, Pinyin: lib.Pinyin(unitName)})
+		if unitErr != nil {
+			return unitErr
+		}
 	}
 	var newInventory types.InventoryManagement
 	res := DB.Where("name = ?", inventoryName).First(&newInventory)
 
-	if res.Error != nil {
+	if res.RowsAffected == 0 {
 		newInventory = types.InventoryManagement{
 			Name:             inventoryName,
 			Pinyin:           lib.Pinyin(inventoryName),
@@ -57,7 +68,7 @@ func AddInventory(inventoryName, supplierName, goodsTypesName, unitName, costPri
 			UnitID:           unitID,
 		}
 		res = DB.Create(&newInventory)
-	} else {
+	} else if res.RowsAffected == 1 {
 		i1 := decimal.NewFromInt(newInventory.Inventory)
 		i2 := decimal.NewFromInt(inventory)
 		costPrices := append(strings.Split(newInventory.CostPrice, ","), costPrice)

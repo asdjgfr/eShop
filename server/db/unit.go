@@ -1,6 +1,7 @@
 package db
 
 import (
+	"errors"
 	"myModule/types"
 )
 
@@ -23,4 +24,17 @@ func GetUnit(query string) ([]types.UnitRes, error) {
 		res = []types.UnitRes{}
 	}
 	return res, dbFind.Error
+}
+
+func AddUnit(unit types.Unit) error {
+	var iUnit types.Unit
+	result := DB.Where("name = ?", unit.Name).First(&iUnit)
+	err := result.Error
+	if result.RowsAffected == 0 {
+		result = DB.Create(&unit)
+		err = result.Error
+	} else if result.RowsAffected == 1 {
+		err = errors.New("单位已存在！")
+	}
+	return err
 }
