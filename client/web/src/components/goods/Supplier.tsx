@@ -18,7 +18,6 @@ interface iSupplier {
 }
 interface iState {
   data: iSupplier[];
-  value: number | undefined;
   enterValue: string;
   fetching: boolean;
 }
@@ -29,7 +28,6 @@ let cancel = () => {};
 class Supplier extends React.Component<iProps, iState> {
   state: iState = {
     data: [],
-    value: undefined,
     enterValue: "",
     fetching: false,
   };
@@ -78,9 +76,6 @@ class Supplier extends React.Component<iProps, iState> {
     );
   }
   handleChange(id: number, item: any) {
-    this.setState({
-      value: id,
-    });
     this.props.onChangeSupplier(
       {
         id,
@@ -90,12 +85,11 @@ class Supplier extends React.Component<iProps, iState> {
     );
   }
   render() {
-    const { fetching, value, data } = this.state;
+    const { fetching, data } = this.state;
     const { t } = this.props;
     return (
       <Form.Item name="supplier" noStyle={true}>
         <Select
-          value={value}
           loading={fetching}
           placeholder={t("plsSearch") + t("supplier")}
           notFoundContent={fetching ? <Spin size="small" /> : <Empty />}

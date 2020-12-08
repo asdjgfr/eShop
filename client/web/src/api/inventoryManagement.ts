@@ -6,7 +6,7 @@ interface IIDAndName {
 }
 
 export interface IInventoryData {
-  name: string;
+  name: IIDAndName;
   inventory: number;
   costPrice: number;
   sellingPrice: number;

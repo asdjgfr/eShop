@@ -5,7 +5,10 @@ import debounce from "lodash/debounce";
 import { getUnit } from "@/api/unit";
 
 interface iProps extends WithTranslation {
-  onChangeUnit: (data: { id: number; name: string }, type: string) => void;
+  onChangeUnit: (
+    data: { id: number | undefined; name: string },
+    type: string
+  ) => void;
   onRef: (ref: any) => void;
   canCreated?: boolean;
 }
@@ -15,7 +18,6 @@ interface iUnit {
 }
 interface iState {
   data: iUnit[];
-  value: number | undefined;
   enterValue: string;
   fetching: boolean;
 }
@@ -25,7 +27,6 @@ let cancel = () => {};
 class Unit extends React.Component<iProps, iState> {
   state: iState = {
     data: [],
-    value: undefined,
     enterValue: "",
     fetching: false,
   };
@@ -55,18 +56,25 @@ class Unit extends React.Component<iProps, iState> {
       fetching: false,
       enterValue: query,
     });
+    return res.unit;
   }
   fetchUnit = debounce(this.fetchValue, 400);
   async updateVal(formRef: any, value: number) {
-    await this.fetchValue("");
+    const data = await this.fetchValue("");
+    const findVal = data.find((item: any) => item.id === value);
+    const id = findVal === undefined ? undefined : value;
     formRef.setFieldsValue({
       unit: value,
     });
+    this.props.onChangeUnit(
+      {
+        id,
+        name: id === -1 ? this.state.enterValue : "",
+      },
+      "unit"
+    );
   }
   handleChange(id: number, item: any) {
-    this.setState({
-      value: id,
-    });
     this.props.onChangeUnit(
       {
         id,
@@ -76,12 +84,11 @@ class Unit extends React.Component<iProps, iState> {
     );
   }
   render() {
-    const { fetching, value, data } = this.state;
+    const { fetching, data } = this.state;
     const { t } = this.props;
     return (
       <Form.Item name="unit" noStyle={true}>
         <Select
-          value={value}
           loading={fetching}
           placeholder={t("plsSearch") + t("unit")}
           notFoundContent={fetching ? <Spin size="small" /> : <Empty />}

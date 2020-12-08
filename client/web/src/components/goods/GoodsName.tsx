@@ -25,7 +25,6 @@ interface iGoodsName {
 }
 interface iState {
   data: iGoodsName[];
-  value: number | undefined;
   enterValue: string;
   fetching: boolean;
 }
@@ -36,11 +35,9 @@ let cancel = () => {};
 class GoodsName extends React.Component<iProps, iState> {
   state: iState = {
     data: [],
-    value: undefined,
     enterValue: "",
     fetching: false,
   };
-
   fetchGoodsName = debounce(async function (query: string) {
     const { t } = this.props;
     cancel();
@@ -67,9 +64,6 @@ class GoodsName extends React.Component<iProps, iState> {
     });
   }, 400);
   handleChange(id: number, item: any) {
-    this.setState({
-      value: id,
-    });
     this.props.onChangeGoodsName(
       {
         id,
@@ -80,12 +74,11 @@ class GoodsName extends React.Component<iProps, iState> {
     );
   }
   render() {
-    const { fetching, value, data } = this.state;
+    const { fetching, data } = this.state;
     const { t } = this.props;
     return (
       <Form.Item name="name" noStyle={true}>
         <Select
-          value={value}
           loading={fetching}
           placeholder={t("searchOrCreateInventory")}
           notFoundContent={fetching ? <Spin size="small" /> : <Empty />}

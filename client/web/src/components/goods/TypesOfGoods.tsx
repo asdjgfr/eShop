@@ -5,7 +5,10 @@ import debounce from "lodash/debounce";
 import { getGoodsTypes } from "@/api/goodsTypes";
 
 interface iProps extends WithTranslation {
-  onChangeGoodsType: (data: { id: number; name: string }, type: string) => void;
+  onChangeGoodsType: (
+    data: { id: number | undefined; name: string },
+    type: string
+  ) => void;
   onRef: (ref: any) => void;
   canCreated?: boolean;
 }
@@ -15,7 +18,6 @@ interface iGoodsTypes {
 }
 interface iState {
   data: iGoodsTypes[];
-  value: number | undefined;
   enterValue: string;
   fetching: boolean;
 }
@@ -25,7 +27,6 @@ let cancel = () => {};
 class TypesOfGoods extends React.Component<iProps, iState> {
   state: iState = {
     data: [],
-    value: undefined,
     enterValue: "",
     fetching: false,
   };
@@ -55,18 +56,25 @@ class TypesOfGoods extends React.Component<iProps, iState> {
       fetching: false,
       enterValue: query,
     });
+    return res.goodsTypes;
   }
   fetchGoodsType = debounce(this.fetchValue, 400);
   async updateVal(formRef: any, value: number) {
-    await this.fetchValue("");
+    const data = await this.fetchValue("");
+    const findVal = data.find((item: any) => item.id === value);
+    const id = findVal === undefined ? undefined : value;
     formRef.setFieldsValue({
       goodsTypes: value,
     });
+    this.props.onChangeGoodsType(
+      {
+        id,
+        name: id === -1 ? this.state.enterValue : "",
+      },
+      "goodsTypes"
+    );
   }
   handleChange(id: number, item: any) {
-    this.setState({
-      value: id,
-    });
     this.props.onChangeGoodsType(
       {
         id,
@@ -76,12 +84,11 @@ class TypesOfGoods extends React.Component<iProps, iState> {
     );
   }
   render() {
-    const { fetching, value, data } = this.state;
+    const { fetching, data } = this.state;
     const { t } = this.props;
     return (
       <Form.Item name="goodsTypes" noStyle={true}>
         <Select
-          value={value}
           loading={fetching}
           placeholder={t("plsSearch") + t("goodsTypes")}
           notFoundContent={fetching ? <Spin size="small" /> : <Empty />}

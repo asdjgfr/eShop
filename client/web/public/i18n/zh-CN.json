@@ -98,5 +98,8 @@
   "newInventoryTooltip": "此为新增库存量，总库存量会自动计算。",
   "searchOrCreateInventory": "搜索或新增库存",
   "addSuccessfully": "添加成功！",
-  "addFailed": "添加失败："
+  "addFailed": "添加失败：",
+  "addNext": "添加下一个",
+  "ok": "确定",
+  "cancel": "取消"
 }

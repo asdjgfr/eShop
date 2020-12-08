@@ -40,7 +40,7 @@ func addInventory(r *gin.RouterGroup) {
 
 		var err error
 		if code == http.StatusOK {
-			err = db.AddInventory(c.Request.PostFormValue("name"), c.Request.PostFormValue("supplier[name]"), c.Request.PostFormValue("goodsTypes[name]"), c.Request.PostFormValue("unit[name]"), tmpC.Round(2).String(), tmpS.Round(2).String(), tmpG.Round(2).String(), inventory, minPackages, supplierID, goodsTypesID, unitID)
+			err = db.AddInventory(c.Request.PostFormValue("name[name]"), c.Request.PostFormValue("supplier[name]"), c.Request.PostFormValue("goodsTypes[name]"), c.Request.PostFormValue("unit[name]"), tmpC.Round(2).String(), tmpS.Round(2).String(), tmpG.Round(2).String(), inventory, minPackages, supplierID, goodsTypesID, unitID)
 			if err != nil {
 				code = http.StatusUnprocessableEntity
 				msg = "添加库存失败：" + err.Error()

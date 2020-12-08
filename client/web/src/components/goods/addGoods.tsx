@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Form, InputNumber, message } from "antd";
+import { Modal, Form, InputNumber, message, Button } from "antd";
 import { FormInstance } from "antd/lib/form";
 import { withTranslation, WithTranslation } from "react-i18next";
 import GoodsName from "@/components/goods/GoodsName";
@@ -28,7 +28,7 @@ class AddGoods extends React.Component<iProps, iState> {
   state: iState = {
     confirmLoading: false,
     postData: {
-      name: "",
+      name: { id: undefined, name: "" },
       inventory: 1,
       costPrice: 0,
       sellingPrice: 0,
@@ -172,15 +172,14 @@ class AddGoods extends React.Component<iProps, iState> {
         );
         this.$refs.unit?.updateVal(this.formRef.current, item.unitID);
       }
-      postData.name = data.name;
-    } else {
-      postData[type] = { id: data.id, name: data.name };
     }
+    postData[type] = { id: data.id, name: data.name };
+
     this.setState({
       postData,
     });
   }
-  handleOk() {
+  handleOk(needClose: boolean) {
     cancel();
     return new Promise(async (resolve, reject) => {
       this.setState({
@@ -193,7 +192,9 @@ class AddGoods extends React.Component<iProps, iState> {
         const res = await ai.data;
         if (res.code === 200) {
           resolve(res);
-          this.props.toggleVisible(false);
+          if (needClose) {
+            this.props.toggleVisible(false);
+          }
           message.success(this.props.t("addSuccessfully"));
           this.onReset();
         } else {
@@ -234,9 +235,28 @@ class AddGoods extends React.Component<iProps, iState> {
       <Modal
         title={t("addInventory")}
         visible={visible}
-        onOk={this.handleOk.bind(this)}
-        confirmLoading={confirmLoading}
         onCancel={this.handleCancel.bind(this)}
+        footer={[
+          <Button key="back" onClick={this.handleCancel.bind(this)}>
+            {t("cancel")}
+          </Button>,
+          <Button
+            key="next"
+            type="primary"
+            loading={confirmLoading}
+            onClick={this.handleOk.bind(this, false)}
+          >
+            {t("addNext")}
+          </Button>,
+          <Button
+            key="submit"
+            type="primary"
+            loading={confirmLoading}
+            onClick={this.handleOk.bind(this, true)}
+          >
+            {t("ok")}
+          </Button>,
+        ]}
       >
         <Form
           ref={this.formRef}

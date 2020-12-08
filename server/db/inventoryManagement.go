@@ -10,8 +10,8 @@ import (
 	"strings"
 )
 
-func AddInventory(name, supplierName, goodsTypesName, unitName, costPrice, sellingPrice, guidePrice string, inventory, minPackages int64, supplierID, goodsTypesID, unitID int) error {
-	if name == "" {
+func AddInventory(inventoryName, supplierName, goodsTypesName, unitName, costPrice, sellingPrice, guidePrice string, inventory, minPackages int64, supplierID, goodsTypesID, unitID int) error {
+	if inventoryName == "" {
 		return errors.New("商品名称不能为空！")
 	}
 	zeroD := decimal.NewFromInt(0)
@@ -40,12 +40,12 @@ func AddInventory(name, supplierName, goodsTypesName, unitName, costPrice, selli
 		fmt.Println("添加unit", unitName)
 	}
 	var newInventory types.InventoryManagement
-	res := DB.Where("name = ?", name).First(&newInventory)
+	res := DB.Where("name = ?", inventoryName).First(&newInventory)
 
 	if res.Error != nil {
 		newInventory = types.InventoryManagement{
-			Name:             name,
-			Pinyin:           lib.Pinyin(name),
+			Name:             inventoryName,
+			Pinyin:           lib.Pinyin(inventoryName),
 			CostPrice:        costPrice,
 			AverageCostPrice: costPrice,
 			SellingPrice:     sellingPrice,
