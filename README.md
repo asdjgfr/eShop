@@ -1,7 +1,5 @@
 > # 废弃的版本
 
-> [2.0版本](https://github.com/asdjgfr/carMaintenanceManagement/tree/2.0)由react+go进行重构
-
 
 ## 汽车养护管理平台
 
