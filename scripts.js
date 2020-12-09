@@ -9,6 +9,12 @@ const buildPath = path.join(__dirname, "build");
 const isWin = os.platform() === "win32";
 const programName = isWin ? "main.exe" : "main";
 
+try {
+  fs.accessSync(buildPath, fs.constants.F_OK);
+} catch (error) {
+  fs.mkdirSync(buildPath);
+}
+
 const actions = {
   install() {
     // 安装桌面的依赖
