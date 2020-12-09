@@ -4,6 +4,7 @@ import { withTranslation, WithTranslation } from "react-i18next";
 import { getLogs } from "@/api/log";
 import { UAParser } from "ua-parser-js";
 import { WarningTwoTone, InfoCircleTwoTone } from "@ant-design/icons";
+import { iPagination } from "@/lib/types";
 
 interface iProps extends WithTranslation {}
 interface iLog {
@@ -13,11 +14,6 @@ interface iLog {
   ip: string;
   description: string;
   time: string;
-}
-interface iPagination {
-  current: number;
-  pageSize: number;
-  total: number;
 }
 interface iState {
   loading: boolean;

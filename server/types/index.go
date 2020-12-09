@@ -107,14 +107,20 @@ type (
 		CreatedAt time.Time `json:"createdAt"`
 	}
 	InventoryNameRes struct {
-		ID           uint    `json:"id"`
-		Name         string  `json:"name"`
-		CostPrice    float64 `json:"costPrice"`
-		SellingPrice float64 `json:"sellingPrice"`
-		GuidePrice   float64 `json:"guidePrice"`
-		MinPackages  int64   `json:"minPackages"`
-		SupplierID   int     `json:"supplierID"`
-		GoodsTypesID int     `json:"goodsTypesID"`
-		UnitID       int     `json:"unitID"`
+		ID                uint      `json:"id"`
+		Name              string    `json:"name"`
+		CostPrice         float64   `json:"costPrice"`
+		CostPrices        []float64 `json:"costPrices"`
+		SellingPrice      float64   `json:"sellingPrice"`
+		GuidePrice        float64   `json:"guidePrice"`
+		AverageCostPrice  float64   `json:"averageCostPrice"`
+		MinPackages       int64     `json:"minPackages"`
+		SupplierID        int       `json:"supplierID"`
+		GoodsTypesID      int       `json:"goodsTypesID"`
+		UnitID            int       `json:"unitID"`
+		Inventory         int64     `json:"inventory"`
+		UpdatedAt         time.Time `json:"updatedAt"`
+		LatestStorageTime time.Time `json:"latestStorageTime"`
+		LatestTime        time.Time `json:"latestTime"`
 	}
 )

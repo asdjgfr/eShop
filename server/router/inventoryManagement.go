@@ -14,6 +14,8 @@ import (
 func InitInventoryManagement(r *gin.RouterGroup) {
 	addInventory(r)
 	getInventoryByName(r)
+	getInventoryList(r)
+	deleteInventoryByID(r)
 }
 
 func addInventory(r *gin.RouterGroup) {
@@ -66,6 +68,50 @@ func getInventoryByName(r *gin.RouterGroup) {
 			"code":        http.StatusOK,
 			"msg":         msg,
 			"inventories": inventories,
+		})
+	})
+}
+
+func getInventoryList(r *gin.RouterGroup) {
+	r.POST(Address["getInventoryList"], func(c *gin.Context) {
+		msg := "获取库存列表成功！"
+		fePage := c.Request.PostFormValue("page")
+		fePageSize := c.Request.PostFormValue("pageSize")
+		page := 1
+		pageSize := 10
+		if fePage != "" {
+			page, _ = strconv.Atoi(fePage)
+		}
+		if fePageSize != "" {
+			pageSize, _ = strconv.Atoi(fePageSize)
+		}
+		inventories, total, err := db.GetInventoryList(pageSize, (page-1)*pageSize)
+		if err != nil {
+			msg = "获取库存列表失败：" + err.Error()
+		}
+		log.Info(c, msg)
+		c.JSON(200, gin.H{
+			"code":        http.StatusOK,
+			"msg":         msg,
+			"inventories": inventories,
+			"total":       total,
+		})
+	})
+}
+
+func deleteInventoryByID(r *gin.RouterGroup) {
+	r.POST(Address["deleteInventoryByID"], func(c *gin.Context) {
+		msg := "删除库存成功！"
+		id := c.Request.PostFormValue("id")
+		idInt, _ := strconv.Atoi(id)
+		err := db.DeleteInventoryByID(idInt)
+		if err != nil {
+			msg = "删除库存失败：" + err.Error()
+		}
+		log.Info(c, msg)
+		c.JSON(200, gin.H{
+			"code": http.StatusOK,
+			"msg":  msg,
 		})
 	})
 }

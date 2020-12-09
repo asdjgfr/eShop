@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 export const sleep = function (time: number) {
   return new Promise((resolve) => setTimeout(resolve, time));
 };
@@ -28,4 +30,10 @@ export const priceFormatter = function (value: number) {
 export const priceParse = function (value: number | string | undefined) {
   value = value ?? "";
   return (value + "").replace(/￥\s?|(,*)/g, "");
+};
+
+// 通用时间格式化
+
+export const formatTime = function (fmtStr: string, template?: string) {
+  return dayjs(fmtStr).format(template ?? "YYYY-MM-DD HH:mm:ss");
 };

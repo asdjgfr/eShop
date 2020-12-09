@@ -82,6 +82,8 @@
   "index": "序号",
   "inventory": "库存量",
   "costPrice": "成本价",
+  "historyCostPrices": "历史成本价",
+  "averageCostPrice": "平均成本价",
   "totalCost": "成本总价",
   "sellingPrice": "销售价",
   "latestPurchasePrice": "最新进价",
@@ -101,5 +103,9 @@
   "addFailed": "添加失败：",
   "addNext": "添加下一个",
   "ok": "确定",
-  "cancel": "取消"
+  "cancel": "取消",
+  "close": "关闭",
+  "monetaryUnit": "（元）",
+  "confirmDelInventory": "确定删除库存？",
+  "unrecoverableAfterDeletion": "删除后不可恢复！"
 }

@@ -24,3 +24,14 @@ export const addInventory = function (data: IInventoryData) {
 export const getInventoryByName = function (query: string) {
   return post("/api/get-inventory-by-name", { query });
 };
+
+export const getInventoryList = function (data: {
+  page: number;
+  pageSize: number;
+}) {
+  return post("/api/get-inventory-list", data);
+};
+
+export const deleteInventoryByID = function (id: number) {
+  return post("/api/delete-inventory-by-id", { id });
+};

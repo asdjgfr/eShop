@@ -93,16 +93,18 @@ type Unit struct {
 }
 type InventoryManagement struct {
 	gorm.Model
-	Name             string `gorm:"comment:商品名称"`
-	Pinyin           string `gorm:"comment:商品名称拼音"`
-	CostPrice        string `gorm:"comment:成本价"`
-	AverageCostPrice string `gorm:"comment:平均成本价"`
-	SellingPrice     string `gorm:"comment:销售价"`
-	GuidePrice       string `gorm:"comment:指导价"`
-	Inventory        int64  `gorm:"comment:库存量"`
-	MinPackages      int64  `gorm:"comment:最小包装数"`
-	SupplierID       int    `gorm:"comment:供货商ID"`
-	GoodsTypesID     int    `gorm:"comment:商品类型ID"`
-	UnitID           int    `gorm:"comment:单位ID"`
-	Remarks          string `gorm:"comment:注释"`
+	Name              string    `gorm:"comment:商品名称"`
+	Pinyin            string    `gorm:"comment:商品名称拼音"`
+	CostPrice         string    `gorm:"comment:成本价"`
+	AverageCostPrice  string    `gorm:"comment:平均成本价"`
+	SellingPrice      string    `gorm:"comment:销售价"`
+	GuidePrice        string    `gorm:"comment:指导价"`
+	Inventory         int64     `gorm:"comment:库存量"`
+	MinPackages       int64     `gorm:"comment:最小包装数"`
+	SupplierID        int       `gorm:"comment:供货商ID"`
+	GoodsTypesID      int       `gorm:"comment:商品类型ID"`
+	UnitID            int       `gorm:"comment:单位ID"`
+	Remarks           string    `gorm:"comment:注释"`
+	LatestStorageTime time.Time `gorm:"comment:最新入库时间"`
+	LatestTime        time.Time `gorm:"comment:最新出库时间"`
 }

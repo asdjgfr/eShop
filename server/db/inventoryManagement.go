@@ -8,6 +8,7 @@ import (
 	"myModule/types"
 	"strconv"
 	"strings"
+	"time"
 )
 
 func AddInventory(inventoryName, supplierName, goodsTypesName, unitName, costPrice, sellingPrice, guidePrice string, inventory, minPackages int64, supplierID, goodsTypesID, unitID int) error {
@@ -55,17 +56,18 @@ func AddInventory(inventoryName, supplierName, goodsTypesName, unitName, costPri
 
 	if res.RowsAffected == 0 {
 		newInventory = types.InventoryManagement{
-			Name:             inventoryName,
-			Pinyin:           lib.Pinyin(inventoryName),
-			CostPrice:        costPrice,
-			AverageCostPrice: costPrice,
-			SellingPrice:     sellingPrice,
-			GuidePrice:       guidePrice,
-			Inventory:        inventory,
-			MinPackages:      minPackages,
-			SupplierID:       supplierID,
-			GoodsTypesID:     goodsTypesID,
-			UnitID:           unitID,
+			Name:              inventoryName,
+			Pinyin:            lib.Pinyin(inventoryName),
+			CostPrice:         costPrice,
+			AverageCostPrice:  costPrice,
+			SellingPrice:      sellingPrice,
+			GuidePrice:        guidePrice,
+			Inventory:         inventory,
+			MinPackages:       minPackages,
+			SupplierID:        supplierID,
+			GoodsTypesID:      goodsTypesID,
+			UnitID:            unitID,
+			LatestStorageTime: time.Now(),
 		}
 		res = DB.Create(&newInventory)
 	} else if res.RowsAffected == 1 {
@@ -78,15 +80,16 @@ func AddInventory(inventoryName, supplierName, goodsTypesName, unitName, costPri
 			initCostPrice = initCostPrice.Add(currentNum)
 		}
 		res = DB.Model(&newInventory).Updates(types.InventoryManagement{
-			CostPrice:        strings.Join(costPrices, ","),
-			AverageCostPrice: initCostPrice.Div(decimal.NewFromInt(int64(len(costPrices)))).Round(2).String(),
-			SellingPrice:     sellingPrice,
-			GuidePrice:       guidePrice,
-			Inventory:        i1.Add(i2).IntPart(),
-			MinPackages:      minPackages,
-			SupplierID:       supplierID,
-			GoodsTypesID:     goodsTypesID,
-			UnitID:           unitID,
+			CostPrice:         strings.Join(costPrices, ","),
+			AverageCostPrice:  initCostPrice.Div(decimal.NewFromInt(int64(len(costPrices)))).Round(2).String(),
+			SellingPrice:      sellingPrice,
+			GuidePrice:        guidePrice,
+			Inventory:         i1.Add(i2).IntPart(),
+			MinPackages:       minPackages,
+			SupplierID:        supplierID,
+			GoodsTypesID:      goodsTypesID,
+			UnitID:            unitID,
+			LatestStorageTime: time.Now(),
 		})
 	}
 
@@ -123,4 +126,53 @@ func GetInventoryByName(query string) ([]types.InventoryNameRes, error) {
 		res = []types.InventoryNameRes{}
 	}
 	return res, dbFind.Error
+}
+
+func GetInventoryList(limit, offset int) ([]types.InventoryNameRes, int64, error) {
+	var im []types.InventoryManagement
+	var imRes []types.InventoryNameRes
+	var count int64
+	var err error
+	DB.Model(&types.InventoryManagement{}).Count(&count)
+	res := DB.Limit(limit).Offset(offset).Find(&im)
+	fmt.Println(res.Error)
+	fmt.Println(res.RowsAffected)
+	fmt.Println(limit, offset)
+	if res.Error != nil {
+		err = errors.New("获取库存列表失败：" + res.Error.Error())
+	}
+
+	for _, i := range im {
+		sellingPrice, _ := strconv.ParseFloat(i.SellingPrice, 64)
+		guidePrice, _ := strconv.ParseFloat(i.GuidePrice, 64)
+		averageCostPrice, _ := strconv.ParseFloat(i.AverageCostPrice, 64)
+		var costPrices []float64
+		for _, costPrice := range strings.Split(i.CostPrice, ",") {
+			cp, _ := strconv.ParseFloat(costPrice, 64)
+			costPrices = append(costPrices, cp)
+		}
+		imRes = append(imRes, types.InventoryNameRes{
+			ID:                i.ID,
+			Name:              i.Name,
+			CostPrices:        costPrices,
+			AverageCostPrice:  averageCostPrice,
+			SellingPrice:      sellingPrice,
+			GuidePrice:        guidePrice,
+			MinPackages:       i.MinPackages,
+			Inventory:         i.Inventory,
+			LatestStorageTime: i.LatestStorageTime,
+			LatestTime:        i.LatestTime,
+		})
+	}
+
+	if len(imRes) == 0 {
+		imRes = []types.InventoryNameRes{}
+	}
+	return imRes, count, err
+}
+
+func DeleteInventoryByID(id int) error {
+	res := DB.Delete(&types.InventoryManagement{}, id)
+	fmt.Println(res.Error, id)
+	return res.Error
 }

@@ -1,17 +1,8 @@
 import React from "react";
-import {
-  Form,
-  Input,
-  Button,
-  Row,
-  Col,
-  Table,
-  Divider,
-  Menu,
-  Dropdown,
-} from "antd";
+import { Form, Input, Button, Row, Col, Divider, Menu, Dropdown } from "antd";
 import { withTranslation, WithTranslation } from "react-i18next";
 import AddGoods from "@/components/goods/addGoods";
+import InventoryManagementList from "@/components/goods/InventoryManagementList";
 
 interface iProps extends WithTranslation {}
 interface iState {
@@ -108,96 +99,7 @@ class InventoryManagement extends React.Component<iProps, iState> {
             {t("add")}
           </Dropdown.Button>
         </div>
-        <Table
-          loading={loading}
-          scroll={{ x: "max-content" }}
-          columns={[
-            {
-              title: t("index"),
-              dataIndex: "index",
-              key: "index",
-            },
-            {
-              title: t("goodsName"),
-              dataIndex: "goodsName",
-              key: "goodsName",
-            },
-            {
-              title: t("goodsTypes"),
-              dataIndex: "goodsTypes",
-              key: "goodsTypes",
-            },
-            {
-              title: t("goodsID"),
-              dataIndex: "goodsID",
-              key: "goodsID",
-            },
-            {
-              title: t("supplier"),
-              dataIndex: "supplier",
-              key: "supplier",
-            },
-            {
-              title: t("inventory"),
-              dataIndex: "inventory",
-              key: "inventory",
-            },
-            {
-              title: t("costPrice"),
-              dataIndex: "costPrice",
-              key: "costPrice",
-            },
-            {
-              title: t("totalCost"),
-              dataIndex: "totalCost",
-              key: "totalCost",
-            },
-            {
-              title: t("sellingPrice"),
-              dataIndex: "sellingPrice",
-              key: "sellingPrice",
-            },
-            {
-              title: t("guidePrice"),
-              dataIndex: "guidePrice",
-              key: "guidePrice",
-            },
-            {
-              title: t("latestPurchasePrice"),
-              dataIndex: "latestPurchasePrice",
-              key: "latestPurchasePrice",
-            },
-            {
-              title: t("unit"),
-              dataIndex: "unit",
-              key: "unit",
-            },
-            {
-              title: t("minPackages"),
-              dataIndex: "minPackages",
-              key: "minPackages",
-            },
-            {
-              title: t("latestStorageTime"),
-              dataIndex: "latestStorageTime",
-              key: "latestStorageTime",
-            },
-            {
-              title: t("latestTime"),
-              dataIndex: "latestTime",
-              key: "latestTime",
-            },
-            {
-              title: t("action"),
-              dataIndex: "action",
-              key: "action",
-              render: (foo, item) => {
-                return [<Button type="primary">{t("search")}</Button>];
-              },
-            },
-          ]}
-          dataSource={[]}
-        />
+        <InventoryManagementList />
         <AddGoods
           visible={addVisible}
           toggleVisible={this.toggleAddModal.bind(this)}
