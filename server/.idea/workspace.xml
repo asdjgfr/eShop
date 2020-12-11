@@ -49,17 +49,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a27ab6c6-a950-4442-ba9f-00845ee34f39" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../client/web/src/components/goods/InventoryManagementList.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../client/web/src/lib/types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../client/web/.eslintcache" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/.eslintcache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/src/pages/InventoryManagement.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/src/pages/InventoryManagement.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/src/pages/User/OperationRecord.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/src/pages/User/OperationRecord.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/inventoryManagement.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/inventoryManagement.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/router/address.go" beforeDir="false" afterPath="$PROJECT_DIR$/router/address.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/router/inventoryManagement.go" beforeDir="false" afterPath="$PROJECT_DIR$/router/inventoryManagement.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/dbTypes.go" beforeDir="false" afterPath="$PROJECT_DIR$/types/dbTypes.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/index.go" beforeDir="false" afterPath="$PROJECT_DIR$/types/index.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,7 +88,7 @@
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
     <property name="go.vendoring.notification.had.been.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../time/main" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
