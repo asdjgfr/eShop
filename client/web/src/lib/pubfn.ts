@@ -33,7 +33,6 @@ export const priceParse = function (value: number | string | undefined) {
 };
 
 // 通用时间格式化
-
 export const formatTime = function (fmtStr: string, template?: string) {
   return dayjs(fmtStr).format(template ?? "YYYY-MM-DD HH:mm:ss");
 };

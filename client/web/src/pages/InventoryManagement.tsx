@@ -3,17 +3,20 @@ import { Form, Input, Button, Row, Col, Divider, Menu, Dropdown } from "antd";
 import { withTranslation, WithTranslation } from "react-i18next";
 import AddGoods from "@/components/goods/addGoods";
 import InventoryManagementList from "@/components/goods/InventoryManagementList";
+import ImportExcel from "@/components/ImportExcel";
 
 interface iProps extends WithTranslation {}
 interface iState {
   loading: boolean;
   addVisible: boolean;
+  importVisible: boolean;
 }
 
 class InventoryManagement extends React.Component<iProps, iState> {
   state: iState = {
     loading: false,
     addVisible: false,
+    importVisible: false,
   };
   onFormLayoutChange() {}
   handleMenuClick(item: any) {
@@ -22,6 +25,7 @@ class InventoryManagement extends React.Component<iProps, iState> {
         this.toggleAddModal(true);
         break;
       case "batchImport":
+        this.toggleImportModal(true);
         break;
       case "export":
         break;
@@ -32,9 +36,14 @@ class InventoryManagement extends React.Component<iProps, iState> {
       addVisible,
     });
   }
+  toggleImportModal(importVisible: boolean) {
+    this.setState({
+      importVisible,
+    });
+  }
   render() {
     const { t } = this.props;
-    const { loading, addVisible } = this.state;
+    const { importVisible, addVisible } = this.state;
     return (
       <>
         <Form
@@ -103,6 +112,12 @@ class InventoryManagement extends React.Component<iProps, iState> {
         <AddGoods
           visible={addVisible}
           toggleVisible={this.toggleAddModal.bind(this)}
+        />
+        <ImportExcel
+          visible={importVisible}
+          title={t("batchImportInventory")}
+          buttonText={t("batchImportInventory")}
+          accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,.csv"
         />
       </>
     );

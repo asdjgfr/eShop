@@ -107,5 +107,8 @@
   "close": "关闭",
   "monetaryUnit": "（元）",
   "confirmDelInventory": "确定删除库存？",
-  "unrecoverableAfterDeletion": "删除后不可恢复！"
+  "unrecoverableAfterDeletion": "删除后不可恢复！",
+  "batchImportInventory": "批量导入库存",
+  "clickOrDragFile": "点击或拖拽到此处来选择文件",
+  "tryEncodeUTF8": "尝试解决中文乱码"
 }
