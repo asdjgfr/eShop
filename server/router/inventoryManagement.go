@@ -32,9 +32,18 @@ func addInventory(r *gin.RouterGroup) {
 		tmpS, seErr := decimal.NewFromString(strings.Trim(c.Request.PostFormValue("sellingPrice"), " "))
 		tmpG, guErr := decimal.NewFromString(strings.Trim(c.Request.PostFormValue("guidePrice"), " "))
 
-		for _, e := range []error{iErr, mErr, suErr, goErr, uErr, cErr, seErr, guErr} {
-			if e != nil {
-				msg = "参数格式不正确：" + e.Error()
+		for _, eMap := range []map[string]interface{}{
+			{"msg": "库存量格式错误", "err": iErr},
+			{"msg": "最小包装数格式错误", "err": mErr},
+			{"msg": "供货商ID格式错误", "err": suErr},
+			{"msg": "商品类型ID格式错误", "err": goErr},
+			{"msg": "单位ID格式错误", "err": uErr},
+			{"msg": "成本价格式错误", "err": cErr},
+			{"msg": "销售价格式错误", "err": seErr},
+			{"msg": "指导价格式错误", "err": guErr},
+		} {
+			if eMap["err"] != nil {
+				msg = eMap["msg"].(string) + "：" + eMap["err"].(error).Error()
 				code = http.StatusUnprocessableEntity
 				break
 			}
