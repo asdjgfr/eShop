@@ -2,7 +2,6 @@ package db
 
 import (
 	"errors"
-	"fmt"
 	"github.com/shopspring/decimal"
 	"myModule/lib"
 	"myModule/types"
@@ -38,7 +37,6 @@ func AddInventory(inventoryName, supplierName, goodsTypesName, unitName, costPri
 			return supplierErr
 		}
 	}
-	fmt.Println("goodsTypesID:", goodsTypesID)
 	if goodsTypesID == -1 {
 		goodsTypesErr := AddGoodTypes(types.GoodsTypes{Name: goodsTypesName, Pinyin: lib.Pinyin(goodsTypesName)})
 		if goodsTypesErr != nil {
@@ -135,9 +133,6 @@ func GetInventoryList(limit, offset int) ([]types.InventoryNameRes, int64, error
 	var err error
 	DB.Model(&types.InventoryManagement{}).Count(&count)
 	res := DB.Limit(limit).Offset(offset).Find(&im)
-	fmt.Println(res.Error)
-	fmt.Println(res.RowsAffected)
-	fmt.Println(limit, offset)
 	if res.Error != nil {
 		err = errors.New("获取库存列表失败：" + res.Error.Error())
 	}
@@ -173,6 +168,9 @@ func GetInventoryList(limit, offset int) ([]types.InventoryNameRes, int64, error
 
 func DeleteInventoryByID(id int) error {
 	res := DB.Delete(&types.InventoryManagement{}, id)
-	fmt.Println(res.Error, id)
 	return res.Error
+}
+
+func BatchAddInventory() {
+
 }

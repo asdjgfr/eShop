@@ -25,6 +25,7 @@ func InitRouterAddress() {
 		"getInventoryByName":     "get-inventory-by-name",
 		"getInventoryList":       "get-inventory-list",
 		"deleteInventoryByID":    "delete-inventory-by-id",
+		"batchAddInventory":      "batch-add-inventory",
 	}
 	for k, v := range apiAddress {
 		Address[k] = v

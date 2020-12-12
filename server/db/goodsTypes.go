@@ -2,7 +2,6 @@ package db
 
 import (
 	"errors"
-	"fmt"
 	"myModule/types"
 )
 
@@ -30,8 +29,6 @@ func GetGoodTypes(query string) ([]types.GoodsTypesRes, error) {
 func AddGoodTypes(goodTypes types.GoodsTypes) error {
 	var iGoodTypes types.GoodsTypes
 	result := DB.Where("name = ?", goodTypes.Name).First(&iGoodTypes)
-	fmt.Println("结果", result.RowsAffected)
-	fmt.Println("错误", result.Error)
 	err := result.Error
 	if result.RowsAffected == 0 {
 		result = DB.Create(&goodTypes)

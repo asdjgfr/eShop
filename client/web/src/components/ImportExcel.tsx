@@ -1,14 +1,6 @@
 import React from "react";
 import { withTranslation, WithTranslation } from "react-i18next";
-import {
-  Modal,
-  Steps,
-  Upload,
-  Divider,
-  Typography,
-  Space,
-  Checkbox,
-} from "antd";
+import { Modal, Upload, Spin, Result, Button } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import debounce from "lodash/debounce";
 import XLSX from "xlsx";
@@ -18,40 +10,52 @@ interface iProps extends WithTranslation {
   accept: string;
   buttonText?: string;
   visible: boolean;
-  onOk?: () => void;
+  onOk?: (formatList: any[]) => void;
   onCancel?: () => void;
 }
 interface iState {
   loading: boolean;
+  spinLoading: boolean;
   visible: boolean;
-  isUTF8: boolean;
   current: number;
+  percent: number;
   fileList: any[];
+  formatList: any[];
 }
 
-const { Text } = Typography;
 const { Dragger } = Upload;
-const { Step } = Steps;
 class ImportExcel extends React.Component<iProps, iState> {
   state = {
-    isUTF8: true,
+    spinLoading: false,
     loading: false,
     visible: false,
     current: 0,
+    percent: 0,
     fileList: [],
+    formatList: [],
   };
   handleOk() {
     if (this.props.onOk) {
-      this.props.onOk();
+      this.props.onOk(this.state.formatList.flat(2));
     }
+    this.reset();
   }
   handleCancel() {
     if (this.props.onCancel) {
-      this.setState({
-        loading: false,
-      });
       this.props.onCancel();
+      this.reset();
     }
+  }
+  reset() {
+    this.setState({
+      spinLoading: false,
+      loading: false,
+      visible: false,
+      current: 0,
+      percent: 0,
+      fileList: [],
+      formatList: [],
+    });
   }
   handleChange(file: any, fileList: any) {
     this.formatExcel();
@@ -66,9 +70,13 @@ class ImportExcel extends React.Component<iProps, iState> {
     return false;
   }
   formatExcel = debounce(async () => {
+    this.setState({
+      spinLoading: true,
+    });
     const { fileList } = this.state;
-    const xlsArr = [];
-    for (let i = 0; i < fileList.length; i++) {
+    const formatList = [];
+    const len = fileList.length;
+    for (let i = 0; i < len; i++) {
       const { file } = fileList[i];
       const fileReader = new FileReader();
       const workbook = await new Promise((resolve) => {
@@ -76,14 +84,9 @@ class ImportExcel extends React.Component<iProps, iState> {
           try {
             resolve(
               Object.values(
-                XLSX.read(
-                  ev.target?.result,
-                  this.state.isUTF8
-                    ? {
-                        type: "binary",
-                      }
-                    : { type: "binary", codepage: 936 }
-                ).Sheets
+                XLSX.read(ev.target?.result, {
+                  type: "binary",
+                }).Sheets
               ).map((sheet) => XLSX.utils.sheet_to_json(sheet))
             );
           } catch (e) {
@@ -92,14 +95,22 @@ class ImportExcel extends React.Component<iProps, iState> {
         };
         fileReader.readAsBinaryString(file);
       });
-
-      xlsArr.push(workbook);
+      this.setState({
+        percent: Number((((i + 1) / len) * 100).toFixed(2)),
+      });
+      formatList.push(workbook);
     }
-    console.log(xlsArr);
-  }, 400);
-  handleToggleUTF8(e: any) {
     this.setState({
-      isUTF8: !e.target.checked,
+      spinLoading: false,
+      percent: 0,
+    });
+    this.setState({
+      formatList,
+    });
+  }, 400);
+  handleClear() {
+    this.setState({
+      formatList: [],
     });
   }
   componentDidUpdate(
@@ -114,7 +125,7 @@ class ImportExcel extends React.Component<iProps, iState> {
     }
   }
   render() {
-    const { visible, current, fileList } = this.state;
+    const { visible, percent, spinLoading, formatList } = this.state;
     const { title, t, accept } = this.props;
     return (
       <Modal
@@ -123,39 +134,43 @@ class ImportExcel extends React.Component<iProps, iState> {
         onOk={this.handleOk.bind(this)}
         onCancel={this.handleCancel.bind(this, false)}
       >
-        <Dragger
-          multiple={true}
-          beforeUpload={this.handleChange.bind(this)}
-          accept={accept}
-          fileList={[]}
-          itemRender={() => null}
-        >
-          <p className="ant-upload-drag-icon">
-            <InboxOutlined />
-          </p>
-          <p className="ant-upload-text">{t("clickOrDragFile")}</p>
-        </Dragger>
-        <Checkbox
-          checked={!this.state.isUTF8}
-          onChange={this.handleToggleUTF8.bind(this)}
-        >
-          {t("tryEncodeUTF8")}
-        </Checkbox>
-        <Divider />
-        <Steps direction="vertical" size="small" current={current}>
-          <Step
-            title={t("selectedFiles")}
-            description={
-              <Space direction="vertical">
-                {fileList.map((file: any) => (
-                  <Text key={file.uid}>{file.name}</Text>
-                ))}
-              </Space>
-            }
-          />
-          <Step title="In Progress" />
-          <Step title="Waiting" />
-        </Steps>
+        <Spin tip={percent + "%"} spinning={spinLoading}>
+          {formatList.length ? (
+            <Result
+              status="success"
+              title={`${t("resolvedSuccessfully")} ${formatList.length} ${t(
+                "files"
+              )} ${formatList.reduce(
+                (pre: number, cur: any[]) => cur.flat(1).length + pre,
+                0
+              )} ${t("data")}`}
+              extra={
+                <Button
+                  type="primary"
+                  danger={true}
+                  onClick={this.handleClear.bind(this)}
+                >
+                  {t("clear")}
+                </Button>
+              }
+            />
+          ) : (
+            <>
+              <Dragger
+                multiple={true}
+                beforeUpload={this.handleChange.bind(this)}
+                accept={accept}
+                fileList={[]}
+                itemRender={() => null}
+              >
+                <p className="ant-upload-drag-icon">
+                  <InboxOutlined />
+                </p>
+                <p className="ant-upload-text">{t("clickOrDragFile")}</p>
+              </Dragger>
+            </>
+          )}
+        </Spin>
       </Modal>
     );
   }

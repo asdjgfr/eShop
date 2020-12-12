@@ -49,7 +49,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a27ab6c6-a950-4442-ba9f-00845ee34f39" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../client/web/.eslintcache" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/.eslintcache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/public/i18n/zh-CN.json" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/public/i18n/zh-CN.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/src/api/inventoryManagement.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/src/api/inventoryManagement.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/src/components/ImportExcel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/src/components/ImportExcel.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/src/pages/InventoryManagement.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/src/pages/InventoryManagement.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/goodsTypes.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/goodsTypes.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/inventoryManagement.go" beforeDir="false" afterPath="$PROJECT_DIR$/db/inventoryManagement.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/router/address.go" beforeDir="false" afterPath="$PROJECT_DIR$/router/address.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/router/inventoryManagement.go" beforeDir="false" afterPath="$PROJECT_DIR$/router/inventoryManagement.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/types/index.go" beforeDir="false" afterPath="$PROJECT_DIR$/types/index.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

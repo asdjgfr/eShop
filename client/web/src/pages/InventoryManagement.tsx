@@ -4,6 +4,7 @@ import { withTranslation, WithTranslation } from "react-i18next";
 import AddGoods from "@/components/goods/addGoods";
 import InventoryManagementList from "@/components/goods/InventoryManagementList";
 import ImportExcel from "@/components/ImportExcel";
+import { batchAddInventory } from "@/api/inventoryManagement";
 
 interface iProps extends WithTranslation {}
 interface iState {
@@ -12,6 +13,7 @@ interface iState {
   importVisible: boolean;
 }
 
+let baiCancel = () => {};
 class InventoryManagement extends React.Component<iProps, iState> {
   state: iState = {
     loading: false,
@@ -39,6 +41,19 @@ class InventoryManagement extends React.Component<iProps, iState> {
   toggleImportModal(importVisible: boolean) {
     this.setState({
       importVisible,
+    });
+  }
+  async handleBatchAddGoods(goods: any[]) {
+    baiCancel();
+    const bai = batchAddInventory(goods);
+    baiCancel = bai.cancel;
+    const res = await bai.data;
+    console.log(res);
+    this.handleCloseImportExcel();
+  }
+  handleCloseImportExcel() {
+    this.setState({
+      importVisible: false,
     });
   }
   render() {
@@ -117,7 +132,9 @@ class InventoryManagement extends React.Component<iProps, iState> {
           visible={importVisible}
           title={t("batchImportInventory")}
           buttonText={t("batchImportInventory")}
-          accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,.csv"
+          accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          onCancel={this.handleCloseImportExcel.bind(this)}
+          onOk={this.handleBatchAddGoods.bind(this)}
         />
       </>
     );

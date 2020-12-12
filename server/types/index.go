@@ -123,4 +123,6 @@ type (
 		LatestStorageTime time.Time `json:"latestStorageTime"`
 		LatestTime        time.Time `json:"latestTime"`
 	}
+	BatchAddInventory struct {
+	}
 )

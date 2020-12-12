@@ -5,6 +5,11 @@ import { message } from "antd";
 import { sleep } from "@/lib/pubfn";
 import store from "@/store";
 
+interface iConfig {
+  globalLoading?: boolean;
+  globalLoadingTip?: string;
+}
+
 const { CancelToken } = axios;
 
 axios.interceptors.request.use(
@@ -61,17 +66,29 @@ axios.interceptors.response.use(
   }
 );
 
-export const post = function (url: string, data?: any, config?: {}) {
+export const post = function (
+  url: string,
+  data?: any,
+  config?: iConfig,
+  contentType?: "form" | "json"
+) {
   const source = CancelToken.source();
   return {
     data: axios
-      .post(url, qs.stringify(data), {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        cancelToken: source.token,
-        ...config,
-      })
+      .post(
+        url,
+        contentType === "json" ? JSON.stringify(data) : qs.stringify(data),
+        {
+          headers: {
+            "Content-Type":
+              contentType === "json"
+                ? "application/json"
+                : "application/x-www-form-urlencoded",
+          },
+          cancelToken: source.token,
+          ...config,
+        }
+      )
       .then((res) => res.data),
     cancel: (msg = "") => {
       source.cancel(msg);

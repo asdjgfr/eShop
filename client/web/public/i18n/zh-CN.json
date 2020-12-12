@@ -110,5 +110,11 @@
   "unrecoverableAfterDeletion": "删除后不可恢复！",
   "batchImportInventory": "批量导入库存",
   "clickOrDragFile": "点击或拖拽到此处来选择文件",
-  "tryEncodeUTF8": "尝试解决中文乱码"
+  "tryEncodeUTF8": "尝试解决中文乱码",
+  "tryEncodeUTF8Help": "office编辑的csv由于编码格式的问题会出现中文乱码的问题，如导入出现乱码则可以勾选尝试再次导入",
+  "resolvedSuccessfully": "成功解析",
+  "files": "个文件",
+  "data": "条数据",
+  "upload": "上传",
+  "reselect": "重新选择"
 }

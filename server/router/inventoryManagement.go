@@ -1,6 +1,7 @@
 package router
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/shopspring/decimal"
 	"myModule/db"
@@ -16,6 +17,7 @@ func InitInventoryManagement(r *gin.RouterGroup) {
 	getInventoryByName(r)
 	getInventoryList(r)
 	deleteInventoryByID(r)
+	batchAddInventory(r)
 }
 
 func addInventory(r *gin.RouterGroup) {
@@ -121,6 +123,18 @@ func deleteInventoryByID(r *gin.RouterGroup) {
 		c.JSON(200, gin.H{
 			"code": http.StatusOK,
 			"msg":  msg,
+		})
+	})
+}
+
+func batchAddInventory(r *gin.RouterGroup) {
+	r.POST(Address["batchAddInventory"], func(c *gin.Context) {
+		var json []map[string]string
+		c.ShouldBindJSON(&json)
+		fmt.Println(json[0]["列1"])
+		c.JSON(200, gin.H{
+			"code": 200,
+			"msg":  c.Request.PostFormValue("data"),
 		})
 	})
 }
