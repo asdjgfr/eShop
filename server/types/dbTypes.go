@@ -94,6 +94,7 @@ type Unit struct {
 type InventoryManagement struct {
 	gorm.Model
 	Name              string    `gorm:"comment:商品名称"`
+	Code              string    `gorm:"comment:商品代码"`
 	Pinyin            string    `gorm:"comment:商品名称拼音"`
 	CostPrice         string    `gorm:"comment:成本价"`
 	AverageCostPrice  string    `gorm:"comment:平均成本价"`

@@ -6,6 +6,7 @@ import (
 	"github.com/shopspring/decimal"
 	"myModule/db"
 	"myModule/log"
+	"myModule/types"
 	"net/http"
 	"strconv"
 	"strings"
@@ -129,12 +130,17 @@ func deleteInventoryByID(r *gin.RouterGroup) {
 
 func batchAddInventory(r *gin.RouterGroup) {
 	r.POST(Address["batchAddInventory"], func(c *gin.Context) {
-		var json []map[string]string
-		c.ShouldBindJSON(&json)
-		fmt.Println(json[0]["列1"])
+		msg := ""
+		var json []types.BatchAddInventory
+		err := c.ShouldBindJSON(&json)
+		if err != nil {
+			msg = "数据解析失败：" + err.Error()
+		}
+		fmt.Println(json)
+		fmt.Println(json[0].SellingPrice)
 		c.JSON(200, gin.H{
 			"code": 200,
-			"msg":  c.Request.PostFormValue("data"),
+			"msg":  msg,
 		})
 	})
 }

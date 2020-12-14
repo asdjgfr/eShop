@@ -1,6 +1,7 @@
 package types
 
 import (
+	"encoding/json"
 	"time"
 )
 
@@ -108,6 +109,7 @@ type (
 	}
 	InventoryNameRes struct {
 		ID                uint      `json:"id"`
+		Code              string    `json:"code"`
 		Name              string    `json:"name"`
 		CostPrice         float64   `json:"costPrice"`
 		CostPrices        []float64 `json:"costPrices"`
@@ -124,5 +126,14 @@ type (
 		LatestTime        time.Time `json:"latestTime"`
 	}
 	BatchAddInventory struct {
+		Name           string      `json:"商品名称"`
+		GoodsTypesName string      `json:"商品种类"`
+		Code           string      `json:"商品ID"`
+		SupplierName   string      `json:"供货商"`
+		Inventory      int64       `json:"库存量"`
+		SellingPrice   json.Number `json:"销售价"`
+		GuidePrice     json.Number `json:"指导价"`
+		UnitName       string      `json:"单位"`
+		MinPackages    int64       `json:"最小包装数"`
 	}
 )

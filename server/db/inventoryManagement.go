@@ -148,6 +148,7 @@ func GetInventoryList(limit, offset int) ([]types.InventoryNameRes, int64, error
 		}
 		imRes = append(imRes, types.InventoryNameRes{
 			ID:                i.ID,
+			Code:              i.Code,
 			Name:              i.Name,
 			CostPrices:        costPrices,
 			AverageCostPrice:  averageCostPrice,
