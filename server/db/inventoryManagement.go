@@ -17,12 +17,18 @@ func AddInventory(inventoryName, supplierName, goodsTypesName, unitName, costPri
 	zeroD := decimal.NewFromInt(0)
 	if d1, _ := decimal.NewFromString(costPrice); d1.Cmp(zeroD) < 0 {
 		return errors.New("成本价不能小于0！")
+	} else {
+		costPrice = d1.Round(2).String()
 	}
 	if d1, _ := decimal.NewFromString(sellingPrice); d1.Cmp(zeroD) < 0 {
 		return errors.New("销售价不能小于0！")
+	} else {
+		sellingPrice = d1.Round(2).String()
 	}
 	if d1, _ := decimal.NewFromString(guidePrice); d1.Cmp(zeroD) < 0 {
 		return errors.New("指导价不能小于0！")
+	} else {
+		guidePrice = d1.Round(2).String()
 	}
 	if inventory <= 0 {
 		return errors.New("库存量不能小于等于0！")
@@ -30,21 +36,23 @@ func AddInventory(inventoryName, supplierName, goodsTypesName, unitName, costPri
 	if minPackages <= 0 {
 		return errors.New("最小包装数不能小于等于0！")
 	}
-
-	if supplierID == -1 {
-		supplierErr := AddSupplier(types.Supplier{Name: supplierName, Pinyin: lib.Pinyin(supplierName)})
+	if supplierID <= 0 {
+		sID, supplierErr := AddSupplier(types.Supplier{Name: supplierName, Pinyin: lib.Pinyin(supplierName)})
+		supplierID = sID
 		if supplierErr != nil {
 			return supplierErr
 		}
 	}
-	if goodsTypesID == -1 {
-		goodsTypesErr := AddGoodTypes(types.GoodsTypes{Name: goodsTypesName, Pinyin: lib.Pinyin(goodsTypesName)})
+	if goodsTypesID <= 0 {
+		gID, goodsTypesErr := AddGoodsTypes(types.GoodsTypes{Name: goodsTypesName, Pinyin: lib.Pinyin(goodsTypesName)})
+		goodsTypesID = gID
 		if goodsTypesErr != nil {
 			return goodsTypesErr
 		}
 	}
-	if unitID == -1 {
-		unitErr := AddUnit(types.Unit{Name: unitName, Pinyin: lib.Pinyin(unitName)})
+	if unitID <= 0 {
+		uID, unitErr := AddUnit(types.Unit{Name: unitName, Pinyin: lib.Pinyin(unitName)})
+		unitID = uID
 		if unitErr != nil {
 			return unitErr
 		}
@@ -66,6 +74,7 @@ func AddInventory(inventoryName, supplierName, goodsTypesName, unitName, costPri
 			GoodsTypesID:      goodsTypesID,
 			UnitID:            unitID,
 			LatestStorageTime: time.Now(),
+			LatestTime:        "",
 		}
 		res = DB.Create(&newInventory)
 	} else if res.RowsAffected == 1 {
@@ -90,7 +99,6 @@ func AddInventory(inventoryName, supplierName, goodsTypesName, unitName, costPri
 			LatestStorageTime: time.Now(),
 		})
 	}
-
 	if res.Error != nil {
 		return res.Error
 	}
@@ -148,7 +156,6 @@ func GetInventoryList(limit, offset int) ([]types.InventoryNameRes, int64, error
 		}
 		imRes = append(imRes, types.InventoryNameRes{
 			ID:                i.ID,
-			Code:              i.Code,
 			Name:              i.Name,
 			CostPrices:        costPrices,
 			AverageCostPrice:  averageCostPrice,
@@ -172,6 +179,38 @@ func DeleteInventoryByID(id int) error {
 	return res.Error
 }
 
-func BatchAddInventory() {
-
+func BatchAddInventory(inventories []types.BatchAddInventory) (string, int, int, int) {
+	totalLen := len(inventories)
+	errorLen := 0
+	errorMsg := ""
+	for index, inv := range inventories {
+		msg := ""
+		if inv.Name == "" {
+			msg += "第" + strconv.Itoa(index+1) + "条名称为空;"
+		}
+		if inv.Inventory == 0 {
+			msg += "第" + strconv.Itoa(index+1) + "条库存量为空;"
+		}
+		if inv.SellingPrice == "" {
+			msg += "第" + strconv.Itoa(index+1) + "条销售价为空;"
+		}
+		if inv.GuidePrice == "" {
+			msg += "第" + strconv.Itoa(index+1) + "条指导价为空;"
+		}
+		if inv.MinPackages == 0 {
+			inv.MinPackages = 1
+		}
+		if msg != "" {
+			errorLen++
+			errorMsg += msg
+			continue
+		}
+		err := AddInventory(inv.Name, inv.SupplierName, inv.GoodsTypesName, inv.UnitName, inv.CostPrice.String(), inv.SellingPrice.String(), inv.GuidePrice.String(), inv.Inventory, inv.MinPackages, -1, -1, -1)
+		if err != nil {
+			errorLen++
+			msg += "第" + strconv.Itoa(index+1) + "条添加失败：" + err.Error() + ";"
+			errorMsg += msg
+		}
+	}
+	return errorMsg, totalLen, totalLen - errorLen, errorLen
 }

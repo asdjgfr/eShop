@@ -109,7 +109,6 @@ type (
 	}
 	InventoryNameRes struct {
 		ID                uint      `json:"id"`
-		Code              string    `json:"code"`
 		Name              string    `json:"name"`
 		CostPrice         float64   `json:"costPrice"`
 		CostPrices        []float64 `json:"costPrices"`
@@ -123,7 +122,7 @@ type (
 		Inventory         int64     `json:"inventory"`
 		UpdatedAt         time.Time `json:"updatedAt"`
 		LatestStorageTime time.Time `json:"latestStorageTime"`
-		LatestTime        time.Time `json:"latestTime"`
+		LatestTime        string    `json:"latestTime"`
 	}
 	BatchAddInventory struct {
 		Name           string      `json:"商品名称"`
@@ -131,6 +130,7 @@ type (
 		Code           string      `json:"商品ID"`
 		SupplierName   string      `json:"供货商"`
 		Inventory      int64       `json:"库存量"`
+		CostPrice      json.Number `json:"成本价"`
 		SellingPrice   json.Number `json:"销售价"`
 		GuidePrice     json.Number `json:"指导价"`
 		UnitName       string      `json:"单位"`

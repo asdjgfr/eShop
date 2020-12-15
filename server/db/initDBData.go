@@ -40,7 +40,7 @@ func InitShopInfo(db *gorm.DB) {
 	_ = db.AutoMigrate(&types.ShopInfo{})
 	var shopInfo types.ShopInfo
 	result := db.First(&shopInfo)
-	if result.Error != nil {
+	if result.RowsAffected == 0 {
 		info := types.ShopInfo{Name: "欣念", Introduction: "说明", Suffix: "智慧门店"}
 		_ = db.Create(&info)
 	}
@@ -51,7 +51,7 @@ func InitDashboardMenus(db *gorm.DB) {
 	_ = db.AutoMigrate(&types.DashboardMenu{})
 	var dashboardMenu types.DashboardMenu
 	result := db.First(&dashboardMenu)
-	if result.Error != nil {
+	if result.RowsAffected == 0 {
 		defaultMenus := []types.DashboardMenu{
 			{Title: "库存管理", Path: "/dashboard/inventory-management", Icon: "BankOutlined", Order: 2},
 			{Title: "订单管理", Path: "/dashboard/order-management", Icon: "FileTextOutlined", Order: 3},
@@ -93,14 +93,23 @@ func InitLogger(db *gorm.DB) {
 func InitSupplier(db *gorm.DB) {
 	//初始化供货商
 	_ = db.AutoMigrate(&types.Supplier{})
+	if result := db.First(&types.Supplier{}); result.RowsAffected == 0 {
+		_, _ = AddSupplier(types.Supplier{Name: "无", Pinyin: lib.Pinyin("无")})
+	}
 }
 func InitGoodsTypes(db *gorm.DB) {
 	//初始化商品类型
 	_ = db.AutoMigrate(&types.GoodsTypes{})
+	if result := db.First(&types.GoodsTypes{}); result.RowsAffected == 0 {
+		_, _ = AddGoodsTypes(types.GoodsTypes{Name: "无", Pinyin: lib.Pinyin("无")})
+	}
 }
 func InitUnit(db *gorm.DB) {
 	//初始化单位
 	_ = db.AutoMigrate(&types.Unit{})
+	if result := db.First(&types.Unit{}); result.RowsAffected == 0 {
+		_, _ = AddUnit(types.Unit{Name: "无", Pinyin: lib.Pinyin("无")})
+	}
 }
 
 func InitInventoryManagement(db *gorm.DB) {

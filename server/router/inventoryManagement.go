@@ -1,7 +1,6 @@
 package router
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/shopspring/decimal"
 	"myModule/db"
@@ -135,12 +134,19 @@ func batchAddInventory(r *gin.RouterGroup) {
 		err := c.ShouldBindJSON(&json)
 		if err != nil {
 			msg = "数据解析失败：" + err.Error()
+			c.JSON(200, gin.H{
+				"code": http.StatusNotAcceptable,
+				"msg":  msg,
+			})
+		} else {
+			errorMsg, totalLen, successLen, errorLen := db.BatchAddInventory(json)
+			c.JSON(200, gin.H{
+				"code":       200,
+				"msg":        errorMsg,
+				"totalLen":   totalLen,
+				"successLen": successLen,
+				"errorLen":   errorLen,
+			})
 		}
-		fmt.Println(json)
-		fmt.Println(json[0].SellingPrice)
-		c.JSON(200, gin.H{
-			"code": 200,
-			"msg":  msg,
-		})
 	})
 }

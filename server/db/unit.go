@@ -26,15 +26,20 @@ func GetUnit(query string) ([]types.UnitRes, error) {
 	return res, dbFind.Error
 }
 
-func AddUnit(unit types.Unit) error {
+func AddUnit(unit types.Unit) (int, error) {
+	unitID := -1
+	if unit.Name == "" {
+		return unitID, errors.New("单位不能为空！")
+	}
 	var iUnit types.Unit
 	result := DB.Where("name = ?", unit.Name).First(&iUnit)
 	err := result.Error
 	if result.RowsAffected == 0 {
 		result = DB.Create(&unit)
+		unitID = int(unit.ID)
 		err = result.Error
 	} else if result.RowsAffected == 1 {
-		err = errors.New("单位已存在！")
+		unitID = int(iUnit.ID)
 	}
-	return err
+	return unitID, err
 }

@@ -26,15 +26,20 @@ func GetGoodTypes(query string) ([]types.GoodsTypesRes, error) {
 	return res, dbFind.Error
 }
 
-func AddGoodTypes(goodTypes types.GoodsTypes) error {
+func AddGoodsTypes(goodTypes types.GoodsTypes) (int, error) {
+	goodsTypesID := -1
+	if goodTypes.Name == "" {
+		return goodsTypesID, errors.New("商品类型不能为空！")
+	}
 	var iGoodTypes types.GoodsTypes
 	result := DB.Where("name = ?", goodTypes.Name).First(&iGoodTypes)
 	err := result.Error
 	if result.RowsAffected == 0 {
 		result = DB.Create(&goodTypes)
+		goodsTypesID = int(goodTypes.ID)
 		err = result.Error
 	} else if result.RowsAffected == 1 {
-		err = errors.New("商品类型已存在！")
+		goodsTypesID = int(iGoodTypes.ID)
 	}
-	return err
+	return goodsTypesID, err
 }

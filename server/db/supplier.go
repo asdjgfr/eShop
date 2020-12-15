@@ -28,15 +28,20 @@ func GetSupplier(query string) ([]types.SupplierRes, error) {
 	return res, dbFind.Error
 }
 
-func AddSupplier(supplier types.Supplier) error {
+func AddSupplier(supplier types.Supplier) (int, error) {
+	supplierID := -1
+	if supplier.Name == "" {
+		return supplierID, errors.New("供货商名称不能为空！")
+	}
 	var iSupplier types.Supplier
 	result := DB.Where("name = ?", supplier.Name).First(&iSupplier)
 	err := result.Error
 	if result.RowsAffected == 0 {
 		result = DB.Create(&supplier)
 		err = result.Error
+		supplierID = int(supplier.ID)
 	} else if result.RowsAffected == 1 {
-		err = errors.New("供货商已存在！")
+		supplierID = int(iSupplier.ID)
 	}
-	return err
+	return supplierID, err
 }
