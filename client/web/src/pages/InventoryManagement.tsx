@@ -115,6 +115,15 @@ class InventoryManagement extends React.Component<iProps, iState> {
             onClick={this.handleMenuClick.bind(this, { key: "add" })}
             overlay={
               <Menu onClick={this.handleMenuClick.bind(this)}>
+                <Menu.Item key="download">
+                  <a
+                    download={t("inventoryTemplateFilename")}
+                    rel="noopener noreferrer"
+                    href={`/templateFiles/${t("inventoryTemplateFilename")}`}
+                  >
+                    {t("downloadTemplate")}
+                  </a>
+                </Menu.Item>
                 <Menu.Item key="batchImport">{t("batchImport")}</Menu.Item>
                 <Menu.Item key="export">{t("export")}</Menu.Item>
               </Menu>
