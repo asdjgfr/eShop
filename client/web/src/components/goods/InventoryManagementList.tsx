@@ -8,7 +8,9 @@ import {
 import { iPagination } from "@/lib/types";
 import { formatTime } from "@/lib/pubfn";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
-interface iProps extends WithTranslation {}
+interface iProps extends WithTranslation {
+  onRef: (ref: any) => void;
+}
 interface iList {
   key: number;
   index: number;
@@ -94,6 +96,7 @@ class InventoryManagementList extends React.Component<iProps, iState> {
     });
   }
   componentDidMount() {
+    this.props.onRef(this);
     this.getList();
   }
   render() {

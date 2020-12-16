@@ -12,9 +12,9 @@ interface iProps extends WithTranslation {
   visible: boolean;
   onOk?: (formatList: any[]) => void;
   onCancel?: () => void;
+  loading: boolean;
 }
 interface iState {
-  loading: boolean;
   spinLoading: boolean;
   visible: boolean;
   current: number;
@@ -27,16 +27,15 @@ const { Dragger } = Upload;
 class ImportExcel extends React.Component<iProps, iState> {
   state = {
     spinLoading: false,
-    loading: false,
     visible: false,
     current: 0,
     percent: 0,
     fileList: [],
     formatList: [],
   };
-  handleOk() {
+  async handleOk() {
     if (this.props.onOk) {
-      this.props.onOk(this.state.formatList.flat(2));
+      await this.props.onOk(this.state.formatList.flat(2));
     }
     this.reset();
   }
@@ -49,7 +48,6 @@ class ImportExcel extends React.Component<iProps, iState> {
   reset() {
     this.setState({
       spinLoading: false,
-      loading: false,
       visible: false,
       current: 0,
       percent: 0,
@@ -126,13 +124,14 @@ class ImportExcel extends React.Component<iProps, iState> {
   }
   render() {
     const { visible, percent, spinLoading, formatList } = this.state;
-    const { title, t, accept } = this.props;
+    const { title, t, accept, loading } = this.props;
     return (
       <Modal
         title={title}
         visible={visible}
         onOk={this.handleOk.bind(this)}
         onCancel={this.handleCancel.bind(this, false)}
+        confirmLoading={loading}
       >
         <Spin tip={percent + "%"} spinning={spinLoading}>
           {formatList.length ? (

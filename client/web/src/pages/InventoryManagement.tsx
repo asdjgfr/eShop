@@ -11,6 +11,7 @@ interface iState {
   loading: boolean;
   addVisible: boolean;
   importVisible: boolean;
+  importLoading: boolean;
 }
 
 let baiCancel = () => {};
@@ -19,8 +20,11 @@ class InventoryManagement extends React.Component<iProps, iState> {
     loading: false,
     addVisible: false,
     importVisible: false,
+    importLoading: false,
   };
-  onFormLayoutChange() {}
+  $refs: any = {
+    list: undefined,
+  };
   handleMenuClick(item: any) {
     switch (item.key) {
       case "add":
@@ -44,28 +48,28 @@ class InventoryManagement extends React.Component<iProps, iState> {
     });
   }
   async handleBatchAddGoods(goods: any[]) {
+    this.setState({
+      importLoading: true,
+    });
     baiCancel();
     const bai = batchAddInventory(goods);
     baiCancel = bai.cancel;
-    const res = await bai.data;
-    console.log(res);
+    await bai.data;
+    await this.$refs.list?.getList();
     this.handleCloseImportExcel();
   }
   handleCloseImportExcel() {
     this.setState({
       importVisible: false,
+      importLoading: false,
     });
   }
   render() {
     const { t } = this.props;
-    const { importVisible, addVisible } = this.state;
+    const { importVisible, addVisible, importLoading } = this.state;
     return (
       <>
-        <Form
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 14 }}
-          onValuesChange={this.onFormLayoutChange.bind(this)}
-        >
+        <Form labelCol={{ span: 8 }} wrapperCol={{ span: 14 }}>
           <Row gutter={24}>
             <Col span={6}>
               <Form.Item label={t("goodsID")}>
@@ -132,10 +136,15 @@ class InventoryManagement extends React.Component<iProps, iState> {
             {t("add")}
           </Dropdown.Button>
         </div>
-        <InventoryManagementList />
+        <InventoryManagementList
+          onRef={(ref: any) => {
+            this.$refs.list = ref;
+          }}
+        />
         <AddGoods
           visible={addVisible}
           toggleVisible={this.toggleAddModal.bind(this)}
+          listRef={this.$refs.list}
         />
         <ImportExcel
           visible={importVisible}
@@ -144,6 +153,7 @@ class InventoryManagement extends React.Component<iProps, iState> {
           accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
           onCancel={this.handleCloseImportExcel.bind(this)}
           onOk={this.handleBatchAddGoods.bind(this)}
+          loading={importLoading}
         />
       </>
     );
