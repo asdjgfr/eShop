@@ -12,7 +12,7 @@ import { maxPrice } from "@/lib/initValue";
 interface iProps extends WithTranslation {
   visible: boolean;
   toggleVisible: (arg: boolean) => void;
-  listRef: any;
+  parentRef: any;
 }
 
 interface iState {
@@ -201,7 +201,7 @@ class AddGoods extends React.Component<iProps, iState> {
         } else {
           message.error(this.props.t("addFailed") + res.msg);
         }
-        await this.props.listRef?.getList();
+        await this.props.parentRef.list?.getList();
       } catch (e) {
         reject(e);
       }

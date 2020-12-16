@@ -183,6 +183,20 @@ func BatchAddInventory(inventories []types.BatchAddInventory) (string, int, int,
 	totalLen := len(inventories)
 	errorLen := 0
 	errorMsg := ""
+	var inventoryManagementList []types.InventoryManagement
+	var invNames []string
+	var addList []struct {
+		inv            types.InventoryManagement
+		supplierName   string
+		goodsTypesName string
+		unitName       string
+	}
+	var supplierNames []string
+	var findSuppliers []types.Supplier
+	var goodsTypesNames []string
+	var findGoodsTypes []types.GoodsTypes
+	var unitNames []string
+	var findUnites []types.Unit
 	for index, inv := range inventories {
 		msg := ""
 		if inv.Name == "" {
@@ -205,12 +219,52 @@ func BatchAddInventory(inventories []types.BatchAddInventory) (string, int, int,
 			errorMsg += msg
 			continue
 		}
-		err := AddInventory(inv.Name, inv.SupplierName, inv.GoodsTypesName, inv.UnitName, inv.CostPrice.String(), inv.SellingPrice.String(), inv.GuidePrice.String(), inv.Inventory, inv.MinPackages, -1, -1, -1)
-		if err != nil {
-			errorLen++
-			msg += "第" + strconv.Itoa(index+1) + "条添加失败：" + err.Error() + ";"
-			errorMsg += msg
-		}
+		supplierNames = append(supplierNames, inv.SupplierName)
+		goodsTypesNames = append(goodsTypesNames, inv.GoodsTypesName)
+		unitNames = append(unitNames, inv.UnitName)
+		invNames = append(invNames, inv.Name)
+		addList = append(addList, struct {
+			inv            types.InventoryManagement
+			supplierName   string
+			goodsTypesName string
+			unitName       string
+		}{types.InventoryManagement{
+			Name:         inv.Name,
+			SupplierID:   -1,
+			GoodsTypesID: -1,
+			UnitID:       -1,
+			CostPrice:    inv.CostPrice.String(),
+			SellingPrice: inv.SellingPrice.String(),
+			GuidePrice:   inv.GuidePrice.String(),
+			Inventory:    inv.Inventory,
+			MinPackages:  inv.MinPackages,
+		}, inv.SupplierName, inv.GoodsTypesName, inv.UnitName})
 	}
+	DB.Where("name IN ?", supplierNames).Find(&findSuppliers)
+	DB.Where("name IN ?", goodsTypesNames).Find(&findGoodsTypes)
+	DB.Where("name IN ?", unitNames).Find(&findUnites)
+	DB.Where("name IN ?", invNames).Find(&inventoryManagementList)
+	for _, item := range addList {
+		for _, s := range findSuppliers {
+			if s.Name == item.supplierName {
+				item.inv.SupplierID = int(s.ID)
+				break
+			}
+		}
+		for _, g := range findGoodsTypes {
+			if g.Name == item.goodsTypesName {
+				item.inv.GoodsTypesID = int(g.ID)
+				break
+			}
+		}
+		for _, u := range findUnites {
+			if u.Name == item.unitName {
+				item.inv.UnitID = int(u.ID)
+				break
+			}
+		}
+		inventoryManagementList = append(inventoryManagementList, item.inv)
+	}
+	DB.Save(&inventoryManagementList)
 	return errorMsg, totalLen, totalLen - errorLen, errorLen
 }
