@@ -98,6 +98,7 @@ type InventoryManagement struct {
 	Pinyin            string    `gorm:"comment:商品名称拼音"`
 	CostPrice         string    `gorm:"comment:成本价"`
 	AverageCostPrice  string    `gorm:"comment:平均成本价"`
+	TotalCostPrice    string    `gorm:"comment:成本总价"`
 	SellingPrice      string    `gorm:"comment:销售价"`
 	GuidePrice        string    `gorm:"comment:指导价"`
 	Inventory         int64     `gorm:"comment:库存量"`

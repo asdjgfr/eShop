@@ -2,7 +2,10 @@ package db
 
 import (
 	"errors"
+	"fmt"
+	"github.com/imdario/mergo"
 	"github.com/shopspring/decimal"
+	"math"
 	"myModule/lib"
 	"myModule/types"
 	"strconv"
@@ -61,11 +64,14 @@ func AddInventory(inventoryName, supplierName, goodsTypesName, unitName, costPri
 	res := DB.Where("name = ?", inventoryName).First(&newInventory)
 
 	if res.RowsAffected == 0 {
+		costPriceNum, _ := decimal.NewFromString(costPrice)
+		inventoryNum := decimal.NewFromInt(inventory)
 		newInventory = types.InventoryManagement{
 			Name:              inventoryName,
 			Pinyin:            lib.Pinyin(inventoryName),
 			CostPrice:         costPrice,
 			AverageCostPrice:  costPrice,
+			TotalCostPrice:    costPriceNum.Mul(inventoryNum).Round(2).String(),
 			SellingPrice:      sellingPrice,
 			GuidePrice:        guidePrice,
 			Inventory:         inventory,
@@ -86,9 +92,12 @@ func AddInventory(inventoryName, supplierName, goodsTypesName, unitName, costPri
 			currentNum, _ := decimal.NewFromString(str)
 			initCostPrice = initCostPrice.Add(currentNum)
 		}
+		oldTotalCostPrice, _ := decimal.NewFromString(newInventory.TotalCostPrice)
+		newCostPrice, _ := decimal.NewFromString(costPrice)
 		res = DB.Model(&newInventory).Updates(types.InventoryManagement{
 			CostPrice:         strings.Join(costPrices, ","),
 			AverageCostPrice:  initCostPrice.Div(decimal.NewFromInt(int64(len(costPrices)))).Round(2).String(),
+			TotalCostPrice:    oldTotalCostPrice.Add(i2.Mul(newCostPrice)).Round(2).String(),
 			SellingPrice:      sellingPrice,
 			GuidePrice:        guidePrice,
 			Inventory:         i1.Add(i2).IntPart(),
@@ -181,9 +190,26 @@ func DeleteInventoryByID(id int) error {
 
 func BatchAddInventory(inventories []types.BatchAddInventory) (string, int, int, int) {
 	totalLen := len(inventories)
-	errorLen := 0
 	errorMsg := ""
-	var inventoryManagementList []types.InventoryManagement
+	successLen := 0
+	invLen := int(math.Ceil(float64(totalLen) / 500))
+	for i := 0; i < invLen; i++ {
+		end := i*500 + 500
+		if end > len(inventories) {
+			end = len(inventories)
+		}
+		insert := inventories[i*500 : end]
+		msg, sLen := batchAddInventory(insert)
+		errorMsg += msg
+		successLen += sLen
+	}
+	return errorMsg, totalLen, successLen, totalLen - successLen
+}
+
+func batchAddInventory(inventories []types.BatchAddInventory) (string, int) {
+	successLen := 0
+	errorMsg := ""
+	var inventoryManagementList, invCreateList []types.InventoryManagement
 	var invNames []string
 	var addList []struct {
 		inv            types.InventoryManagement
@@ -215,7 +241,6 @@ func BatchAddInventory(inventories []types.BatchAddInventory) (string, int, int,
 			inv.MinPackages = 1
 		}
 		if msg != "" {
-			errorLen++
 			errorMsg += msg
 			continue
 		}
@@ -229,22 +254,26 @@ func BatchAddInventory(inventories []types.BatchAddInventory) (string, int, int,
 			goodsTypesName string
 			unitName       string
 		}{types.InventoryManagement{
-			Name:         inv.Name,
-			SupplierID:   -1,
-			GoodsTypesID: -1,
-			UnitID:       -1,
-			CostPrice:    inv.CostPrice.String(),
-			SellingPrice: inv.SellingPrice.String(),
-			GuidePrice:   inv.GuidePrice.String(),
-			Inventory:    inv.Inventory,
-			MinPackages:  inv.MinPackages,
+			Name:              inv.Name,
+			SupplierID:        -1,
+			GoodsTypesID:      -1,
+			UnitID:            -1,
+			Pinyin:            lib.Pinyin(inv.Name),
+			CostPrice:         inv.CostPrice.String(),
+			AverageCostPrice:  inv.CostPrice.String(),
+			SellingPrice:      inv.SellingPrice.String(),
+			GuidePrice:        inv.GuidePrice.String(),
+			Inventory:         inv.Inventory,
+			MinPackages:       inv.MinPackages,
+			LatestStorageTime: time.Now(),
 		}, inv.SupplierName, inv.GoodsTypesName, inv.UnitName})
 	}
 	DB.Where("name IN ?", supplierNames).Find(&findSuppliers)
 	DB.Where("name IN ?", goodsTypesNames).Find(&findGoodsTypes)
 	DB.Where("name IN ?", unitNames).Find(&findUnites)
 	DB.Where("name IN ?", invNames).Find(&inventoryManagementList)
-	for _, item := range addList {
+	for i, _ := range addList {
+		item := addList[i]
 		for _, s := range findSuppliers {
 			if s.Name == item.supplierName {
 				item.inv.SupplierID = int(s.ID)
@@ -263,8 +292,50 @@ func BatchAddInventory(inventories []types.BatchAddInventory) (string, int, int,
 				break
 			}
 		}
-		inventoryManagementList = append(inventoryManagementList, item.inv)
+		var current *types.InventoryManagement
+		for i, inv := range inventoryManagementList {
+			if inv.Name == item.inv.Name {
+				current = &inventoryManagementList[i]
+				break
+			}
+		}
+		if current == nil {
+			invCreateList = append(invCreateList, item.inv)
+		} else {
+			costPrice := current.CostPrice + "," + item.inv.CostPrice
+			costPrices := strings.Split(costPrice, ",")
+			initCostPrice := decimal.NewFromInt(0)
+			for _, str := range costPrices {
+				currentNum, _ := decimal.NewFromString(str)
+				initCostPrice = initCostPrice.Add(currentNum)
+			}
+			item.inv.AverageCostPrice = initCostPrice.Div(decimal.NewFromInt(int64(len(costPrices)))).Round(2).String()
+			item.inv.CostPrice = costPrice
+			if err := mergo.Merge(current, item.inv, mergo.WithOverride); err != nil {
+				fmt.Println("合并失败：", err)
+			} else {
+				successLen++
+			}
+		}
 	}
 	DB.Save(&inventoryManagementList)
-	return errorMsg, totalLen, totalLen - errorLen, errorLen
+	if len(invCreateList) != 0 {
+		invLen := int(math.Ceil(float64(len(invCreateList)) / 500))
+		for i := 0; i < invLen; i++ {
+			end := i*500 + 500
+			if end > len(invCreateList) {
+				end = len(invCreateList)
+			}
+			insert := invCreateList[i*500 : end]
+			res := DB.Create(&insert)
+			if res.Error != nil {
+				errorMsg += "批量新增错误：" + res.Error.Error() + ";"
+			} else {
+				successLen += end - i*500
+			}
+		}
+	}
+
+	fmt.Println("查找长度", len(inventoryManagementList))
+	return errorMsg, successLen
 }

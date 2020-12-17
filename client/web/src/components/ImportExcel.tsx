@@ -17,6 +17,7 @@ interface iProps extends WithTranslation {
 interface iState {
   spinLoading: boolean;
   visible: boolean;
+  spinTip: string;
   current: number;
   percent: number;
   fileList: any[];
@@ -28,12 +29,16 @@ class ImportExcel extends React.Component<iProps, iState> {
   state = {
     spinLoading: false,
     visible: false,
+    spinTip: "",
     current: 0,
     percent: 0,
     fileList: [],
     formatList: [],
   };
   async handleOk() {
+    this.setState({
+      spinTip: this.props.t("plsWait"),
+    });
     if (this.props.onOk) {
       await this.props.onOk(this.state.formatList.flat(2));
     }
@@ -50,6 +55,7 @@ class ImportExcel extends React.Component<iProps, iState> {
       spinLoading: false,
       visible: false,
       current: 0,
+      spinTip: "",
       percent: 0,
       fileList: [],
       formatList: [],
@@ -91,10 +97,10 @@ class ImportExcel extends React.Component<iProps, iState> {
             resolve([]);
           }
         };
+        this.setState({
+          percent: Number((((i + 1) / len) * 100).toFixed(2)),
+        });
         fileReader.readAsBinaryString(file);
-      });
-      this.setState({
-        percent: Number((((i + 1) / len) * 100).toFixed(2)),
       });
       formatList.push(workbook);
     }
@@ -123,7 +129,7 @@ class ImportExcel extends React.Component<iProps, iState> {
     }
   }
   render() {
-    const { visible, percent, spinLoading, formatList } = this.state;
+    const { visible, percent, spinLoading, formatList, spinTip } = this.state;
     const { title, t, accept, loading } = this.props;
     return (
       <Modal
@@ -133,7 +139,10 @@ class ImportExcel extends React.Component<iProps, iState> {
         onCancel={this.handleCancel.bind(this, false)}
         confirmLoading={loading}
       >
-        <Spin tip={percent + "%"} spinning={spinLoading}>
+        <Spin
+          tip={loading ? spinTip : percent + "%"}
+          spinning={loading ? loading : spinLoading}
+        >
           {formatList.length ? (
             <Result
               status="success"
@@ -149,7 +158,7 @@ class ImportExcel extends React.Component<iProps, iState> {
                   danger={true}
                   onClick={this.handleClear.bind(this)}
                 >
-                  {t("clear")}
+                  {t("reselect")}
                 </Button>
               }
             />

@@ -118,5 +118,6 @@
   "upload": "上传",
   "reselect": "重新选择",
   "inventoryTemplateFilename": "库存模板.xlsx",
-  "downloadTemplate": "模板下载"
+  "downloadTemplate": "模板下载",
+  "plsWait": "请稍后"
 }

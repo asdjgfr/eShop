@@ -6,7 +6,7 @@ import {
   deleteInventoryByID,
 } from "@/api/inventoryManagement";
 import { iPagination } from "@/lib/types";
-import { formatTime } from "@/lib/pubfn";
+import { formatTime, syncSetState } from "@/lib/pubfn";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 interface iProps extends WithTranslation {
   onRef: (ref: any) => void;
@@ -33,6 +33,7 @@ interface iList {
 }
 interface iState {
   loading: boolean;
+  total: number;
   list: iList[];
   pagination: iPagination;
 }
@@ -43,11 +44,11 @@ let delCancel = () => {};
 class InventoryManagementList extends React.Component<iProps, iState> {
   state: iState = {
     loading: true,
+    total: 0,
     list: [],
     pagination: {
       current: 1,
       pageSize: 10,
-      total: 0,
     },
   };
   async getList() {
@@ -61,9 +62,11 @@ class InventoryManagementList extends React.Component<iProps, iState> {
     });
     cancel = gil.cancel;
     const res = await gil.data;
+    const startIndex =
+      (this.state.pagination.current - 1) * this.state.pagination.pageSize;
     const inventories = res.inventories.map((item: iList, i: number) => ({
       ...item,
-      index: i + 1,
+      index: startIndex + i + 1,
       key: item.id,
       latestStorageTime: formatTime(item.latestStorageTime),
       latestTime: formatTime(item.latestTime),
@@ -71,6 +74,7 @@ class InventoryManagementList extends React.Component<iProps, iState> {
     this.setState({
       loading: false,
       list: inventories,
+      total: res.total,
     });
   }
   async handleDelete(item: iList) {
@@ -95,13 +99,19 @@ class InventoryManagementList extends React.Component<iProps, iState> {
       },
     });
   }
+  async handleChangePage(page: number, pageSize?: number | undefined) {
+    await syncSetState.call(this, {
+      pagination: { current: page, pageSize },
+    });
+    await this.getList();
+  }
   componentDidMount() {
     this.props.onRef(this);
     this.getList();
   }
   render() {
     const { t } = this.props;
-    const { loading, list } = this.state;
+    const { loading, list, pagination, total } = this.state;
     return (
       <Table
         loading={loading}
@@ -215,6 +225,11 @@ class InventoryManagementList extends React.Component<iProps, iState> {
           ),
         }}
         dataSource={list}
+        pagination={{
+          ...pagination,
+          total,
+          onChange: this.handleChangePage.bind(this),
+        }}
       />
     );
   }

@@ -6,6 +6,7 @@ require (
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-delve/delve v1.5.0 // indirect
 	github.com/go-redis/redis/v8 v8.3.2
+	github.com/imdario/mergo v0.3.11
 	github.com/mozillazg/go-pinyin v0.18.0
 	github.com/mssola/user_agent v0.5.2
 	github.com/satori/go.uuid v1.2.0
