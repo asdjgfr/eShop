@@ -42,7 +42,7 @@ class AuthRoutes extends React.Component<iProps, iState> {
   async authUser() {
     const needAuth = this.matchRouter(mainRoutes, history.location.pathname);
     if (needAuth) {
-      const tip = this.props.t("authing");
+      const tip = this.props.t("authing")?.toString() ?? "";
       this.props.globalConfig?.setLoadingTip(tip);
       await syncSetState.call(this, {
         needAuth,

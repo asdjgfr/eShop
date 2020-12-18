@@ -1,64 +1,61 @@
 import React from "react";
-import { Select, Spin, Empty, Form, Row, Col, Input, Button } from "antd";
+import { DatePicker, Form, Row, Col, Input, Button } from "antd";
 import { withTranslation, WithTranslation } from "react-i18next";
-import GoodsName from "@/components/goods/GoodsName";
+import Supplier from "@/components/goods/Supplier";
 
 interface iProps extends WithTranslation {
   parentRef: any;
 }
 interface iState {}
+
+const { RangePicker } = DatePicker;
 class InvFilter extends React.Component<iProps, iState> {
   state: iState = {};
   async handleSearch() {
     console.log();
     await this.props.parentRef.list?.getList();
   }
-  changeData(data: { id: number; name: string }, type: string, item: any) {
+  changeData(
+    data: { id: number | undefined; name: string },
+    type: string,
+    item?: any
+  ) {
     console.log(data, type, item);
-  }
-  changeForm(item: any) {
-    console.log(item);
   }
   render() {
     const { t } = this.props;
     return (
-      <Form
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 14 }}
-        onChange={this.changeForm}
-      >
+      <Form labelCol={{ span: 8 }} wrapperCol={{ span: 14 }}>
         <Row gutter={24}>
           <Col span={6}>
-            <Form.Item label={t("goodsID")}>
-              <Input placeholder={t("plsEnter") + t("goodsID")} />
-            </Form.Item>
-          </Col>
-          <Col span={6}>
-            <Form.Item label={t("goodsName")}>
-              <GoodsName
-                onChangeGoodsName={this.changeData.bind(this)}
-                canCreated={false}
-              />
+            <Form.Item label={t("goodsNameOrID")}>
+              <Input placeholder={`${t("plsEnter")}${t("goodsNameOrID")}`} />
             </Form.Item>
           </Col>
           <Col span={6}>
             <Form.Item label={t("supplier")}>
-              <Input placeholder={t("plsEnter") + t("supplier")} />
+              <Supplier
+                onChangeSupplier={this.changeData.bind(this)}
+                canCreated={true}
+              />
             </Form.Item>
           </Col>
-          <Col span={6}>
-            <Form.Item label={t("storageTime")}>
-              <Input placeholder={t("plsEnter") + t("storageTime")} />
+          <Col span={12}>
+            <Form.Item label={t("deliveryAndStorageTime")}>
+              <RangePicker
+                showTime={{ format: "HH:mm:ss" }}
+                format="YYYY-MM-DD HH:mm:ss"
+              />
             </Form.Item>
           </Col>
           <Col span={6}>
             <Form.Item label={t("deliveryTime")}>
-              <Input placeholder={t("plsEnter") + t("deliveryTime")} />
+              <Input placeholder={`${t("plsEnter")}${t("deliveryTime")}`} />
             </Form.Item>
           </Col>
           <Col span={6}>
             <Form.Item label={t("amountOfGoods")}>
-              <Input placeholder={t("plsEnter") + t("amountOfGoods")} />
+              <Input placeholder={`${t("plsEnter")}${t("amountOfGoods")}`} />
             </Form.Item>
           </Col>
           <Col span={24} style={{ textAlign: "center" }}>

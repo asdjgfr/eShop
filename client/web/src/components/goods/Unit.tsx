@@ -45,7 +45,7 @@ class Unit extends React.Component<iProps, iState> {
     let canCreated = [
       {
         id: -1,
-        name: t("add") + t("unit") + t("：") + query,
+        name: `${t("add")}${t("unit")}${t("：")}${query}`,
       },
     ];
     if (!this.props.canCreated || (!res.unit.length && query === "")) {
@@ -90,7 +90,7 @@ class Unit extends React.Component<iProps, iState> {
       <Form.Item name="unit" noStyle={true}>
         <Select
           loading={fetching}
-          placeholder={t("plsSearch") + t("unit")}
+          placeholder={`${t("plsSearch")?.toString()}${t("unit")?.toString()}`}
           notFoundContent={fetching ? <Spin size="small" /> : <Empty />}
           filterOption={false}
           onFocus={this.fetchUnit.bind(this, "")}

@@ -7,9 +7,10 @@ import { getSuppliers } from "@/api/supplies";
 interface iProps extends WithTranslation {
   onChangeSupplier: (
     data: { id: number | undefined; name: string },
-    type: string
+    type: string,
+    item?: any
   ) => void;
-  onRef: (ref: any) => void;
+  onRef?: (ref: any) => void;
   canCreated?: boolean;
 }
 interface iSupplier {
@@ -32,7 +33,9 @@ class Supplier extends React.Component<iProps, iState> {
     fetching: false,
   };
   componentDidMount() {
-    this.props.onRef(this);
+    if (this.props.onRef) {
+      this.props.onRef(this);
+    }
   }
   async fetchValue(query: string) {
     const { t } = this.props;
@@ -46,7 +49,7 @@ class Supplier extends React.Component<iProps, iState> {
     let canCreated = [
       {
         id: -1,
-        name: t("add") + t("supplier") + t("：") + query,
+        name: `${t("add")}${t("supplier")}${t("：")}${query}`,
       },
     ];
     if (!this.props.canCreated || (!res.supplies.length && query === "")) {
@@ -91,7 +94,7 @@ class Supplier extends React.Component<iProps, iState> {
       <Form.Item name="supplier" noStyle={true}>
         <Select
           loading={fetching}
-          placeholder={t("plsSearch") + t("supplier")}
+          placeholder={`${t("plsSearch")}${t("supplier")}`}
           notFoundContent={fetching ? <Spin size="small" /> : <Empty />}
           filterOption={false}
           onFocus={this.fetchSupplier.bind(this, "")}

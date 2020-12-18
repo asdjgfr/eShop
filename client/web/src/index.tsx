@@ -3,7 +3,9 @@ import ReactDOM from "react-dom";
 import "./index.less";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
+import dayjs from "dayjs";
 import "dayjs/locale/zh-cn";
+dayjs.locale("zh-cn");
 
 ReactDOM.render(<App />, document.getElementById("root"));
 

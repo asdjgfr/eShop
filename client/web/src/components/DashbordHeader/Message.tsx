@@ -99,7 +99,7 @@ class Message extends React.Component<iProps, iState> {
         <Drawer
           title={
             <div className="layout-message-header">
-              <span>{t("message") + t("list")}</span>
+              <span>{`${t("message")}${t("list")}`}</span>
               <Link to="/dashboard/center?activeKey=allMessages">
                 {t("allMessages")}
               </Link>

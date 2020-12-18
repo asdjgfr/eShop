@@ -4,10 +4,13 @@ const {
   addLessLoader,
   addWebpackAlias,
   disableEsLint,
+  addWebpackPlugin,
 } = require("customize-cra");
+const AntdDayjsWebpackPlugin = require("antd-dayjs-webpack-plugin");
 
 module.exports = {
   webpack: override(
+    addWebpackPlugin(new AntdDayjsWebpackPlugin()),
     addLessLoader({
       lessOptions: {
         javascriptEnabled: true,

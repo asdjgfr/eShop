@@ -6,11 +6,13 @@ import { getInventoryByName } from "@/api/inventoryManagement";
 
 interface iProps extends WithTranslation {
   onChangeGoodsName: (
-    data: { id: number; name: string },
+    data: { id: number | undefined; name: string },
     type: string,
     item: any
   ) => void;
   canCreated?: boolean;
+  nameType?: "id" | "name";
+  name?: "id" | "name";
 }
 interface iGoodsName {
   id: number;
@@ -75,9 +77,9 @@ class GoodsName extends React.Component<iProps, iState> {
   }
   render() {
     const { fetching, data } = this.state;
-    const { t } = this.props;
+    const { t, nameType, name } = this.props;
     return (
-      <Form.Item name="name" noStyle={true}>
+      <Form.Item name={name === "id" ? "id" : "name"} noStyle={true}>
         <Select
           loading={fetching}
           placeholder={t("searchOrCreateInventory")}
@@ -89,8 +91,13 @@ class GoodsName extends React.Component<iProps, iState> {
           onChange={this.handleChange.bind(this)}
         >
           {data.map((d: iGoodsName) => (
-            <Option key={d.id} value={d.id} name={d.name} item={d}>
-              {d.name}
+            <Option
+              key={d.id}
+              value={d.id}
+              name={nameType === "id" ? d.id : d.name}
+              item={d}
+            >
+              {nameType === "id" ? d.id : d.name}
             </Option>
           ))}
         </Select>

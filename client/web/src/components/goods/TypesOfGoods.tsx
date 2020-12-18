@@ -45,7 +45,7 @@ class TypesOfGoods extends React.Component<iProps, iState> {
     let canCreated = [
       {
         id: -1,
-        name: t("add") + t("goodsTypes") + t("：") + query,
+        name: `${t("add")}${t("goodsTypes")}${t("：")}${query}`,
       },
     ];
     if (!this.props.canCreated || (!res.goodsTypes.length && query === "")) {
@@ -90,7 +90,9 @@ class TypesOfGoods extends React.Component<iProps, iState> {
       <Form.Item name="goodsTypes" noStyle={true}>
         <Select
           loading={fetching}
-          placeholder={t("plsSearch") + t("goodsTypes")}
+          placeholder={`${t("plsSearch")?.toString()}${t(
+            "goodsTypes"
+          )?.toString()}`}
           notFoundContent={fetching ? <Spin size="small" /> : <Empty />}
           filterOption={false}
           onFocus={this.fetchGoodsType.bind(this, "")}

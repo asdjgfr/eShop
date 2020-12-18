@@ -52,23 +52,16 @@ class User extends React.Component<iProps, iState> {
         icon: <ExclamationCircleOutlined />,
         okType: "danger",
         onOk() {
+          const { t } = this.props;
           return new Promise(async (resolve) => {
             signOut()
               .data.then((res) => {
                 if (res.code === 200) {
-                  message.success(
-                    that.props.t("signOut") +
-                      that.props.t("success") +
-                      that.props.t("!")
-                  );
+                  message.success(`${t("signOut")}${t("success")}${t("!")}`);
                   localStorage.removeItem("autoSignIn");
                   history.replace("/");
                 } else {
-                  message.error(
-                    that.props.t("signOut") +
-                      that.props.t("fail") +
-                      that.props.t("!")
-                  );
+                  message.error(`${t("signOut")}${t("fail")}${t("!")}`);
                 }
                 resolve(res);
               })

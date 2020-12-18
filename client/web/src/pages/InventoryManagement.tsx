@@ -107,8 +107,8 @@ class InventoryManagement extends React.Component<iProps, iState> {
         />
         <ImportExcel
           visible={importVisible}
-          title={t("batchImportInventory")}
-          buttonText={t("batchImportInventory")}
+          title={t("batchImportInventory")?.toString() ?? ""}
+          buttonText={t("batchImportInventory")?.toString() ?? ""}
           accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
           onCancel={this.handleCloseImportExcel.bind(this)}
           onOk={this.handleBatchAddGoods.bind(this)}

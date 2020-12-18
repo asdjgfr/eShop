@@ -148,17 +148,17 @@ class InventoryManagementList extends React.Component<iProps, iState> {
             key: "inventory",
           },
           {
-            title: t("averageCostPrice") + t("monetaryUnit"),
+            title: `${t("averageCostPrice")}${t("monetaryUnit")}`,
             dataIndex: "averageCostPrice",
             key: "averageCostPrice",
           },
           {
-            title: t("totalCost") + t("monetaryUnit"),
+            title: `${t("totalCost")}${t("monetaryUnit")}`,
             dataIndex: "totalCost",
             key: "totalCost",
           },
           {
-            title: t("sellingPrice") + t("monetaryUnit"),
+            title: `${t("sellingPrice")}${t("monetaryUnit")}`,
             dataIndex: "sellingPrice",
             key: "sellingPrice",
           },
@@ -217,10 +217,9 @@ class InventoryManagementList extends React.Component<iProps, iState> {
         expandable={{
           expandedRowRender: (record) => (
             <>
-              {t("historyCostPrices") +
-                t("monetaryUnit") +
-                t("：") +
-                record.costPrices.join("，")}
+              {`${t("historyCostPrices")}${t("monetaryUnit")}${t(
+                "："
+              )}${record.costPrices.join("，")}`}
             </>
           ),
         }}

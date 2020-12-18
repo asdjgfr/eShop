@@ -82,7 +82,7 @@ class SignIn extends React.Component<iProps, iState> {
               >
                 <Input
                   prefix={<UserOutlined className="site-form-item-icon" />}
-                  placeholder={t("plsEnter") + t("username")}
+                  placeholder={`${t("plsEnter")}${t("username")}`}
                 />
               </Form.Item>
               <Form.Item
@@ -92,16 +92,16 @@ class SignIn extends React.Component<iProps, iState> {
                 <Input
                   prefix={<LockOutlined className="site-form-item-icon" />}
                   type="password"
-                  placeholder={t("plsEnter") + t("password")}
+                  placeholder={`${t("plsEnter")}${t("password")}`}
                 />
               </Form.Item>
               <Form.Item>
                 <div className="justify-between">
                   <Form.Item name="autoSignin" valuePropName="checked">
-                    <Checkbox>{t("auto") + t("signIn")}</Checkbox>
+                    <Checkbox>{`${t("auto")}${t("signIn")}`}</Checkbox>
                   </Form.Item>
                   <Link to="/user/forget-password">
-                    {t("forget") + t("password")}
+                    {`${t("forget")}${t("password")}`}
                   </Link>
                 </div>
               </Form.Item>
@@ -121,7 +121,7 @@ class SignIn extends React.Component<iProps, iState> {
                     {t("otherSignInMethods")}
                     <WechatOutlined
                       className="margin-l-r-8 click-item"
-                      title={t("wechat")}
+                      title={t("wechat")?.toString() ?? ""}
                     />
                   </span>
                   <Link to="/user/signUp">{t("signUp")}</Link>

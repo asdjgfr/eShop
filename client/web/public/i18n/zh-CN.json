@@ -75,6 +75,7 @@
   "supplier": "供货商",
   "storageTime": "入库时间",
   "deliveryTime": "出库时间",
+  "deliveryAndStorageTime": "出入库时间",
   "goodsTypes": "商品种类",
   "amountOfGoods": "商品数量",
   "search": "搜索",
@@ -119,5 +120,6 @@
   "reselect": "重新选择",
   "inventoryTemplateFilename": "库存模板.xlsx",
   "downloadTemplate": "模板下载",
-  "plsWait": "请稍后"
+  "plsWait": "请稍后",
+  "goodsNameOrID": "商品名称或ID"
 }

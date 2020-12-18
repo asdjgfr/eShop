@@ -37,7 +37,7 @@ class ImportExcel extends React.Component<iProps, iState> {
   };
   async handleOk() {
     this.setState({
-      spinTip: this.props.t("plsWait"),
+      spinTip: this.props.t("plsWait")?.toString() ?? "",
     });
     if (this.props.onOk) {
       await this.props.onOk(this.state.formatList.flat(2));
