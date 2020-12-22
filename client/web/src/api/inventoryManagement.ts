@@ -39,3 +39,7 @@ export const deleteInventoryByID = function (id: number) {
 export const batchAddInventory = function (data: IInventoryData[]) {
   return post("/api/batch-add-inventory", data, {}, "json");
 };
+
+export const searchInventoryList = function (data: any) {
+  return post("/api/search-inventory-list", data);
+};

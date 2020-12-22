@@ -16,13 +16,13 @@ try {
 }
 
 const actions = {
-  install() {
+  async install() {
     // 安装桌面的依赖
-    const install = spawn("yarn", [], {
+    const installWeb = spawn("yarn", [], {
       cwd: path.resolve(__dirname, "client/web"),
       shell: true,
     });
-    spawnCB(install, "web依赖");
+    await spawnCB(installWeb, "web依赖");
   },
 
   "dev:web"() {

@@ -121,5 +121,6 @@
   "inventoryTemplateFilename": "库存模板.xlsx",
   "downloadTemplate": "模板下载",
   "plsWait": "请稍后",
-  "goodsNameOrID": "商品名称或ID"
+  "goodsNameOrID": "商品名称或ID",
+  "minMaxAmountOfGoods": "商品个数最小值，不填为0。\n商品个数最大值，不填为无限大。"
 }

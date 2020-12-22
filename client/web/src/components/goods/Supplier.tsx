@@ -5,7 +5,7 @@ import debounce from "lodash/debounce";
 import { getSuppliers } from "@/api/supplies";
 
 interface iProps extends WithTranslation {
-  onChangeSupplier: (
+  onChangeSupplier?: (
     data: { id: number | undefined; name: string },
     type: string,
     item?: any
@@ -70,22 +70,26 @@ class Supplier extends React.Component<iProps, iState> {
     formRef.setFieldsValue({
       supplier: id,
     });
-    this.props.onChangeSupplier(
-      {
-        id,
-        name: id === -1 ? this.state.enterValue : "",
-      },
-      "supplier"
-    );
+    if (this.props.onChangeSupplier) {
+      this.props.onChangeSupplier(
+        {
+          id,
+          name: id === -1 ? this.state.enterValue : "",
+        },
+        "supplier"
+      );
+    }
   }
   handleChange(id: number, item: any) {
-    this.props.onChangeSupplier(
-      {
-        id,
-        name: id === -1 ? this.state.enterValue : item.name,
-      },
-      "supplier"
-    );
+    if (this.props.onChangeSupplier) {
+      this.props.onChangeSupplier(
+        {
+          id,
+          name: id === -1 ? this.state.enterValue : item.name,
+        },
+        "supplier"
+      );
+    }
   }
   render() {
     const { fetching, data } = this.state;
