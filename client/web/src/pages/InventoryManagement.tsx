@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Input, Button, Row, Col, Divider, Menu, Dropdown } from "antd";
+import { Divider, Menu, Dropdown } from "antd";
 import { withTranslation, WithTranslation } from "react-i18next";
 import AddGoods from "@/components/goods/addGoods";
 import InventoryManagementList from "@/components/goods/InventoryManagementList";
@@ -25,6 +25,7 @@ class InventoryManagement extends React.Component<iProps, iState> {
   };
   $refs: any = {
     list: undefined,
+    invFilter: undefined,
   };
   handleMenuClick(item: any) {
     switch (item.key) {
@@ -70,7 +71,12 @@ class InventoryManagement extends React.Component<iProps, iState> {
     const { importVisible, addVisible, importLoading } = this.state;
     return (
       <>
-        <InvFilter parentRef={this.$refs} />
+        <InvFilter
+          parentRef={this.$refs}
+          onRef={(ref: any) => {
+            this.$refs.invFilter = ref;
+          }}
+        />
         <Divider />
         <div>
           <Dropdown.Button
@@ -96,6 +102,7 @@ class InventoryManagement extends React.Component<iProps, iState> {
           </Dropdown.Button>
         </div>
         <InventoryManagementList
+          parentRef={this.$refs}
           onRef={(ref: any) => {
             this.$refs.list = ref;
           }}

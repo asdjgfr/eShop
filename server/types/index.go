@@ -122,7 +122,7 @@ type (
 		Inventory         int64     `json:"inventory"`
 		UpdatedAt         time.Time `json:"updatedAt"`
 		LatestStorageTime time.Time `json:"latestStorageTime"`
-		LatestTime        string    `json:"latestTime"`
+		LatestTime        time.Time `json:"latestTime"`
 	}
 	BatchAddInventory struct {
 		Name           string      `json:"商品名称"`
@@ -135,5 +135,14 @@ type (
 		GuidePrice     json.Number `json:"指导价"`
 		UnitName       string      `json:"单位"`
 		MinPackages    int64       `json:"最小包装数"`
+	}
+	InvFilter struct {
+		Page                   int    `json:"page"`
+		PageSize               int    `json:"pageSize"`
+		GoodsNameOrID          string `json:"goodsNameOrID"`
+		MaxAmountOfGoods       int    `json:"maxAmountOfGoods"`
+		MinAmountOfGoods       int    `json:"minAmountOfGoods"`
+		Supplier               int    `json:"supplier"`
+		DeliveryAndStorageTime []int  `json:"deliveryAndStorageTime"`
 	}
 )

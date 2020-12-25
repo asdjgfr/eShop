@@ -3,10 +3,10 @@ import { DatePicker, Form, Row, Col, Input, Button, InputNumber } from "antd";
 import { FormInstance } from "antd/lib/form";
 import { withTranslation, WithTranslation } from "react-i18next";
 import Supplier from "@/components/goods/Supplier";
-import { searchInventoryList } from "@/api/inventoryManagement";
 
 interface iProps extends WithTranslation {
   parentRef: any;
+  onRef: (ref: any) => void;
 }
 interface iState {
   minAmountOfGoods: number;
@@ -14,19 +14,17 @@ interface iState {
 }
 
 const { RangePicker } = DatePicker;
-let cancel = () => {};
+
 class InvFilter extends React.Component<iProps, iState> {
   formRef = React.createRef<FormInstance>();
   state: iState = {
     minAmountOfGoods: 0,
     loading: false,
   };
+  componentDidMount() {
+    this.props.onRef(this);
+  }
   async handleSearch() {
-    cancel();
-    const sil = searchInventoryList(this.formRef.current?.getFieldsValue());
-    cancel = sil.cancel;
-    const res = await sil.data;
-    console.log(res);
     await this.refreshList();
   }
   async handleReset() {
@@ -41,7 +39,8 @@ class InvFilter extends React.Component<iProps, iState> {
   changeForm(current: any) {
     if (!isNaN(current.minAmountOfGoods)) {
       this.setState({
-        minAmountOfGoods: current.minAmountOfGoods,
+        minAmountOfGoods:
+          current.minAmountOfGoods === 0 ? 1 : current.minAmountOfGoods,
       });
     }
   }

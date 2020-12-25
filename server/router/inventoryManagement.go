@@ -1,6 +1,7 @@
 package router
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/shopspring/decimal"
 	"myModule/db"
@@ -86,17 +87,18 @@ func getInventoryByName(r *gin.RouterGroup) {
 func getInventoryList(r *gin.RouterGroup) {
 	r.POST(Address["getInventoryList"], func(c *gin.Context) {
 		msg := "获取库存列表成功！"
-		fePage := c.Request.PostFormValue("page")
-		fePageSize := c.Request.PostFormValue("pageSize")
-		page := 1
-		pageSize := 10
-		if fePage != "" {
-			page, _ = strconv.Atoi(fePage)
-		}
-		if fePageSize != "" {
-			pageSize, _ = strconv.Atoi(fePageSize)
-		}
-		inventories, total, err := db.GetInventoryList(pageSize, (page-1)*pageSize)
+		var json types.InvFilter
+		_ = c.ShouldBindJSON(&json)
+
+		fmt.Println("Page", json.Page)
+		fmt.Println("PageSize", json.PageSize)
+		fmt.Println("Supplier", json.Supplier)
+		fmt.Println("GoodsNameOrID", json.GoodsNameOrID)
+		fmt.Println("MaxAmountOfGoods", json.MaxAmountOfGoods)
+		fmt.Println("MinAmountOfGoods", json.MinAmountOfGoods)
+		fmt.Println("DeliveryAndStorageTime", json.DeliveryAndStorageTime)
+
+		inventories, total, err := db.GetInventoryList(json)
 		if err != nil {
 			msg = "获取库存列表失败：" + err.Error()
 		}

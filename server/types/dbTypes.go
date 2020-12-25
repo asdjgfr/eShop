@@ -108,5 +108,5 @@ type InventoryManagement struct {
 	UnitID            int       `gorm:"comment:单位ID"`
 	Remarks           string    `gorm:"comment:注释"`
 	LatestStorageTime time.Time `gorm:"comment:最新入库时间"`
-	LatestTime        string    `gorm:"comment:最新出库时间"`
+	LatestTime        time.Time `gorm:"comment:最新出库时间"`
 }

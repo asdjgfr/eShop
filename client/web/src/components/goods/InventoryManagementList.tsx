@@ -8,7 +8,10 @@ import {
 import { iPagination } from "@/lib/types";
 import { formatTime, syncSetState } from "@/lib/pubfn";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
+import dayjs from "dayjs";
+
 interface iProps extends WithTranslation {
+  parentRef: any;
   onRef: (ref: any) => void;
 }
 interface iList {
@@ -52,6 +55,8 @@ class InventoryManagementList extends React.Component<iProps, iState> {
     },
   };
   async getList() {
+    const props =
+      this.props.parentRef?.invFilter?.formRef.current?.getFieldsValue() ?? {};
     cancel();
     this.setState({
       loading: true,
@@ -59,6 +64,13 @@ class InventoryManagementList extends React.Component<iProps, iState> {
     const gil = getInventoryList({
       page: this.state.pagination.current,
       pageSize: this.state.pagination.pageSize,
+      deliveryAndStorageTime: (
+        props.deliveryAndStorageTime ?? []
+      ).map((d: typeof dayjs) => d.valueOf()),
+      goodsNameOrID: props.goodsNameOrID ?? "",
+      maxAmountOfGoods: props.maxAmountOfGoods ?? Infinity,
+      minAmountOfGoods: props.minAmountOfGoods ?? 0,
+      supplier: props.supplier ?? -1,
     });
     cancel = gil.cancel;
     const res = await gil.data;

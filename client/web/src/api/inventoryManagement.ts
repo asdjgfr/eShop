@@ -28,8 +28,14 @@ export const getInventoryByName = function (query: string) {
 export const getInventoryList = function (data: {
   page: number;
   pageSize: number;
+  deliveryAndStorageTime: Array<number>;
+  goodsNameOrID: string;
+  maxAmountOfGoods: number;
+  minAmountOfGoods: number;
+  supplier: number;
 }) {
-  return post("/api/get-inventory-list", data);
+  console.log(666, data);
+  return post("/api/get-inventory-list", data, {}, "json");
 };
 
 export const deleteInventoryByID = function (id: number) {
@@ -38,8 +44,4 @@ export const deleteInventoryByID = function (id: number) {
 
 export const batchAddInventory = function (data: IInventoryData[]) {
   return post("/api/batch-add-inventory", data, {}, "json");
-};
-
-export const searchInventoryList = function (data: any) {
-  return post("/api/search-inventory-list", data);
 };

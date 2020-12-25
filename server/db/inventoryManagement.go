@@ -80,7 +80,6 @@ func AddInventory(inventoryName, supplierName, goodsTypesName, unitName, costPri
 			GoodsTypesID:      goodsTypesID,
 			UnitID:            unitID,
 			LatestStorageTime: time.Now(),
-			LatestTime:        "",
 		}
 		res = DB.Create(&newInventory)
 	} else if res.RowsAffected == 1 {
@@ -143,13 +142,20 @@ func GetInventoryByName(query string) ([]types.InventoryNameRes, error) {
 	return res, dbFind.Error
 }
 
-func GetInventoryList(limit, offset int) ([]types.InventoryNameRes, int64, error) {
+func GetInventoryList(filters types.InvFilter) ([]types.InventoryNameRes, int64, error) {
 	var im []types.InventoryManagement
 	var imRes []types.InventoryNameRes
 	var count int64
 	var err error
 	DB.Model(&types.InventoryManagement{}).Count(&count)
-	res := DB.Limit(limit).Offset(offset).Find(&im)
+	res := DB.Where("id LIKE ?", "%"+filters.GoodsNameOrID+"%").
+		Or("name LIKE ?", "%"+filters.GoodsNameOrID+"%").
+		Where("inventory >= ? AND inventory <= ?", filters.MinAmountOfGoods, filters.MaxAmountOfGoods).
+		Where("supplierID = ?", filters.Supplier).
+		//Where("latestStorageTime >= ? AND latestStorageTime <= ?", time.Unix(int64(filters.DeliveryAndStorageTime[0]), 0), time.Unix(int64(filters.DeliveryAndStorageTime[1]), 0)).
+		Limit(filters.Page).
+		Offset((filters.Page - 1) * filters.PageSize).
+		Find(&im)
 	if res.Error != nil {
 		err = errors.New("获取库存列表失败：" + res.Error.Error())
 	}
