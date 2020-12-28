@@ -3,7 +3,7 @@
   "compilerOptions": {
     "sourceMap": true,
     "lib": ["es2019", "es2020.string", "dom"],
-    "outDir": "./dist/",
+    "outDir": "../build/server",
     "noImplicitAny": true,
     "module": "CommonJS",
     "target": "es2019",

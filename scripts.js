@@ -2,17 +2,19 @@ const action = process.argv[2];
 const { spawn } = require("child_process");
 const path = require("path");
 const fs = require("fs");
-const os = require("os");
 
 const buildPath = path.join(__dirname, "build");
-
-const isWin = os.platform() === "win32";
-const programName = isWin ? "main.exe" : "main";
 
 try {
   fs.accessSync(buildPath, fs.constants.F_OK);
 } catch (error) {
   fs.mkdirSync(buildPath);
+}
+
+try {
+  fs.accessSync(path.join(buildPath, "server"), fs.constants.F_OK);
+} catch (error) {
+  fs.mkdirSync(path.join(buildPath, "server"));
 }
 
 const actions = {
@@ -36,31 +38,22 @@ const actions = {
     // 服务端打包
     const cwd = path.resolve(__dirname, "server");
     try {
-      fs.unlinkSync(`${buildPath}/${programName}`);
+      fs.unlinkSync(server);
       console.log("移除上次打包文件成功！");
     } catch (e) {}
-    try {
-      fs.unlinkSync(`${buildPath}/config.json`);
-      console.log("移除上次配置文件成功！");
-    } catch (e) {}
-
     // 复制配置文件
     fs.copyFileSync(
-      path.join(cwd, "config.json"),
-      path.join(buildPath, "config.json")
+      path.join(cwd, "src", "config.json"),
+      path.join(buildPath, "server", "config.json")
     );
     console.log("复制配置文件成功！");
 
-    console.log("重新打包！");
-    const build = spawn(
-      "go",
-      ["build", "-o", `${buildPath}/${programName}`, "main.go"],
-      {
-        cwd,
-        shell: true,
-        env: process.env,
-      }
-    );
+    console.log("重新打包中！");
+    const build = spawn("tsc", {
+      cwd,
+      shell: true,
+      env: process.env,
+    });
     await spawnCB(build, "服务端打包");
   },
   async "build:web"() {
@@ -77,8 +70,8 @@ const actions = {
   },
   async "dev:server"() {
     await this["build:server"]();
-    const server = spawn(`${isWin ? "" : "./"}${programName}`, {
-      cwd: buildPath,
+    const server = spawn("node", ["app.js"], {
+      cwd: path.join(buildPath, "server"),
       shell: true,
     });
     await spawnCB(server, "后台服务");

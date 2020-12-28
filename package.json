@@ -11,7 +11,7 @@
     "build:web": "node scripts.js build:web",
     "dev:web": "node scripts.js dev:web",
     "dev:w": "yarn dev:web",
-    "dev:server": "nodemon -e go --watch ./server --inspect ./scripts.js dev:server",
+    "dev:server": "nodemon -e ts --inspect ./scripts.js dev:server",
     "dev:s": "yarn dev:server"
   },
   "devDependencies": {
@@ -19,11 +19,14 @@
     "prettier": "2.2.1"
   },
   "nodemonConfig": {
+    "watch": [
+      "server/src/"
+    ],
     "ignore": [
       "*.log",
-      "build/*",
+      "dev/*",
       "node_modules/*"
     ],
-    "delay": 2500
+    "delay": 3000
   }
 }
