@@ -1,1 +1,3 @@
-console.log("切换node");
+import { sqrt } from "mathjs";
+
+console.log(sqrt(-4).toString());
