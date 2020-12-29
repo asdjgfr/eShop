@@ -4,7 +4,7 @@ const path = require("path");
 const fs = require("fs");
 
 const buildPath = path.join(__dirname, "build");
-const serverDevPath = path.join(__dirname, "server", "dev");
+const serverPath = path.join(__dirname, "server");
 
 try {
   fs.accessSync(buildPath, fs.constants.F_OK);
@@ -31,53 +31,10 @@ const actions = {
   async "build:server"(isDev = false) {
     // 服务端打包
     const cwd = path.resolve(__dirname, "server");
-    try {
-      fs.accessSync(path.join(buildPath, "server"), fs.constants.F_OK);
-    } catch (error) {
-      fs.mkdirSync(path.join(buildPath, "server"));
-    }
-    try {
-      fs.accessSync(serverDevPath, fs.constants.F_OK);
-    } catch (error) {
-      fs.mkdirSync(serverDevPath);
-    }
-    try {
-      fs.unlinkSync(server);
-      console.log("移除上次打包文件成功！");
-    } catch (e) {}
-    // 复制配置文件
-    fs.copyFileSync(
-      path.join(cwd, "src", "config.json"),
-      isDev
-        ? path.join(serverDevPath, "config.json")
-        : path.join(buildPath, "server", "config.json")
-    );
-    console.log("复制配置文件成功！");
-    if (!isDev) {
-      fs.copyFileSync(
-        path.join(cwd, "package.json"),
-        path.join(buildPath, "server", "package.json")
-      );
-      console.log("复制package.json成功！");
-      fs.copyFileSync(
-        path.join(cwd, "yarn.lock"),
-        path.join(buildPath, "server", "yarn.lock")
-      );
-      console.log("复制yarn.lock成功！");
-    }
-    console.log("重新打包中！");
-    console.log(serverDevPath);
-    const build = isDev
-      ? spawn("tsc", [`--outDir ${serverDevPath}`], {
-          cwd,
-          shell: true,
-          env: process.env,
-        })
-      : spawn("tsc", {
-          cwd,
-          shell: true,
-          env: process.env,
-        });
+    const build = spawn("yarn", ["build"], {
+      cwd,
+      shell: true,
+    });
     await spawnCB(build, "服务端打包");
   },
   async "build:web"() {
@@ -93,9 +50,8 @@ const actions = {
     await this["build:web"]();
   },
   async "dev:server"() {
-    await this["build:server"](true);
-    const server = spawn("node", ["app.js"], {
-      cwd: serverDevPath,
+    const server = spawn("yarn", ["dev"], {
+      cwd: path.resolve(__dirname, "server"),
       shell: true,
     });
     await spawnCB(server, "后台服务");

@@ -1,22 +1,15 @@
 {
-  "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
     "sourceMap": true,
-    "lib": ["es2019", "es2020.string", "dom"],
-    "outDir": "../build/server",
-    "noImplicitAny": true,
-    "module": "CommonJS",
-    "target": "es2019",
-    "moduleResolution": "node",
-    "allowJs": false,
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
-  },
-  "rules": {
-    "no-console": false
-  },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "**/*.spec.ts"]
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true
+  }
 }

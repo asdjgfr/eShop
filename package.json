@@ -13,22 +13,8 @@
     "build:w": "yarn build:web",
     "dev:web": "node scripts.js dev:web",
     "dev:w": "yarn dev:web",
-    "dev:server": "nodemon -e ts --inspect ./scripts.js dev:server",
+    "dev:server": "node scripts.js dev:server",
     "dev:s": "yarn dev:server"
   },
-  "devDependencies": {
-    "nodemon": "^2.0.6",
-    "prettier": "2.2.1"
-  },
-  "nodemonConfig": {
-    "watch": [
-      "server/src/"
-    ],
-    "ignore": [
-      "*.log",
-      "dev/*",
-      "node_modules/*"
-    ],
-    "delay": 3000
-  }
+  "devDependencies": {}
 }
