@@ -1,16 +1,9 @@
 const action = process.argv[2];
 const { spawn } = require("child_process");
 const path = require("path");
-const fs = require("fs");
+const fs = require("fs-extra");
 
 const buildPath = path.join(__dirname, "build");
-const serverPath = path.join(__dirname, "server");
-
-try {
-  fs.accessSync(buildPath, fs.constants.F_OK);
-} catch (error) {
-  fs.mkdirSync(buildPath);
-}
 
 const actions = {
   async install() {
@@ -28,9 +21,10 @@ const actions = {
     });
     spawnCB(build, "web开发");
   },
-  async "build:server"(isDev = false) {
+  async "build:server"() {
     // 服务端打包
     const cwd = path.resolve(__dirname, "server");
+    fs.copySync(path.join(cwd, "config"), path.join(buildPath, "config"));
     const build = spawn("yarn", ["build"], {
       cwd,
       shell: true,

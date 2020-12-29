@@ -2,7 +2,9 @@
   "name": "car-maintenance-management",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {},
+  "dependencies": {
+    "fs-extra": "^9.0.1"
+  },
   "scripts": {
     "install": "node scripts.js install",
     "i": "yarn install",

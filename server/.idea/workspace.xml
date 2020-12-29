@@ -4,6 +4,7 @@
     <list default="true" id="eeb0ed32-24ae-44e0-a903-240cd3c32b8b" name="默认的" comment="">
       <change afterPath="$PROJECT_DIR$/.eslintrc.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/project.yml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/nest-cli.json" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/app.controller.spec.ts" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/app.controller.ts" afterDir="false" />
@@ -49,6 +50,11 @@
     <property name="ts.external.directory.path" value="E:\learn\carMaintenanceManagement\server\node_modules\typescript\lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\learn\carMaintenanceManagement\server" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="默认任务">
@@ -57,7 +63,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1609228270210</updated>
-      <workItem from="1609228275814" duration="3060000" />
+      <workItem from="1609228275814" duration="5825000" />
     </task>
     <servers />
   </component>
