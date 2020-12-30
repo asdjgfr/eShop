@@ -24,6 +24,14 @@ const actions = {
   async "build:server"() {
     // 服务端打包
     const cwd = path.resolve(__dirname, "server");
+    try {
+      fs.unlinkSync(cwd);
+    } catch (error) {}
+    fs.copySync(
+      path.join(cwd, "package.json"),
+      path.join(buildPath, "package.json")
+    );
+    fs.copySync(path.join(cwd, "yarn.lock"), path.join(buildPath, "yarn.lock"));
     fs.copySync(path.join(cwd, "config"), path.join(buildPath, "config"));
     const build = spawn("yarn", ["build"], {
       cwd,
