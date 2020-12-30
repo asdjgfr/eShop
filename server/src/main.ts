@@ -9,7 +9,7 @@ import * as YAML from "yaml";
 const projectConfig = YAML.parse(
   readFileSync(join(__dirname, "..", "config", "project.yml"), "utf8"),
 );
-
+console.log(123, projectConfig);
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   await app.listen(projectConfig.port);
