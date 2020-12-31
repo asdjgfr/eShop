@@ -3,6 +3,8 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from "@nestjs/platform-fastify";
+import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
+
 import { AppModule } from "./app.module";
 import { projectConfig } from "./common/untils/getConfig";
 
@@ -13,6 +15,17 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter(),
   );
+
+  // 注册文档
+  const options = new DocumentBuilder()
+    .setTitle("API 文档")
+    .setDescription("API 文档")
+    .setVersion("1.0")
+    .addTag("api")
+    .build();
+  const document = SwaggerModule.createDocument(app, options);
+  SwaggerModule.setup("api-doc", app, document);
+
   await app.listen(port);
 }
 
