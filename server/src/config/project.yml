@@ -1,9 +1,12 @@
 # 端口
 port: 5001
-#语言，默认为简体中文 语言文件在 src/i18n/ 文件夹中，配置文件夹中没有的会默认切换为简体中文
+# 语言，默认为简体中文 语言文件在 src/i18n/ 文件夹中，配置文件夹中没有的会默认切换为简体中文
 language: zh_cn
-
+# 店铺信息
 shopInfo:
-  name: XXX
-  suffix: XXX
+#  标题
+  title: XXX
+#  子标题
+  titleSuffix: XXX
+#  说明
   introduction: XXX

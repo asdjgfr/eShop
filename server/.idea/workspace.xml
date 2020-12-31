@@ -9,10 +9,15 @@
       <change afterPath="$PROJECT_DIR$/src/app.controller.ts" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/app.module.ts" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/app.service.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/common/untils/getConfig.ts" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/config/project.yml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/i18n/index.ts" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/i18n/languages/zh_cn.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/interfaces/shopInfo.interface.ts" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/modules/shopInfo/shopInfo.controller.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/modules/shopInfo/shopInfo.module.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/modules/shopInfo/shopInfo.service.ts" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/test/app.e2e-spec.ts" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/test/jest-e2e.json" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/tsconfig.build.json" afterDir="false" />
@@ -33,6 +38,11 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="NamedScopeManager">
+    <order>
+      <scope name="排除dist" />
+    </order>
+  </component>
   <component name="ProjectId" id="1mK35GrKcPziVXdUWWo0doVBDii" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -46,7 +56,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/modules/shopInfo" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -60,9 +70,12 @@
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\learn\carMaintenanceManagement\server\src\modules\shopInfo" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="E:\learn\carMaintenanceManagement\server\src\i18n\languages" />
       <recent name="E:\learn\carMaintenanceManagement\server\src" />
+      <recent name="E:\learn\carMaintenanceManagement\server\src\i18n\languages" />
       <recent name="E:\learn\carMaintenanceManagement\server" />
     </key>
   </component>
@@ -76,7 +89,8 @@
       <updated>1609228270210</updated>
       <workItem from="1609228275814" duration="5825000" />
       <workItem from="1609316017120" duration="2754000" />
-      <workItem from="1609383938697" duration="5741000" />
+      <workItem from="1609383938697" duration="5773000" />
+      <workItem from="1609399617374" duration="3178000" />
     </task>
     <servers />
   </component>
