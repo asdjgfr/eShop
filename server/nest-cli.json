@@ -3,5 +3,9 @@
   "sourceRoot": "src",
   "generateOptions": {
     "outDir": "../build/server"
+  },
+  "compilerOptions": {
+    "assets": ["config/**/*", "i18n/languages/**/*"],
+    "watchAssets": true
   }
 }

@@ -10,7 +10,7 @@ import * as YAML from "yaml";
 
 // 加载配置文件
 const projectConfig = YAML.parse(
-  readFileSync(join(__dirname, "..", "config", "project.yml"), "utf8"),
+  readFileSync(join(__dirname, "config", "project.yml"), "utf8"),
 );
 
 async function bootstrap() {
