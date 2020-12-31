@@ -1,5 +1,8 @@
 import { NestFactory } from "@nestjs/core";
-import { NestExpressApplication } from "@nestjs/platform-express";
+import {
+  FastifyAdapter,
+  NestFastifyApplication,
+} from "@nestjs/platform-fastify";
 import { AppModule } from "./app.module";
 import { readFileSync } from "fs-extra";
 import { join } from "path";
@@ -9,11 +12,15 @@ import * as YAML from "yaml";
 const projectConfig = YAML.parse(
   readFileSync(join(__dirname, "..", "config", "project.yml"), "utf8"),
 );
-console.log(123, projectConfig);
+
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestFastifyApplication>(
+    AppModule,
+    new FastifyAdapter(),
+  );
   await app.listen(projectConfig.port);
 }
+
 bootstrap().then(() => {
-  console.log(`服务启动成功：${projectConfig.port}`);
+  console.log(`服务启动成功，端口：${projectConfig.port}`);
 });
