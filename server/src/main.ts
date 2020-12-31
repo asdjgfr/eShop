@@ -21,6 +21,10 @@ async function bootstrap() {
   await app.listen(projectConfig.port);
 }
 
-bootstrap().then(() => {
-  console.log(`服务启动成功，端口：${projectConfig.port}`);
-});
+bootstrap()
+  .then(() => {
+    console.log(`服务启动成功，端口：${projectConfig.port}`);
+  })
+  .catch((err: Error) => {
+    console.log(`服务启动成功失败：${err}`);
+  });

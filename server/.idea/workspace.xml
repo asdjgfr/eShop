@@ -10,6 +10,8 @@
       <change afterPath="$PROJECT_DIR$/src/app.controller.ts" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/app.module.ts" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/app.service.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/i18n/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/i18n/zh_cn.yml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main.ts" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/test/app.e2e-spec.ts" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/test/jest-e2e.json" afterDir="false" />
@@ -20,6 +22,13 @@
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -65,7 +74,7 @@
       <updated>1609228270210</updated>
       <workItem from="1609228275814" duration="5825000" />
       <workItem from="1609316017120" duration="2754000" />
-      <workItem from="1609383938697" duration="2608000" />
+      <workItem from="1609383938697" duration="3774000" />
     </task>
     <servers />
   </component>
