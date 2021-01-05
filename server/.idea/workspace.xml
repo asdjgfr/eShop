@@ -2,26 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eeb0ed32-24ae-44e0-a903-240cd3c32b8b" name="默认的" comment="">
-      <change afterPath="$PROJECT_DIR$/.eslintrc.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nest-cli.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app.controller.spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app.controller.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app.module.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app.service.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/common/untils/getConfig.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/config/project.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/i18n/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/i18n/languages/zh_cn.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/interfaces/shopInfo.interface.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/modules/shopInfo/shopInfo.controller.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/modules/shopInfo/shopInfo.module.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/modules/shopInfo/shopInfo.service.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/app.e2e-spec.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/jest-e2e.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tsconfig.build.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tsconfig.outBuild.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/src/api/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/src/api/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/src/api/universal.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/src/api/universal.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/web/src/lib/rc.local.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/src/lib/rc.local.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,7 +21,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="NamedScopeManager">
     <order>
@@ -44,7 +29,7 @@
     </order>
   </component>
   <component name="ProjectId" id="1mK35GrKcPziVXdUWWo0doVBDii" />
-  <component name="ProjectLevelVcsManager">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
@@ -65,7 +50,7 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="yarn" />
     <property name="prettierjs.PrettierConfiguration.Package" value="E:\learn\carMaintenanceManagement\server\node_modules\prettier" />
-    <property name="settings.editor.selected.configurable" value="settings.javascript.prettier" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
     <property name="ts.external.directory.path" value="E:\learn\carMaintenanceManagement\server\node_modules\typescript\lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -90,7 +75,8 @@
       <workItem from="1609228275814" duration="5825000" />
       <workItem from="1609316017120" duration="2754000" />
       <workItem from="1609383938697" duration="5773000" />
-      <workItem from="1609399617374" duration="5295000" />
+      <workItem from="1609399617374" duration="6504000" />
+      <workItem from="1609836461033" duration="1054000" />
     </task>
     <servers />
   </component>
@@ -111,6 +97,9 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <ignored-roots>
+      <path value="$PROJECT_DIR$" />
+    </ignored-roots>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -95,3 +95,19 @@ export const post = function (
     },
   };
 };
+
+export const get = function (url: string, data?: any, config?: iConfig) {
+  const source = CancelToken.source();
+  return {
+    data: axios
+      .get(url, {
+        params: data ?? {},
+        cancelToken: source.token,
+        ...(config ?? {}),
+      })
+      .then((res) => res.data),
+    cancel: (msg = "") => {
+      source.cancel(msg);
+    },
+  };
+};

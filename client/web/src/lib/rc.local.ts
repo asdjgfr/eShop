@@ -21,9 +21,9 @@ async function initShopInfo() {
   const gsi = getShopInfo();
   const res = await gsi.data;
   store.shopInfo.setShopInfo({
-    title: res.data.name,
-    titleSuffix: res.data.suffix,
-    introduction: res.data.introduction,
+    title: res.title,
+    titleSuffix: res.titleSuffix,
+    introduction: res.introduction,
   });
 }
 
