@@ -2,11 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eeb0ed32-24ae-44e0-a903-240cd3c32b8b" name="默认的" comment="">
-      <change beforePath="$PROJECT_DIR$/../client/web/src/api/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/src/api/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/src/api/universal.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/src/api/universal.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/web/src/lib/rc.local.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../client/web/src/lib/rc.local.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/interfaces/user.interface.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/modules/user/user.controller.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/modules/user/user.module.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/modules/user/user.service.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/interfaces/shopInfo.interface.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/interfaces/shopInfo.interface.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,7 +43,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/modules/shopInfo" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/interfaces" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -56,6 +58,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\learn\carMaintenanceManagement\server\src\interfaces" />
       <recent name="E:\learn\carMaintenanceManagement\server\src\modules\shopInfo" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -76,7 +79,7 @@
       <workItem from="1609316017120" duration="2754000" />
       <workItem from="1609383938697" duration="5773000" />
       <workItem from="1609399617374" duration="6504000" />
-      <workItem from="1609836461033" duration="1054000" />
+      <workItem from="1609836461033" duration="2728000" />
     </task>
     <servers />
   </component>
