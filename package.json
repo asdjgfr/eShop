@@ -2,14 +2,30 @@
   "name": "e-shop",
   "version": "0.0.1",
   "license": "MIT",
-  "dependencies": {},
   "scripts": {},
   "devDependencies": {
+    "@commitlint/cli": "^16.2.3",
+    "@commitlint/config-conventional": "^16.2.1",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.3.7",
     "prettier": "^2.5.1"
   },
   "engines": {
     "node": ">=16",
     "pnpm": ">=6"
   },
-  "packageManager": "pnpm"
+  "packageManager": "pnpm",
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*.{js,vue,ts,jsx,tsx,json}": [
+      "prettier --write",
+      "eslint --cache --fix",
+      "git add"
+    ]
+  }
 }
