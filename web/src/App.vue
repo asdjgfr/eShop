@@ -8,6 +8,7 @@ import { RouterView } from "vue-router";
   >
     Save changes
   </button>
+  <el-button type="danger">asdasd</el-button>
   <RouterView />
 </template>
 
